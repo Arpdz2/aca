@@ -14,6 +14,7 @@ var express = require('express'),
     employee = require('./routes/employee.js'),
     agentDashboard = require('./routes/agentDashboard.js'),
     search = require('./routes/search.js');
+    nodemailer = require('nodemailer');
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -187,6 +188,29 @@ app.post('/profile/case', isLoggedIn,function (req, res, next){
     );
 });
 
+app.get('/:employer/sendemail/:id/:eid/:employeremail', isLoggedIn, function(req, res) {
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'acainsuresme@gmail.com',
+            pass: 'nathantoal56712'
+        }
+    });
+    var mailOptions = {
+        from: 'ACA  <acainsuresme@gmail.com>', // sender address
+        to: req.params.employeremail, // list of receivers
+        subject: 'ACA Insurance Employee Registration Link', // Subject line
+        text: 'Dear ' + req.params.employer + ',' + "\n\n" + "Please forward the below link to your employees in order to register for ACA coverage:" + '\n\n'  + req.protocol + '://' + req.get('host') + '/signup' + '/' + req.params.id + '/' + req.params.eid // plaintext body
+    };
+    transporter.sendMail(mailOptions, function(error, info){
+        if(error){
+            return console.log(error);
+        }
+        console.log('Message sent: ' + info.response);
+        res.redirect('/agentDashboard');
+    });
+});
+
 
 app.get('/:id/:eid', isLoggedIn, function(req, res)
 {
@@ -335,6 +359,8 @@ app.post('/information', function(req,res){
         res.redirect('/');
     }
 });
+
+
 
 /*
 app.get('/employee', isLoggedIn, function(req,res, next)
