@@ -1,0 +1,14 @@
+<p>
+    <% user.employer.forEach(function(employer) { %>
+    <%if (employer._id == emp) { %>
+    New employee account created! with an agent id of <%= user.id %> and an employer id of
+    <%= employer._id %><br>
+
+</p>
+
+<br><br>
+
+<a href="/<%= user._id %>/<%= employer._id %>" class="btn btn-default"></span> Back to Employer Page</a>
+<% } %>
+<% }); %>
+

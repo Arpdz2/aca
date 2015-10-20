@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../partials/header.ejs %></head>
+<body>
+    <div class="page-wrapper">
+        <% include ../partials/nav.ejs %>
+        <div class="container">
+            <br>
+            <ul class="nav nav-tabs nav-justified">
+                <li role="presentation"><a href="/agentDashboard"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back</a></li>
+            </ul>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h2>Employer Data</h2>
+
+                        <p>
+                            <% user.employer.forEach(function(employer) { %>
+                            <%if (employer._id == page) { %>
+                            <strong>Id</strong>: <%= employer._id %><br>
+                            <strong>Name</strong>: <%= employer.empname %><br>
+                            <strong>Street Address</strong>: <%= employer.streetaddress %><br>
+                            <strong>City</strong>: <%= employer.city %><br>
+                            <strong>State</strong>: <%= employer.state %><br>
+                            <strong>Zip Code</strong>: <%= employer.zipcode %><br>
+                            <strong>Phone Number</strong>: <%= employer.phonenumber %><br>
+                            <strong>Email</strong>: <%= employer.email %><br>
+                            <strong>Payroll Deposit</strong>: <%= employer.payroll %><br>
+                            <strong>Dental Plan</strong>: <%= employer.dental %><br>
+                            <strong>Cash Advantage Plan</strong>: <%= employer.cashadvantage %><br>
+                            <strong>Vision Plan</strong>: <%= employer.vision %><br>
+                            <strong>Comments</strong>: <%= employer.comments %><br>
+                            <!--
+                            <a href="/agentDashboard" class="btn btn-default"> Back to Agent Dashboard</a>
+                            -->
+                            <br>
+                            <center>
+                                <a href="#" class="btn btn-info"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Send Registration Info</a>
+                                <a href="/delete" name="delete" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete Record</a>
+                            </center>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h2>Employee Data</h2>
+                        <p>
+                            <p>
+                                <% emp.forEach(function(employee) { %>
+                                <%if (employer._id == employee.employerid && user._id == employee.agentid) { %>
+                                <strong>Id</strong>: <%= employee._id %><br>
+                                <% } %>
+                                <% }); %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+            <% }); %>
+            <ul class="nav nav-tabs nav-justified">
+                <li role="presentation"><a href="/agentDashboard"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!--
+    <h2><strong>Employee Signup Link</strong>: <%= url %> </h2>
+    -->
+
+    <% include ../partials/footer.ejs %>
+
+    <script type="text/javascript">
+        var elems = document.getElementsByName('delete');
+        var confirmIt = function (e) {
+            if (!confirm('Are you sure you want to delete this employer account?')) e.preventDefault();
+        };
+        for (var i = 0, l = elems.length; i < l; i++) {
+            elems[i].addEventListener('click', confirmIt, false);
+        }
+    </script>
+</body>
+</html>

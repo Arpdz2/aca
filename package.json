@@ -1,0 +1,38 @@
+{
+  "name": "aca",
+  "version": "0.1.4",
+  "description": "Affordable Care Act Insurance Group",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "*",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.0",
+    "ejs": "^2.3.1",
+    "express": "~4.9.x",
+    "express-session": "^1.11.3",
+    "method-override": "^2.3.5",
+    "mongoose": "^4.1.8",
+    "morgan": "^1.6.1",
+    "nodemailer": "*",
+    "passport": "^0.3.0",
+    "passport-local": "^1.0.0",
+    "random-js": "^1.0.6"
+  },
+  "engines": {
+    "node": "0.12.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bsmckamey/aca"
+  },
+  "keywords": [
+    "ACA",
+    "ACA Insurance Group",
+    "Affordable Care Act"
+  ],
+  "license": "MIT"
+}

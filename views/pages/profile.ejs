@@ -1,0 +1,54 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <% include ../partials/header.ejs %></head>
+<body>
+    <div class="page-wrapper">
+        <% include ../partials/nav.ejs %>
+        <div class="container">
+
+            <div class="page-header text-center">
+                <h1><span class="fa fa-anchor"></span> Profile Page</h1>
+                <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+            </div>
+
+            <div class="row">
+
+                <!-- LOCAL INFORMATION -->
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h3><span class="fa fa-user"></span> Local Info</h3>
+
+                        <p>
+                            <strong>id</strong>: <%= user._id %><br>
+                            <strong>email</strong>: <%= user.local.email %><br>
+                            <!--
+                            <strong>password</strong>: <%= user.local.password %>
+                            -->
+                        </p>
+
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h3>Cases</h3>
+                        <p>
+                        <% user.employer.forEach(function(employer) { %>
+                        <a href="/<%= user._id %>/<%= employer._id %>"><%= employer.empname %> </a>   <br>
+                        <% }); %>
+
+                        </p>
+                        <p>
+                            <a href="/profile/case" class="btn btn-default"> Add New Case</a>
+                        </p>
+                    </div>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+    <% include ../partials/footer.ejs %>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <% include ../partials/header.ejs %></head>
+<body>
+    <div class="page-wrapper">
+        <% include ../partials/nav.ejs %>
+        <div class="container">
+
+            <div class="page-header text-center">
+                <h1>Agent Dashboard</h1>
+                <!-- <a href="/logout" class="btn btn-default btn-sm">Logout</a> -->
+            </div>
+
+            <div class="row">
+
+                <!-- LOCAL INFORMATION -->
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h3><span class="fa fa-user"></span> Agent Info</h3>
+
+                        <p>
+                            <strong>Agent ID</strong>: <%= user._id %><br>
+                            <strong>Name</strong>: <%= user.employer[0].empname %><br>
+                            <strong>E-mail</strong>: <%= user.local.email %>
+                            <!--
+                            <strong>password</strong>: <%= user.local.password %>
+                            -->
+                        </p>
+
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h3>Agent Cases</h3>
+                        <p>
+                        <% user.employer.forEach(function(employer) { %>
+                        <a href="/<%= user._id %>/<%= employer._id %>"><%= employer._id %> <%= employer.firstname %> <%= employer.lastname %></a>   <br>
+                        <% }); %>
+
+                        </p>
+                        <p>
+                            <a href="/profile/case" class="btn btn-default"> Add New Case</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h3><span class="fa fa-user"></span> Search</h3>
+
+                        <p>
+                            <form class="form-inline" action="/search" method="post">
+                                <div class="form-group">
+                                    <input type="search" class="form-control" id="search">
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-default">Search</button>
+                                </div>
+                            </form>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <% include ../partials/footer.ejs %>
+</body>
+</html>

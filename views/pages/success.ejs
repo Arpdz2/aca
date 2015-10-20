@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+    
+    <div class="page-wrapper">
+        <% include ../partials/nav.ejs %>
+        <section class="content-8 v-center">
+            <div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <h1>Message Sent!</h1>
+                            <h2>We will be in touch shortly. :)</h2>
+                            <br/>
+                            <br/>
+                            <a class="btn btn-large btn-clear" href="/">Let's Go Back Home</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <% include ../partials/footer.ejs %>
+    
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/common-files/js/jquery-1.10.2.min.js"></script>
+    <script src="/flat-ui/js/bootstrap.min.js"></script>
+    <script src="/common-files/js/modernizr.custom.js"></script>
+    <script src="/common-files/js/jquery.scrollTo-1.4.3.1-min.js"></script>
+    <script src="/common-files/js/jquery.parallax.min.js"></script>
+    <script src="/common-files/js/startup-kit.js"></script>
+    <script src="/common-files/js/jquery.backgroundvideo.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script type="text/javascript">
+        function showContent8(){
+            fadedEls($('.content-8'), 300);
+            $(window).resize().scroll();
+        }
+        showContent8();
+    </script>
+
+
+</body>
+</html>
