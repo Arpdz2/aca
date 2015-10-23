@@ -75,6 +75,7 @@ app.get('/test', function(req, res)
 
 
     var asposeapp = new AsposeCloud({'appSID':AppSID,'appKey':AppKey,'baseURI':BaseProductUri});
+    console.log("test post");
     console.log(aspose);
 
     var pdf = new AsposePdf(asposeapp);
