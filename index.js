@@ -84,9 +84,9 @@ app.get('/test', function(req, res)
     
     storage.uploadFile('./public/pdf/cignaApplicationForInsurance.pdf', '', 'default', function (err, data) {
         if(err) {
-            console.log("Error:" + err);
+            console.log(err);
         } else {
-            console.log("Data:" + data);
+            console.log(data);
         }
         res.redirect('/');
     });
