@@ -14,7 +14,9 @@ var express = require('express'),
     employee = require('./routes/employee.js'),
     agentDashboard = require('./routes/agentDashboard.js'),
     search = require('./routes/search.js');
-    nodemailer = require('nodemailer');
+    nodemailer = require('nodemailer'),
+    fdf = require('fdf'),
+    fs = require('fs');
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -45,6 +47,23 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 app.get('/', function(request, response) {
   response.render('pages/index');
+});
+
+app.get('/test', function(req, res)
+{
+    var data = fdf.generate({
+        "Applicants Name" : "Dante",
+        "Last" : "Nguyen",
+        "MI": "",
+        "sex": "M"
+    });
+ 
+    fs.writeFile('data.fdf', data, function(err){
+        console.log('done');
+        res.redirect('/');
+    });
+ 
+    spawn('pdftk', ['test3.pdf', 'fill_form','data.fdf', 'output', 'filledfinal2.pdf', 'flatten']);
 });
 
 app.get('/quote', function(request, response) {
