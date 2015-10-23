@@ -66,7 +66,7 @@ app.get('/test', function(req, res)
         res.redirect('/');
     });
  
-    spawn('pdftk', ['cignaApplicationForInsurance.pdf', 'fill_form','data.fdf', 'output', 'filled.pdf', 'flatten']);
+    spawn('pdftk', ['./public/pdf/cignaApplicationForInsurance.pdf', 'fill_form','data.fdf', 'output', 'filled.pdf', 'flatten']);
     
     var AppSID = 'e0d73122-beed-4c52-bfc2-07da8811f777';
     var AppKey = 'c84dd369f125ca2ffe8117f259fb8b96';
