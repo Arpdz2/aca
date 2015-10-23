@@ -19,7 +19,8 @@ var express = require('express'),
     fs = require('fs'),
     AsposeCloud = require('asposecloud/lib/aspose-cloud'),
     AsposeStorage = require('asposecloud/lib/aspose-storage'),
-    AsposePdf = require('asposecloud/lib/aspose-pdf');
+    AsposePdf = require('asposecloud/lib/aspose-pdf'),
+    spawn = require('child_process').spawn;
 
 
 app.set('port', (process.env.PORT || 5000));
