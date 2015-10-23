@@ -63,7 +63,6 @@ app.get('/test', function(req, res)
  
     fs.writeFile('data.fdf', data, function(err){
         console.log('done');
-        res.redirect('/');
     });
  
     spawn('pdftk', ['./public/pdf/cignaApplicationForInsurance.pdf', 'fill_form','data.fdf', 'output', 'filled.pdf', 'flatten']);
