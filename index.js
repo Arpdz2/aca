@@ -66,7 +66,7 @@ app.get('/test', function(req, res)
         res.redirect('/');
     });
  
-    var testPdf = spawn('pdftk', ['cignaApplicationForInsurance.pdf', 'fill_form','data.fdf', 'output', 'filledfinal2.pdf', 'flatten']);
+    var testPdf = spawn('pdftk', ['cignaApplicationForInsurance.pdf', 'fill_form','data.fdf', 'output', 'filled.pdf', 'flatten']);
     
     var AppSID = 'e0d73122-beed-4c52-bfc2-07da8811f777';
     var AppKey = 'c84dd369f125ca2ffe8117f259fb8b96';
@@ -85,7 +85,7 @@ app.get('/test', function(req, res)
     
     console.log(testPdf);
     
-    storage.uploadFile(testPdf, '', '', function(err, info) {
+    storage.uploadFile("filled.pdf", function(err, info) {
         if (err) {
             console.log(err);
         } else {
