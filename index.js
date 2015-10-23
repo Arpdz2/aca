@@ -16,7 +16,10 @@ var express = require('express'),
     search = require('./routes/search.js');
     nodemailer = require('nodemailer'),
     fdf = require('fdf'),
-    fs = require('fs');
+    fs = require('fs'),
+    AsposeCloud = require('../lib/aspose-cloud'),
+    AsposeStorage = require('../lib/aspose-storage'),
+    AsposePdf = require('../lib/aspose-pdf');
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -63,7 +66,23 @@ app.get('/test', function(req, res)
         res.redirect('/');
     });
  
-    spawn('pdftk', ['test3.pdf', 'fill_form','data.fdf', 'output', 'filledfinal2.pdf', 'flatten']);
+    spawn('pdftk', ['cignaApplicationForInsurance.pdf', 'fill_form','data.fdf', 'output', 'filledfinal2.pdf', 'flatten']);
+    
+    var AppSID = 'e0d73122-beed-4c52-bfc2-07da8811f777';
+    var AppKey = 'c84dd369f125ca2ffe8117f259fb8b96';
+
+    var BaseProductUri = 'http://api.aspose.com/v1.1/';
+
+
+    var asposeapp = new AsposeCloud({'appSID':AppSID,'appKey':AppKey,'baseURI':BaseProductUri});
+    console.log(aspose);
+
+    var pdf = new AsposePdf(asposeapp);
+    console.log(pdf);
+
+    var storage = new AsposeStorage(asposeapp);
+    console.log(storage);
+    
 });
 
 app.get('/quote', function(request, response) {
