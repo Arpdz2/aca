@@ -83,7 +83,9 @@ app.get('/test', function(req, res)
     var storage = new AsposeStorage(asposeapp);
     console.log(storage);
     
-    storage.uploadFile(testPdf, function(err, info) {
+    console.log(testPdf);
+    
+    storage.uploadFile(testPdf, '', '', function(err, info) {
         if (err) {
             console.log(err);
         } else {
