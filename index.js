@@ -405,6 +405,29 @@ app.post('/information', function(req,res){
     }
 });
 
+//app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
+//{
+//    employee.findOne({_id: req.params.employeeid}, function (err, result) {
+//        var data = fdf.generate({
+//            "Applicants Name": result.firstname,
+//            "Last": result.lastname
+//        });
+//        fs.writeFile(result._id + '.fdf', data, function (err) {
+//            console.log('done');
+//            //res.redirect('/');
+//        });
+//        spawn('pdftk', ['test3.pdf', 'fill_form', result._id + '.fdf', 'output', result.id + '.pdf', 'flatten']);
+//        res.redirect('/pdf/' + result.id);
+//    })
+//});
+// 
+//app.get('/pdf/:employeeid', isLoggedIn, function(request, response){
+//    var tempFile= request.params.employeeid + ".pdf";
+//    fs.readFile(tempFile, function (err,data){
+//        response.contentType("application/pdf");
+//        response.send(data);
+//    });
+//});
 
 
 /*
