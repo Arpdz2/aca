@@ -87,6 +87,7 @@ app.get('/test', function(req, res)
         if (err) {
             console.log(err);
         }
+        res.redirect('/');
     });
 });
 
