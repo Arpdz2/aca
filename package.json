@@ -23,7 +23,8 @@
     "random-js": "^1.0.6",
     "fdf": "*",
     "fs": "*",
-    "asposecloud":"*"
+    "asposecloud":"*",
+    "path":"*"
   },
   "engines": {
     "node": "0.12.2"
