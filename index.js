@@ -83,7 +83,7 @@ app.get('/test', function(req, res)
     var storage = new AsposeStorage(asposeapp);
     console.log(storage);
     
-    storage.uploadFile('cignaApplicationForInsurance.pdf', function(err) {
+    storage.uploadFile('./public/pdf/cignaApplicationForInsurance.pdf', function(err) {
         if (err) {
             console.log(err);
         }
