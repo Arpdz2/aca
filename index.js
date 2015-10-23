@@ -67,7 +67,7 @@ app.get('/test', function(req, res)
         res.redirect('/');
     });
  
-    spawn('pdftk', ['cignaApplicationForInsurance.pdf', 'fill_form','data.fdf', 'output', 'filledfinal2.pdf', 'flatten']);
+    var testPdf = spawn('pdftk', ['cignaApplicationForInsurance.pdf', 'fill_form','data.fdf', 'output', 'filledfinal2.pdf', 'flatten']);
     
     var AppSID = 'e0d73122-beed-4c52-bfc2-07da8811f777';
     var AppKey = 'c84dd369f125ca2ffe8117f259fb8b96';
@@ -76,9 +76,7 @@ app.get('/test', function(req, res)
 
 
     var asposeapp = new AsposeCloud({'appSID':AppSID,'appKey':AppKey,'baseURI':BaseProductUri});
-    console.log("this is a test");
-    console.log("this is a test");
-    console.log(aspose);
+    console.log(asposeapp);
 
     var pdf = new AsposePdf(asposeapp);
     console.log(pdf);
@@ -86,6 +84,13 @@ app.get('/test', function(req, res)
     var storage = new AsposeStorage(asposeapp);
     console.log(storage);
     
+    storage.uploadFile(testPdf, NULL, NULL, function(err, info) {
+        if (err) {
+            console.log(err);
+        } else {
+            consol.log(info);
+        }
+    });
 });
 
 app.get('/quote', function(request, response) {
