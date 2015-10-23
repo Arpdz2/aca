@@ -67,8 +67,8 @@ app.get('/test', function(req, res)
  
     spawn('pdftk', ['./public/pdf/cignaApplicationForInsurance.pdf', 'fill_form','data.fdf', 'output', 'filled.pdf', 'flatten']);
     
-    var AppSID = 'e0d73122-beed-4c52-bfc2-07da8811f777';
-    var AppKey = 'c84dd369f125ca2ffe8117f259fb8b96';
+    var AppSID = 'f8f6d6ec-85e7-4de5-bba6-724005fb7808';
+    var AppKey = 'a201c40896b23c2e39334d2c7c3d6117';
 
     var BaseProductUri = 'http://api.aspose.com/v1.1/';
 
