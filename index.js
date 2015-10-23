@@ -17,9 +17,9 @@ var express = require('express'),
     nodemailer = require('nodemailer'),
     fdf = require('fdf'),
     fs = require('fs'),
-    AsposeCloud = require('../lib/aspose-cloud'),
-    AsposeStorage = require('../lib/aspose-storage'),
-    AsposePdf = require('../lib/aspose-pdf');
+    AsposeCloud = require('./node_modules/lib/aspose-cloud'),
+    AsposeStorage = require('./node_modules/lib/aspose-storage'),
+    AsposePdf = require('./node_modules/lib/aspose-pdf');
 
 
 app.set('port', (process.env.PORT || 5000));
