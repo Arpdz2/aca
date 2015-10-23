@@ -58,8 +58,7 @@ app.get('/test', function(req, res)
     var data = fdf.generate({
         "Applicants Name" : "Dante",
         "Last" : "Nguyen",
-        "MI": "",
-        "sex": "M"
+        "MI": ""
     });
  
     fs.writeFile('data.fdf', data, function(err){
