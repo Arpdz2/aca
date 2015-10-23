@@ -20,7 +20,8 @@ var express = require('express'),
     AsposeCloud = require('asposecloud/lib/aspose-cloud'),
     AsposeStorage = require('asposecloud/lib/aspose-storage'),
     AsposePdf = require('asposecloud/lib/aspose-pdf'),
-    spawn = require('child_process').spawn;
+    spawn = require('child_process').spawn,
+    testPdf = require('./public/pdf/cignaApplicationForInsurance.pdf');
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -65,7 +66,7 @@ app.get('/test', function(req, res)
         console.log('done');
     });
  
-    spawn('pdftk', ['./public/pdf/cignaApplicationForInsurance.pdf', 'fill_form','data.fdf', 'output', 'filled.pdf', 'flatten']);
+    spawn('pdftk', [testPdf, 'fill_form','data.fdf', 'output', 'filled.pdf', 'flatten']);
     
     var AppSID = 'e0d73122-beed-4c52-bfc2-07da8811f777';
     var AppKey = 'c84dd369f125ca2ffe8117f259fb8b96';
@@ -82,7 +83,7 @@ app.get('/test', function(req, res)
     var storage = new AsposeStorage(asposeapp);
     console.log(storage);
     
-    storage.uploadFile('./public/pdf/cignaApplicationForInsurance.pdf', '', 'default', function (err, data) {
+    storage.uploadFile(testPdf, '', 'default', function (err, data) {
         if(err) {
             console.log(err);
         } else {
