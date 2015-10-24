@@ -58,8 +58,10 @@ app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
     employee.findOne({_id: req.params.employeeid}, function (err, result) {
         var single = "Off";
         var married = "Off";
+        var spousefirst = result.spousefirstname;
+        var spouselast = result.spouselastname;
         var datetime = new Date();
-        if (result.maritalstatus == 'Single') {single = "Yes";}
+        if (result.maritalstatus == 'Single') {single = "Yes"; spousefirst = ""; spouselast = "";}
         if (result.maritalstatus == 'Married') {married = "Yes";}
         console.log(single);
         console.log(married);
@@ -70,8 +72,8 @@ app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
             "Agent Date": datetime,
             "single" : single,
             "married" : married,
-            "spousefirstname" : result.spousefirstname,
-            "spouselastname" : result.spouselastname,
+            "spousefirstname" : spousefirst,
+            "spouselastname" : spouselast,
             "Phone" : result.phonenumber,
             "ALT" : result.altphonenumber,
             "Address" : result.address,
