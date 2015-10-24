@@ -50,7 +50,7 @@
                             <p>
                                 <% emp.forEach(function(employee) { %>
                                 <%if (employer._id == employee.employerid && user._id == employee.agentid) { %>
-                                <strong>Id</strong>:  <a href="/employee/pdf/generator/<%= employee._id %>"><%= employee._id %> </a> <br>
+                                <strong>Id/ Name</strong>:  <a href="/employee/pdf/generator/<%= employee._id %>"><%= employee._id %>/ <%= employee.firstname %>&nbsp;<%= employee.lastname%> </a> <br>
                                 <% } %>
                                 <% }); %>
                         </p>

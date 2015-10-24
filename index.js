@@ -56,16 +56,39 @@ app.get('/', function(request, response) {
 app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
 {
     employee.findOne({_id: req.params.employeeid}, function (err, result) {
+        var single = "Off";
+        var married = "Off";
+        var datetime = new Date();
+        if (result.maritalstatus == 'Single') {single = "Yes";}
+        if (result.maritalstatus == 'Married') {married = "Yes";}
+        console.log(single);
+        console.log(married);
         var data = fdf.generate({
-            "Applicants Name": result.firstname,
-            "Last": result.lastname
+            "first name": result.firstname,
+            "last name": result.lastname,
+            "agent_id": result.agentid,
+            "Agent Date": datetime,
+            "single" : single,
+            "married" : married,
+            "spousefirstname" : result.spousefirstname,
+            "spouselastname" : result.spouselastname,
+            "Phone" : result.phonenumber,
+            "ALT" : result.altphonenumber,
+            "Address" : result.address,
+            "City" : result.city,
+            "State" : result.state,
+            "Zip" : result.zip,
+            "Email" : result.email,
+            "Birth date" : result.birthdate,
+            "Number of People" : result.coveragenumber,
+            "Primary Social Security" : result.ss
         });
 
         fs.writeFile(result._id + '.fdf', data, function (err) {
             console.log('done');
             //res.redirect('/');
         });
-        spawn('pdftk', ['./public/pdf/cignaApplicationForInsurance.pdf', 'fill_form', result._id + ".fdf", 'output', result._id + '.pdf', 'flatten']);
+        spawn('pdftk', ['./public/pdf/ClientInformation.pdf', 'fill_form', result._id + ".fdf", 'output', result._id + '.pdf', 'flatten']);
         var refreshIntervalId = setInterval(function() {
             fs.stat(result._id + '.pdf', function(err, exists) {
                 if (exists) {
@@ -85,7 +108,7 @@ app.get('/pdf/:employeeid', isLoggedIn, function(request, response){
     });
 });
 
-app.get('/test', function(req, res)
+/*app.get('/test', function(req, res)
 {
     var data = fdf.generate({
         "Applicants Name" : "Dante",
@@ -113,7 +136,7 @@ app.get('/test', function(req, res)
         }
         res.redirect('/');
     });
-});
+});*/
 
 app.get('/quote', function(request, response) {
   response.render('pages/quote');
