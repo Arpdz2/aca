@@ -1,297 +1,295 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <% include ../partials/header.ejs %></head>
-<body>
-<div class="page-wrapper">
-    <% include ../partials/nav.ejs %>
-    <div class="container">
-        <div class="page-header text-center">
-            <h1><span class="fa fa-anchor"></span> Profile Page</h1>
-            <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="well">
-                <%= employee.email%> <br>
-                <%= employee.password%> <br>
-                <p>
-                    You will receive: <br>
-                    <% user.employer.forEach(function(employer) { %>
-                    <%if (employer._id == employerid) { %>
-                    <% if (employer.payroll == "True") { %>
-                    Payroll Deposit <br>
-                    <% } %>
-                    <% if (employer.dental == "True") { %>
-                    Dental Plan <br>
-                    <% } %>
-                    <% if (employer.cashadvantage == "True") { %>
-                    Cash Advantage Plan <br>
-                    <% } %>
-                    <% if (employer.vision == "True") { %>
-                    Vision Plan <br>
-                    <% } %>
-                <p>
-                    <% } %>
-                    <% }); %>
-            </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="well">
-                    <form method="post">
-                        <div class="row requiredRow">
-                            <h5>Primary</h5>
-                            <label for="FirstName">First Name</label>
-                            <input id="FirstName" name="FirstName" type="text" class="required" title="First Name" placeholder="First Name" value="<%= employee.firstname %>"required>
+    <head>
+        <% include ../partials/header.ejs %>
+    </head>
+    <body>
+        <div class="page-wrapper">
+            <% include ../partials/nav.ejs %>
+            <div class="container">
+                <div class="page-header text-center">
+                    <h1><span class="fa fa-anchor"></span> Profile Page</h1>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="well">
+                            <%= employee.email%> <br>
+                            <p>
+                                Your coverage: <br>
+                                <% user.employer.forEach(function(employer) { %>
+                                <%if (employer._id == employerid) { %>
+                                <% if (employer.payroll == "True") { %>
+                                Payroll Deposit <br>
+                                <% } %>
+                                <% if (employer.dental == "True") { %>
+                                Dental Plan <br>
+                                <% } %>
+                                <% if (employer.cashadvantage == "True") { %>
+                                Cash Advantage Plan <br>
+                                <% } %>
+                                <% if (employer.vision == "True") { %>
+                                Vision Plan <br>
+                                <% } %>
+                            <p>
+                                <% } %>
+                                <% }); %>
                         </div>
-                        <div class="row requiredRow">
-                            <label for="LastName">Last Name</label>
-                            <input id="LastName" name="LastName" type="text" class="required" title="Last Name" placeholder="Last Name" value="<%= employee.lastname %>"required>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="well">
+                            <form method="post">
+                                <div class="row requiredRow">
+                                    <h5>Primary</h5>
+                                    <label for="FirstName">First Name</label>
+                                    <input id="FirstName" name="FirstName" type="text" class="required" title="First Name" placeholder="First Name" value="<%= employee.firstname %>"required>
+                                </div>
+                                <div class="row requiredRow">
+                                    <label for="LastName">Last Name</label>
+                                    <input id="LastName" name="LastName" type="text" class="required" title="Last Name" placeholder="Last Name" value="<%= employee.lastname %>"required>
+                                </div>
+                                <div class="row requiredRow">
+                                    <% if (employee.maritalstatus == "Single") { %>
+                                    <fieldset>
+                                        Marital Status &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span><input value="Single" id="MaritalStatus_21" name="MaritalStatus" type="radio" class="required" title="Single" checked="checked" required> <label for="MaritalStatus_21">Single</label></span>
+                                        <span><input value="Married" id="MaritalStatus_22" name="MaritalStatus" type="radio" class="required" title="Married" required> <label for="MaritalStatus_22">Married</label></span>
+                                    </fieldset>
+                                    <% } %>
+                                    <% if (employee.maritalstatus == "Married") { %>
+                                    <fieldset>
+                                        Marital Status &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span><input value="Single" id="MaritalStatus_21" name="MaritalStatus" type="radio" class="required" title="Single"  required> <label for="MaritalStatus_21">Single</label></span>
+                                        <span><input value="Married" id="MaritalStatus_22" name="MaritalStatus" type="radio" class="required" title="Married" checked="checked" required> <label for="MaritalStatus_22">Married</label></span>
+                                    </fieldset>
+                                    <% } %>
+                                    <% if (employee.maritalstatus == null) { %>
+                                    <fieldset>
+                                        Marital Status &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span><input value="Single" id="MaritalStatus_21" name="MaritalStatus" type="radio" class="required" title="Single"  required> <label for="MaritalStatus_21">Single</label></span>
+                                        <span><input value="Married" id="MaritalStatus_22" name="MaritalStatus" type="radio" class="required" title="Married" required> <label for="MaritalStatus_22">Married</label></span>
+                                    </fieldset>
+                                    <% } %>
+                                </div>
+                                <div class="row">
+                                    <label for="SpouseFirstName">Spouse First Name</label>
+                                    <input id="SpouseFirstName" name="SpouseFirstName" type="text" placeholder="First Name" value="<%= employee.spousefirstname %>">
+                                </div>
+                                <div class="row">
+                                    <label for="SpouseLastName">Spouse Last Name</label>
+                                    <input id="SpouseLastName" name="SpouseLastName" type="text" placeholder="Last Name" value="<%= employee.spouselastname %>">
+                                </div>
+                                <div class="row requiredRow">
+                                    <label for="PhoneNumber">Phone Number</label>
+                                    <input id="PhoneNumber" name="PhoneNumber" type="tel" class="required" placeholder="Phone Number" value="<%= employee.phonenumber %>" required>
+                                </div>
+                                <div class="row requiredRow">
+                                    <label for="AlternatePhoneNumber">Alternate Phone Number</label>
+                                    <input id="AlternatePhoneNumber" name="AlternatePhoneNumber" type="tel" class="required" placeholder="Alternate Phone Number" value="<%= employee.altphonenumber %>" required>
+                                </div>
+                                <div class="row requiredRow">
+                                    <label for="Address">Address</label>
+                                    <input id="Address" name="Address" type="text" class="required" title="Address" placeholder="Address" value="<%= employee.address %>" required>
+                                </div>
+                                <div class="row requiredRow">
+                                    <label for="City">City</label>
+                                    <input id="City" name="City" type="text" class="required" title="City" placeholder="City" value="<%= employee.city %>" required>
+                                </div>
+                                <div class="row requiredRow">
+                                    <label for="State">State</label>
+                                    <select id="State" name="State" class="required" title="State" onload="myFunction();" required>
+                                        <option value="AL" <%= (employee.state == 'AL')?'selected':'' %> >AL </option>
+                                        <option value="AK" <%= (employee.state == 'AK')?'selected':'' %> >AK </option>
+                                        <option value="AZ" <%= (employee.state == 'AZ')?'selected':'' %> >AZ </option>
+                                        <option value="AR" <%= (employee.state == 'AR')?'selected':'' %> >AR</option>
+                                        <option value="CA" <%= (employee.state == 'CA')?'selected':'' %> >CA</option>
+                                        <option value="CO" <%= (employee.state == 'CO')?'selected':'' %> >CO</option>
+                                        <option value="CT" <%= (employee.state == 'CT')?'selected':'' %> >CT</option>
+                                        <option value="DE" <%= (employee.state == 'DE')?'selected':'' %> >DE</option>
+                                        <option value="FL" <%= (employee.state == 'FL')?'selected':'' %> >FL</option>
+                                        <option value="GA" <%= (employee.state == 'GA')?'selected':'' %> >GA</option>
+                                        <option value="HI" <%= (employee.state == 'HI')?'selected':'' %> >HI</option>
+                                        <option value="ID" <%= (employee.state == 'ID')?'selected':'' %> >ID</option>
+                                        <option value="IL" <%= (employee.state == 'IL')?'selected':'' %> >IL</option>
+                                        <option value="IN" <%= (employee.state == 'IN')?'selected':'' %> >IN</option>
+                                        <option value="IA" <%= (employee.state == 'IA')?'selected':'' %> >IA</option>
+                                        <option value="KS" <%= (employee.state == 'KS')?'selected':'' %> >KS</option>
+                                        <option value="KY" <%= (employee.state == 'KY')?'selected':'' %> >KY</option>
+                                        <option value="LA" <%= (employee.state == 'LA')?'selected':'' %> >LA</option>
+                                        <option value="ME" <%= (employee.state == 'ME')?'selected':'' %> >ME</option>
+                                        <option value="MD" <%= (employee.state == 'MD')?'selected':'' %> >MD</option>
+                                        <option value="MA" <%= (employee.state == 'MA')?'selected':'' %> >MA</option>
+                                        <option value="MI" <%= (employee.state == 'MI')?'selected':'' %> >MI</option>
+                                        <option value="MN" <%= (employee.state == 'MN')?'selected':'' %> >MN</option>
+                                        <option value="MS" <%= (employee.state == 'MS')?'selected':'' %> >MS</option>
+                                        <option value="MO" <%= (employee.state == 'MO')?'selected':'' %> >MO</option>
+                                        <option value="MT" <%= (employee.state == 'MT')?'selected':'' %> >MT</option>
+                                        <option value="NE" <%= (employee.state == 'NE')?'selected':'' %> >NE</option>
+                                        <option value="NV" <%= (employee.state == 'NV')?'selected':'' %> >NV</option>
+                                        <option value="NH" <%= (employee.state == 'NH')?'selected':'' %> >NH</option>
+                                        <option value="NJ" <%= (employee.state == 'NJ')?'selected':'' %> >NJ</option>
+                                        <option value="NM" <%= (employee.state == 'NM')?'selected':'' %> >NM</option>
+                                        <option value="NY" <%= (employee.state == 'NY')?'selected':'' %> >NY</option>
+                                        <option value="NC" <%= (employee.state == 'NC')?'selected':'' %> >NC</option>
+                                        <option value="ND" <%= (employee.state == 'ND')?'selected':'' %> >ND</option>
+                                        <option value="OH" <%= (employee.state == 'OH')?'selected':'' %> >OH</option>
+                                        <option value="OK" <%= (employee.state == 'OK')?'selected':'' %> >OK</option>
+                                        <option value="OR" <%= (employee.state == 'OR')?'selected':'' %> >OR</option>
+                                        <option value="PA" <%= (employee.state == 'PA')?'selected':'' %> >PA</option>
+                                        <option value="RI" <%= (employee.state == 'RI')?'selected':'' %> >RI</option>
+                                        <option value="SC" <%= (employee.state == 'SC')?'selected':'' %> >SC</option>
+                                        <option value="SD" <%= (employee.state == 'SD')?'selected':'' %> >SD</option>
+                                        <option value="TN" <%= (employee.state == 'TN')?'selected':'' %> >TN</option>
+                                        <option value="TX" <%= (employee.state == 'TX')?'selected':'' %> >TX</option>
+                                        <option value="UT" <%= (employee.state == 'UT')?'selected':'' %> >UT</option>
+                                        <option value="VT" <%= (employee.state == 'VT')?'selected':'' %> >VT</option>
+                                        <option value="VA" <%= (employee.state == 'VA')?'selected':'' %> >VA</option>
+                                        <option value="WA" <%= (employee.state == 'WA')?'selected':'' %> >WA</option>
+                                        <option value="WV" <%= (employee.state == 'WV')?'selected':'' %> >WV</option>
+                                        <option value="WI" <%= (employee.state == 'WI')?'selected':'' %> >WI</option>
+                                        <option value="WY" <%= (employee.state == 'WY')?'selected':'' %> >WY</option>
+                                    </select>
+                                </div>
+                                <div class="row requiredRow">
+                                    <label for="Zip">Zip</label>
+                                    <input id="Zip" name="Zip" type="text" class="required" title="Zip" placeholder="Zip" value="<%= employee.zip %>" required>
+                                </div>
+                                <div class="row requiredRow">
+                                    <label for="Email">Email</label>
+                                    <input id="Email" name="Email" type="email" class="required" title="Email" placeholder="Email" value="<%= employee.email %>" required>
+                                </div>
+                                <div class="row requiredRow">
+                                    <label for="BirthDate">Birth Date</label>
+                                    <input id="BirthDate" name="BirthDate" type="date" class="required" title="Birth Date" value="<%= employee.birthdate %>" required>
+                                </div>
+                                <div class="row requiredRow">
+                                    <label for="NumberofPeopleThatNeedCoverage">Number of People That Need Coverage</label>
+                                    <input id="NumberofPeopleThatNeedCoverage" name="NumberofPeopleThatNeedCoverage" type="number" class="required" title="Number of People That Need Coverage" placeholder="0" value="<%= employee.coveragenumber %>"required>
+                                </div>
+                                <div class="row requiredRow">
+                                    <label for="PrimarySocialSecurity">Primary Social Security #</label>
+                                    <input id="PrimarySocialSecurity" name="PrimarySocialSecurity" type="text" class="required" title="Primary Social Security #" placeholder="SS#" value="<%= employee.ss %>"required>
+                                </div>
+                                <div class="row">
+                                    <h5>Dependent 1</h5>
+                                    <label for="Dependent1FirstName">Dependent 1 First Name</label>
+                                    <input id="Dependent1FirstName" name="Dependent1FirstName" type="text">
+                                </div>
+                                <div class="row">
+                                    <label for="Dependent1LastName">Dependent 1 Last Name</label>
+                                    <input id="Dependent1LastName" name="Dependent1LastName" type="text">
+                                </div>
+                                <div class="row">
+                                    <label for="Dependent1BirthDate">Dependent 1 Birth Date </label>
+                                    <input id="Dependent1BirthDate" name="Dependent1BirthDate" type="date">
+                                </div>
+                                <div class="row">
+                                    <label for="Dependent1SocialSecurity#">Dependent 1 Social Security #</label>
+                                    <input id="Dependent1SocialSecurity#" name="Dependent1SocialSecurity#" type="text">
+                                </div>
+                                <div class="row">
+                                    <fieldset>
+                                        Dependent 1 Gender&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span><input value="Male" id="Dependent1Gender_23" name="Dependent1Gender" type="radio"> <label for="Dependent1Gender_23">Male</label></span>
+                                        <span><input value="Female" id="Dependent1Gender_24" name="Dependent1Gender" type="radio"> <label for="Dependent1Gender_24">Female</label></span>
+                                    </fieldset>
+                                </div>
+                                <div class="row">
+                                    <input id="Dependent1NeedsCoverage" name="Dependent1NeedsCoverage" type="checkbox">
+                                    <span><label for="Dependent1NeedsCoverage">Dependent 1 Needs Coverage</label></span>
+                                </div>
+                                <div class="row">
+                                    <h5>Dependent 2</h5>
+                                    <label for="Dependent2FirstName">Dependent 2 First Name</label>
+                                    <input id="Dependent2FirstName" name="Dependent2FirstName" type="text">
+                                </div>
+                                <div class="row">
+                                    <label for="Dependent2LastName">Dependent 2 Last Name</label>
+                                    <input id="Dependent2LastName" name="Dependent2LastName" type="text">
+                                </div>
+                                <div class="row">
+                                    <label for="Dependent2BirthDate">Dependent 2 Birth Date </label>
+                                    <input id="Dependent2BirthDate" name="Dependent2BirthDate" type="date">
+                                </div>
+                                <div class="row">
+                                    <label for="Dependent2SocialSecurity#">Dependent 2 Social Security #</label>
+                                    <input id="Dependent2SocialSecurity#" name="Dependent2SocialSecurity#" type="text">
+                                </div>
+                                <div class="row">
+                                    <fieldset>
+                                        Dependent 2 Gender&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span><input value="Male" id="Dependent2Gender_25" name="Dependent2Gender" type="radio"> <label for="Dependent2Gender_25">Male</label></span>
+                                        <span><input value="Female" id="Dependent2Gender_26" name="Dependent2Gender" type="radio"> <label for="Dependent2Gender_26">Female</label></span>
+                                    </fieldset>
+                                </div>
+                                <div class="row">
+                                    <input id="Dependent2NeedsCoverage" name="Dependent2NeedsCoverage" type="checkbox">
+                                    <span><label for="Dependent2NeedsCoverage">Dependent 2 Needs Coverage</label></span>
+                                </div>
+                                <div class="row">
+                                    <h5>Dependent 3</h5>
+                                    <label for="Dependent3FirstName">Dependent 3 First Name</label>
+                                    <input id="Dependent3FirstName" name="Dependent3FirstName" type="text">
+                                </div>
+                                <div class="row">
+                                    <label for="Dependent3LastName">Dependent 3 Last Name</label>
+                                    <input id="Dependent3LastName" name="Dependent3LastName" type="text">
+                                </div>
+                                <div class="row">
+                                    <label for="Dependent3BirthDate">Dependent 3 Birth Date </label>
+                                    <input id="Dependent3BirthDate" name="Dependent3BirthDate" type="date">
+                                </div>
+                                <div class="row">
+                                    <label for="Dependent3SocialSecurity#">Dependent 3 Social Security #</label>
+                                    <input id="Dependent3SocialSecurity#" name="Dependent3SocialSecurity#" type="text">
+                                </div>
+                                <div class="row">
+                                    <fieldset>
+                                        Dependent 3 Gender&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span><input value="Male" id="Dependent3Gender_27" name="Dependent3Gender" type="radio"> <label for="Dependent3Gender_27">Male</label></span>
+                                        <span><input value="Female" id="Dependent3Gender_28" name="Dependent3Gender" type="radio"> <label for="Dependent3Gender_28">Female</label></span>
+                                    </fieldset>
+                                </div>
+                                <div class="row">
+                                    <input id="Dependent3NeedsCoverage" name="Dependent3NeedsCoverage" type="checkbox">
+                                    <span><label for="Dependent3NeedsCoverage">Dependent 3 Needs Coverage</label></span>
+                                </div>
+                                <div class="row">
+                                    <h5>Dependent 4</h5>
+                                    <label for="Dependent4FirstName">Dependent 4 First Name</label>
+                                    <input id="Dependent4FirstName" name="Dependent4FirstName" type="text">
+                                </div>
+                                <div class="row">
+                                    <label for="Dependent4LastName">Dependent 4 Last Name</label>
+                                    <input id="Dependent4LastName" name="Dependent4LastName" type="text">
+                                </div>
+                                <div class="row">
+                                    <label for="Dependent4BirthDate">Dependent 4 Birth Date </label>
+                                    <input id="Dependent4BirthDate" name="Dependent4BirthDate" type="date">
+                                </div>
+                                <div class="row">
+                                    <label for="Dependent4SocialSecurity#">Dependent 4 Social Security #</label>
+                                    <input id="Dependent4SocialSecurity#" name="Dependent4SocialSecurity#" type="text">
+                                </div>
+                                <div class="row">
+                                    <fieldset>
+                                        Dependent 4 Gender&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span><input value="Male" id="Dependent4Gender_29" name="Dependent4Gender" type="radio"> <label for="Dependent4Gender_29">Male</label></span>
+                                        <span><input value="Female" id="Dependent4Gender_30" name="Dependent4Gender" type="radio"> <label for="Dependent4Gender_30">Female</label></span>
+                                    </fieldset>
+                                </div>
+                                <div class="row">
+                                    <input id="Dependent4NeedsCoverage" name="Dependent4NeedsCoverage" type="checkbox">
+                                    <span><label for="Dependent4NeedsCoverage">Dependent 4 Needs Coverage</label></span>
+                                </div>
+                                <div class="row">
+                                    <input type="submit" value="Save">
+                                </div>
+                            </form>
                         </div>
-                        <div class="row requiredRow">
-                            <% if (employee.maritalstatus == "Single") { %>
-                            <fieldset>
-                                Marital Status &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <span><input value="Single" id="MaritalStatus_21" name="MaritalStatus" type="radio" class="required" title="Single" checked="checked" required> <label for="MaritalStatus_21">Single</label></span>
-                                <span><input value="Married" id="MaritalStatus_22" name="MaritalStatus" type="radio" class="required" title="Married" required> <label for="MaritalStatus_22">Married</label></span>
-                            </fieldset>
-                            <% } %>
-                            <% if (employee.maritalstatus == "Married") { %>
-                            <fieldset>
-                                Marital Status &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <span><input value="Single" id="MaritalStatus_21" name="MaritalStatus" type="radio" class="required" title="Single"  required> <label for="MaritalStatus_21">Single</label></span>
-                                <span><input value="Married" id="MaritalStatus_22" name="MaritalStatus" type="radio" class="required" title="Married" checked="checked" required> <label for="MaritalStatus_22">Married</label></span>
-                            </fieldset>
-                            <% } %>
-                            <% if (employee.maritalstatus == null) { %>
-                            <fieldset>
-                                Marital Status &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <span><input value="Single" id="MaritalStatus_21" name="MaritalStatus" type="radio" class="required" title="Single"  required> <label for="MaritalStatus_21">Single</label></span>
-                                <span><input value="Married" id="MaritalStatus_22" name="MaritalStatus" type="radio" class="required" title="Married" required> <label for="MaritalStatus_22">Married</label></span>
-                            </fieldset>
-                            <% } %>
-                        </div>
-                        <div class="row">
-                            <label for="SpouseFirstName">Spouse First Name</label>
-                            <input id="SpouseFirstName" name="SpouseFirstName" type="text" placeholder="First Name" value="<%= employee.spousefirstname %>">
-                        </div>
-                        <div class="row">
-                            <label for="SpouseLastName">Spouse Last Name</label>
-                            <input id="SpouseLastName" name="SpouseLastName" type="text" placeholder="Last Name" value="<%= employee.spouselastname %>">
-                        </div>
-                        <div class="row requiredRow">
-                            <label for="PhoneNumber">Phone Number</label>
-                            <input id="PhoneNumber" name="PhoneNumber" type="tel" class="required" placeholder="Phone Number" value="<%= employee.phonenumber %>" required>
-                        </div>
-                        <div class="row requiredRow">
-                            <label for="AlternatePhoneNumber">Alternate Phone Number</label>
-                            <input id="AlternatePhoneNumber" name="AlternatePhoneNumber" type="tel" class="required" placeholder="Alternate Phone Number" value="<%= employee.altphonenumber %>" required>
-                        </div>
-                        <div class="row requiredRow">
-                            <label for="Address">Address</label>
-                            <input id="Address" name="Address" type="text" class="required" title="Address" placeholder="Address" value="<%= employee.address %>" required>
-                        </div>
-                        <div class="row requiredRow">
-                            <label for="City">City</label>
-                            <input id="City" name="City" type="text" class="required" title="City" placeholder="City" value="<%= employee.city %>" required>
-                        </div>
-                        <div class="row requiredRow">
-                            <label for="State">State</label>
-                            <select id="State" name="State" class="required" title="State" required>
-                                <option value="AL" <%= (employee.state == 'AL')?'selected':'' %> >AL </option>
-                                <option value="AK" <%= (employee.state == 'AK')?'selected':'' %> >AK </option>
-                                <option value="AZ" <%= (employee.state == 'AZ')?'selected':'' %> >AZ </option>
-                                <option value="AR" <%= (employee.state == 'AR')?'selected':'' %> >AR</option>
-                                <option value="CA" <%= (employee.state == 'CA')?'selected':'' %> >CA</option>
-                                <option value="CO" <%= (employee.state == 'CO')?'selected':'' %> >CO</option>
-                                <option value="CT" <%= (employee.state == 'CT')?'selected':'' %> >CT</option>
-                                <option value="DE" <%= (employee.state == 'DE')?'selected':'' %> >DE</option>
-                                <option value="FL" <%= (employee.state == 'FL')?'selected':'' %> >FL</option>
-                                <option value="GA" <%= (employee.state == 'GA')?'selected':'' %> >GA</option>
-                                <option value="HI" <%= (employee.state == 'HI')?'selected':'' %> >HI</option>
-                                <option value="ID" <%= (employee.state == 'ID')?'selected':'' %> >ID</option>
-                                <option value="IL" <%= (employee.state == 'IL')?'selected':'' %> >IL</option>
-                                <option value="IN" <%= (employee.state == 'IN')?'selected':'' %> >IN</option>
-                                <option value="IA" <%= (employee.state == 'IA')?'selected':'' %> >IA</option>
-                                <option value="KS" <%= (employee.state == 'KS')?'selected':'' %> >KS</option>
-                                <option value="KY" <%= (employee.state == 'KY')?'selected':'' %> >KY</option>
-                                <option value="LA" <%= (employee.state == 'LA')?'selected':'' %> >LA</option>
-                                <option value="ME" <%= (employee.state == 'ME')?'selected':'' %> >ME</option>
-                                <option value="MD" <%= (employee.state == 'MD')?'selected':'' %> >MD</option>
-                                <option value="MA" <%= (employee.state == 'MA')?'selected':'' %> >MA</option>
-                                <option value="MI" <%= (employee.state == 'MI')?'selected':'' %> >MI</option>
-                                <option value="MN" <%= (employee.state == 'MN')?'selected':'' %> >MN</option>
-                                <option value="MS" <%= (employee.state == 'MS')?'selected':'' %> >MS</option>
-                                <option value="MO" <%= (employee.state == 'MO')?'selected':'' %> >MO</option>
-                                <option value="MT" <%= (employee.state == 'MT')?'selected':'' %> >MT</option>
-                                <option value="NE" <%= (employee.state == 'NE')?'selected':'' %> >NE</option>
-                                <option value="NV" <%= (employee.state == 'NV')?'selected':'' %> >NV</option>
-                                <option value="NH" <%= (employee.state == 'NH')?'selected':'' %> >NH</option>
-                                <option value="NJ" <%= (employee.state == 'NJ')?'selected':'' %> >NJ</option>
-                                <option value="NM" <%= (employee.state == 'NM')?'selected':'' %> >NM</option>
-                                <option value="NY" <%= (employee.state == 'NY')?'selected':'' %> >NY</option>
-                                <option value="NC" <%= (employee.state == 'NC')?'selected':'' %> >NC</option>
-                                <option value="ND" <%= (employee.state == 'ND')?'selected':'' %> >ND</option>
-                                <option value="OH" <%= (employee.state == 'OH')?'selected':'' %> >OH</option>
-                                <option value="OK" <%= (employee.state == 'OK')?'selected':'' %> >OK</option>
-                                <option value="OR" <%= (employee.state == 'OR')?'selected':'' %> >OR</option>
-                                <option value="PA" <%= (employee.state == 'PA')?'selected':'' %> >PA</option>
-                                <option value="RI" <%= (employee.state == 'RI')?'selected':'' %> >RI</option>
-                                <option value="SC" <%= (employee.state == 'SC')?'selected':'' %> >SC</option>
-                                <option value="SD" <%= (employee.state == 'SD')?'selected':'' %> >SD</option>
-                                <option value="TN" <%= (employee.state == 'TN')?'selected':'' %> >TN</option>
-                                <option value="TX" <%= (employee.state == 'TX')?'selected':'' %> >TX</option>
-                                <option value="UT" <%= (employee.state == 'UT')?'selected':'' %> >UT</option>
-                                <option value="VT" <%= (employee.state == 'VT')?'selected':'' %> >VT</option>
-                                <option value="VA" <%= (employee.state == 'VA')?'selected':'' %> >VA</option>
-                                <option value="WA" <%= (employee.state == 'WA')?'selected':'' %> >WA</option>
-                                <option value="WV" <%= (employee.state == 'WV')?'selected':'' %> >WV</option>
-                                <option value="WI" <%= (employee.state == 'WI')?'selected':'' %> >WI</option>
-                                <option value="WY" <%= (employee.state == 'WY')?'selected':'' %> >WY</option>
-                            </select>
-                        </div>
-                        <div class="row requiredRow">
-                            <label for="Zip">Zip</label>
-                            <input id="Zip" name="Zip" type="text" class="required" title="Zip" placeholder="Zip" value="<%= employee.zip %>" required>
-                        </div>
-                        <div class="row requiredRow">
-                            <label for="Email">Email</label>
-                            <input id="Email" name="Email" type="email" class="required" title="Email" placeholder="Email" value="<%= employee.email %>" required>
-                        </div>
-                        <div class="row requiredRow">
-                            <label for="BirthDate">Birth Date</label>
-                            <input id="BirthDate" name="BirthDate" type="date" class="required" title="Birth Date" value="<%= employee.birthdate %>" required>
-                        </div>
-                        <div class="row requiredRow">
-                            <label for="NumberofPeopleThatNeedCoverage">Number of People That Need Coverage</label>
-                            <input id="NumberofPeopleThatNeedCoverage" name="NumberofPeopleThatNeedCoverage" type="number" class="required" title="Number of People That Need Coverage" placeholder="0" value="<%= employee.coveragenumber %>"required>
-                        </div>
-                        <div class="row requiredRow">
-                            <label for="PrimarySocialSecurity">Primary Social Security #</label>
-                            <input id="PrimarySocialSecurity" name="PrimarySocialSecurity" type="text" class="required" title="Primary Social Security #" placeholder="SS#" value="<%= employee.ss %>"required>
-                        </div>
-                        <div class="row">
-                            <h5>Dependent 1</h5>
-                            <label for="Dependent1FirstName">Dependent 1 First Name</label>
-                            <input id="Dependent1FirstName" name="Dependent1FirstName" type="text">
-                        </div>
-                        <div class="row">
-                            <label for="Dependent1LastName">Dependent 1 Last Name</label>
-                            <input id="Dependent1LastName" name="Dependent1LastName" type="text">
-                        </div>
-                        <div class="row">
-                            <label for="Dependent1BirthDate">Dependent 1 Birth Date </label>
-                            <input id="Dependent1BirthDate" name="Dependent1BirthDate" type="date">
-                        </div>
-                        <div class="row">
-                            <label for="Dependent1SocialSecurity#">Dependent 1 Social Security #</label>
-                            <input id="Dependent1SocialSecurity#" name="Dependent1SocialSecurity#" type="text">
-                        </div>
-                        <div class="row">
-                            <fieldset>
-                                Dependent 1 Gender&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <span><input value="Male" id="Dependent1Gender_23" name="Dependent1Gender" type="radio"> <label for="Dependent1Gender_23">Male</label></span>
-                                <span><input value="Female" id="Dependent1Gender_24" name="Dependent1Gender" type="radio"> <label for="Dependent1Gender_24">Female</label></span>
-                            </fieldset>
-                        </div>
-                        <div class="row">
-                            <input id="Dependent1NeedsCoverage" name="Dependent1NeedsCoverage" type="checkbox">
-                            <span><label for="Dependent1NeedsCoverage">Dependent 1 Needs Coverage</label></span>
-                        </div>
-                        <div class="row">
-                            <h5>Dependent 2</h5>
-                            <label for="Dependent2FirstName">Dependent 2 First Name</label>
-                            <input id="Dependent2FirstName" name="Dependent2FirstName" type="text">
-                        </div>
-                        <div class="row">
-                            <label for="Dependent2LastName">Dependent 2 Last Name</label>
-                            <input id="Dependent2LastName" name="Dependent2LastName" type="text">
-                        </div>
-                        <div class="row">
-                            <label for="Dependent2BirthDate">Dependent 2 Birth Date </label>
-                            <input id="Dependent2BirthDate" name="Dependent2BirthDate" type="date">
-                        </div>
-                        <div class="row">
-                            <label for="Dependent2SocialSecurity#">Dependent 2 Social Security #</label>
-                            <input id="Dependent2SocialSecurity#" name="Dependent2SocialSecurity#" type="text">
-                        </div>
-                        <div class="row">
-                            <fieldset>
-                                Dependent 2 Gender&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <span><input value="Male" id="Dependent2Gender_25" name="Dependent2Gender" type="radio"> <label for="Dependent2Gender_25">Male</label></span>
-                                <span><input value="Female" id="Dependent2Gender_26" name="Dependent2Gender" type="radio"> <label for="Dependent2Gender_26">Female</label></span>
-                            </fieldset>
-                        </div>
-                        <div class="row">
-                            <input id="Dependent2NeedsCoverage" name="Dependent2NeedsCoverage" type="checkbox">
-                            <span><label for="Dependent2NeedsCoverage">Dependent 2 Needs Coverage</label></span>
-                        </div>
-                        <div class="row">
-                            <h5>Dependent 3</h5>
-                            <label for="Dependent3FirstName">Dependent 3 First Name</label>
-                            <input id="Dependent3FirstName" name="Dependent3FirstName" type="text">
-                        </div>
-                        <div class="row">
-                            <label for="Dependent3LastName">Dependent 3 Last Name</label>
-                            <input id="Dependent3LastName" name="Dependent3LastName" type="text">
-                        </div>
-                        <div class="row">
-                            <label for="Dependent3BirthDate">Dependent 3 Birth Date </label>
-                            <input id="Dependent3BirthDate" name="Dependent3BirthDate" type="date">
-                        </div>
-                        <div class="row">
-                            <label for="Dependent3SocialSecurity#">Dependent 3 Social Security #</label>
-                            <input id="Dependent3SocialSecurity#" name="Dependent3SocialSecurity#" type="text">
-                        </div>
-                        <div class="row">
-                            <fieldset>
-                                Dependent 3 Gender&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <span><input value="Male" id="Dependent3Gender_27" name="Dependent3Gender" type="radio"> <label for="Dependent3Gender_27">Male</label></span>
-                                <span><input value="Female" id="Dependent3Gender_28" name="Dependent3Gender" type="radio"> <label for="Dependent3Gender_28">Female</label></span>
-                            </fieldset>
-                        </div>
-                        <div class="row">
-                            <input id="Dependent3NeedsCoverage" name="Dependent3NeedsCoverage" type="checkbox">
-                            <span><label for="Dependent3NeedsCoverage">Dependent 3 Needs Coverage</label></span>
-                        </div>
-                        <div class="row">
-                            <h5>Dependent 4</h5>
-                            <label for="Dependent4FirstName">Dependent 4 First Name</label>
-                            <input id="Dependent4FirstName" name="Dependent4FirstName" type="text">
-                        </div>
-                        <div class="row">
-                            <label for="Dependent4LastName">Dependent 4 Last Name</label>
-                            <input id="Dependent4LastName" name="Dependent4LastName" type="text">
-                        </div>
-                        <div class="row">
-                            <label for="Dependent4BirthDate">Dependent 4 Birth Date </label>
-                            <input id="Dependent4BirthDate" name="Dependent4BirthDate" type="date">
-                        </div>
-                        <div class="row">
-                            <label for="Dependent4SocialSecurity#">Dependent 4 Social Security #</label>
-                            <input id="Dependent4SocialSecurity#" name="Dependent4SocialSecurity#" type="text">
-                        </div>
-                        <div class="row">
-                            <fieldset>
-                                Dependent 4 Gender&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <span><input value="Male" id="Dependent4Gender_29" name="Dependent4Gender" type="radio"> <label for="Dependent4Gender_29">Male</label></span>
-                                <span><input value="Female" id="Dependent4Gender_30" name="Dependent4Gender" type="radio"> <label for="Dependent4Gender_30">Female</label></span>
-                            </fieldset>
-                        </div>
-                        <div class="row">
-                            <input id="Dependent4NeedsCoverage" name="Dependent4NeedsCoverage" type="checkbox">
-                            <span><label for="Dependent4NeedsCoverage">Dependent 4 Needs Coverage</label></span>
-                        </div>
-                        <div class="row">
-                            <input type="submit" value="Save">
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<% include ../partials/footer.ejs %>
-
-</body>
+        <% include ../partials/footer.ejs %>
+    </body>
 </html>

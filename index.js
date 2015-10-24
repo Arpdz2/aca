@@ -15,11 +15,9 @@ var express = require('express'),
     agentDashboard = require('./routes/agentDashboard.js'),
     search = require('./routes/search.js');
     nodemailer = require('nodemailer'),
+    mandrillTransport = require('nodemailer-mandrill-transport'),
     fdf = require('fdf'),
     fs = require('fs'),
-    AsposeCloud = require('asposecloud/lib/aspose-cloud'),
-    AsposeStorage = require('asposecloud/lib/aspose-storage'),
-    AsposePdf = require('asposecloud/lib/aspose-pdf'),
     spawn = require('child_process').spawn;
 
 
@@ -56,6 +54,7 @@ app.get('/', function(request, response) {
 app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
 {
     employee.findOne({_id: req.params.employeeid}, function (err, result) {
+        console.log(result);
         var single = "Off";
         var married = "Off";
         var spousefirst = result.spousefirstname;
@@ -282,25 +281,24 @@ app.post('/profile/case', isLoggedIn,function (req, res, next){
 });
 
 app.get('/:employer/sendemail/:id/:eid/:employeremail', isLoggedIn, function(req, res) {
-    var transporter = nodemailer.createTransport({
-        service: 'gmail',
+    var transport = nodemailer.createTransport(mandrillTransport({
         auth: {
-            user: 'acainsuresme@gmail.com',
-            pass: 'nathantoal56712'
+            apiKey: 'y-Z7eNsStP65JC4YKJD3Lg'
         }
-    });
-    var mailOptions = {
-        from: 'ACA  <acainsuresme@gmail.com>', // sender address
-        to: req.params.employeremail, // list of receivers
-        subject: 'ACA Insurance Employee Registration Link', // Subject line
-        text: 'Dear ' + req.params.employer + ',' + "\n\n" + "Please forward the below link to your employees in order to register for ACA coverage:" + '\n\n'  + req.protocol + '://' + req.get('host') + '/signup' + '/' + req.params.id + '/' + req.params.eid // plaintext body
-    };
-    transporter.sendMail(mailOptions, function(error, info){
-        if(error){
-            return console.log(error);
+    }));
+    transport.sendMail({
+        from: 'ACA Insurance Group  <noreply@acainsuresme.com>',
+        to: 'brenden.mckamey@gmail.com',
+//        to: req.params.employeremail,
+        subject: 'ACA Insurance Employee Registration Link',
+        html: '<p>Dear ' + req.params.employer + ',</p><p>Please forward the below link to your employees in order to register for ACA coverage:</p><p>' + req.protocol + '://' + req.get("host") + '/signup/' + req.params.id + '/' + req.params.eid + '</p><br/><p>Thank you,</p><p>ACA Insurance Group</p>'
+    }, function(err, info) {
+        if (err) {
+            console.error(err);
+        } else {
+            console.log('Message sent: ' + info.response);
+            res.redirect('/agentDashboard');
         }
-        console.log('Message sent: ' + info.response);
-        res.redirect('/agentDashboard');
     });
 });
 
@@ -398,6 +396,62 @@ app.post('/signup2', function(req,res){
 
 app.get('/login', function(req,res){
     res.render('pages/login2', {message : "" });
+});
+
+app.get('/recovery', function(req,res){
+    res.render('pages/recovery');
+});
+
+app.post('/recovery', function(req, res){
+    var optionsRadios1 = req.body.optionsRadios1
+    var optionsRadios2 = req.body.optionsRadios2
+    var optionsRadios3 = req.body.optionsRadios3
+    
+    if (optionsRadios1 == 'option1') {
+        employee.findOne({ 'email' :  req.body.email }, function(err, user) {
+            if (err) {
+                console.log("error");
+            } else if (user) {
+                var transport = nodemailer.createTransport(mandrillTransport({
+                    auth: {
+                        apiKey: 'y-Z7eNsStP65JC4YKJD3Lg'
+                    }
+                }));
+                transport.sendMail({
+                    from: 'ACA Insurance Group  <noreply@acainsuresme.com>',
+                    to: 'brenden.mckamey@gmail.com',
+            //        to: user.email,
+                    subject: 'ACA Insurance Credentials',
+                    html: '<p>Dear ' + user.firstname + ',<br/>Your temporary password for ACA Insurance is below. Your username will be sent in a separate email. Please use the link below to login.<br/><b>Password: </b>' + user.password + '<br/><b>Link to site: </b>' + req.protocol + '://' + req.get("host") + '<br/>If you have any questions or issues regarding access to ACA Insurance, please e-mail EMAILHERE or call TEAMHERE at NUMBERHERE.</p><p>Thank you,<br/>ACA Insurance Group</p>'
+                }, function(err, info) {
+                    if (err) {
+                        console.error(err);
+                    } else {
+                        console.log('Message sent: ' + info.response);
+                    }
+                });
+                transport.sendMail({
+                    from: 'ACA Insurance Group  <noreply@acainsuresme.com>',
+                    to: 'brenden.mckamey@gmail.com',
+            //        to: user.email,
+                    subject: 'ACA Insurance Credentials',
+                    html: '<p>Dear ' + user.firstname + ',<br/>Your username for ACA Insurance is below. Your temporary password will be sent in a separate email. Please use the link below to login.<br/><b>Username: </b>' + user.email + '<br/><b>Link to site: </b>' + req.protocol + '://' + req.get("host") + '<br/>If you have any questions or issues regarding access to ACA Insurance, please e-mail EMAILHERE or call TEAMHERE at NUMBERHERE.</p><p>Thank you,<br/>ACA Insurance Group</p>'
+                }, function(err, info) {
+                    if (err) {
+                        console.error(err);
+                    } else {
+                        console.log('Message sent: ' + info.response);
+                    }
+                });
+            }
+        });
+    } else if (optionsRadios2 == 'option2') {
+        console.log("option2 not setup.");
+    } else if (optionsRadios3 == 'option3') {
+        console.log("option3 not setup.");
+    }
+    
+    res.redirect("/");
 });
 
 app.post('/login', function(req,res){

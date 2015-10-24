@@ -18,12 +18,12 @@
     "mongoose": "^4.1.8",
     "morgan": "^1.6.1",
     "nodemailer": "*",
+    "nodemailer-mandrill-transport":"*",
     "passport": "^0.3.0",
     "passport-local": "^1.0.0",
     "random-js": "^1.0.6",
     "fdf": "*",
     "fs": "*",
-    "asposecloud":"*",
     "path":"*"
   },
   "engines": {

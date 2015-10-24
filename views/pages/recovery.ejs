@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+    <head>
+        <% include ../partials/header.ejs %>
+    </head>
+    <body>
+        <div class="page-wrapper">
+            <% include ../partials/nav.ejs %>
+            <div class="container">
+                <div class="row">
+                    <div class=".col-xs-6 .col-sm-4">
+                        <form class="form-horizontal" action="/recovery" method="post">
+                            <h1>Having trouble signing in?</h1>
+                            <div class="radio-option">
+                                <label>
+                                    <input type="radio" name="optionsRadios1" id="optionsRadios1" value="option1" onclick="recoveryOptionSelected();" data-toggle="collapse" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                                    I don't know my password
+                                    <div class="collapse" id="collapse1">
+                                        <div class="well">
+                                            To reset your password, enter the email address you use to sign in to ACA.
+                                            <input type="email" class="form-control" name="email" id="email" placeholder="E-mail Address">
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="radio-option">
+                                <label>
+                                    <input type="radio" name="optionsRadios2" id="optionsRadios2" value="option2" onclick="recoveryOptionSelected();">
+                                    I don't know my username
+                                </label>
+                            </div>
+                            <div class="radio-option">
+                                <label>
+                                    <input type="radio" name="optionsRadios3" id="optionsRadios3" value="option3" onclick="recoveryOptionSelected();" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                                    I'm having other problems signing in
+                                    <div class="collapse" id="collapse2">
+                                        <div class="well">
+                                            Enter the username you use to sign in to ACA.
+                                            <input type="email" class="form-control" name="email2" id="email2" placeholder="E-mail Address">
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                            <button type="submit" value="submit" class="btn btn-primary">Continue</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% include ../partials/footer.ejs %>
+        <script>
+            function recoveryOptionSelected() {
+                var optionOneSelected = document.getElementById("optionsRadios1").checked;
+                var optionTwoSelected = document.getElementById("optionsRadios2").checked;
+                var optionThreeSelected = document.getElementById("optionsRadios3").checked;
+                if (optionOneSelected == true) {
+                    $('#collapse2').collapse('hide');
+                } else if (optionTwoSelected == true) {
+                    $('#collapse1').collapse('hide');
+                    $('#collapse2').collapse('hide');
+                } else if (optionThreeSelected == true) {
+                    $('#collapse1').collapse('hide');
+                }
+            };
+        </script>
+    </body>
+</html>
