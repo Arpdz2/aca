@@ -53,6 +53,38 @@ app.get('/', function(request, response) {
   response.render('pages/index');
 });
 
+app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
+{
+    employee.findOne({_id: req.params.employeeid}, function (err, result) {
+        var data = fdf.generate({
+            "Applicants Name": result.firstname,
+            "Last": result.lastname
+        });
+
+        fs.writeFile(result._id + '.fdf', data, function (err) {
+            console.log('done');
+            //res.redirect('/');
+        });
+        spawn('pdftk', ['./public/pdf/cignaApplicationForInsurance.pdf', 'fill_form', result._id + ".fdf", 'output', result._id + '.pdf', 'flatten']);
+        var refreshIntervalId = setInterval(function() {
+            fs.stat(result._id + '.pdf', function(err, exists) {
+                if (exists) {
+                    clearInterval(refreshIntervalId);
+                    res.redirect('/pdf/' + result.id);
+                }
+            });
+        }, 1000);
+    });
+});
+
+app.get('/pdf/:employeeid', isLoggedIn, function(request, response){
+    var tempFile= request.params.employeeid + ".pdf";
+    fs.readFile(tempFile, function (err,data){
+        response.contentType("application/pdf");
+        response.send(data);
+    });
+});
+
 app.get('/test', function(req, res)
 {
     var data = fdf.generate({
