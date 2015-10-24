@@ -353,6 +353,7 @@ app.get('/signup/:agentid/:employerid', function(req,res){
     req.session.employerid = req.params.employerid;
     user.findOne({'_id' : req.params.agentid }, function(err, docs) {
         if (err) res.redirect('/');
+        else if(docs == null) res.redirect('/');
         else {
             user.find({
                 '_id': { $in: [
@@ -383,7 +384,7 @@ app.post('/signup2', function(req,res){
             newuser.agentid = req.session.agentid;
             newuser.employerid = req.session.employerid;
             newuser.save(function (err) {
-                req.session.employee = newuser;
+                req.session.employee = newuser._id;
                 res.redirect('/information');
             });
         }
@@ -406,7 +407,7 @@ app.post('/login', function(req,res){
             res.render('pages/login2', {message : "Invalid Password" });
         // all is well, return successful user
         else {
-            req.session.employee = user;
+            req.session.employee = user._id;
             res.redirect('/information');
         }
 });
@@ -414,10 +415,12 @@ app.post('/login', function(req,res){
 
 app.get('/information', function(req,res){
     if (req.session.employee && req.session.employee != null) {
-        var agentid = req.session.employee.agentid;
-        var employerid = req.session.employee.employerid;
-        user.findOne({'_id' : agentid  }, function(err, docs) {
-            res.render('pages/information', {employee: req.session.employee, user: docs, employerid: employerid});
+        employee.findOne({_id: req.session.employee}, function (err, result) {
+            var agentid = result.agentid;
+            var employerid = result.employerid;
+            user.findOne({'_id': agentid}, function (err, docs) {
+                res.render('pages/information', {employee: result, user: docs, employerid: employerid});
+            });
         });
     }
     else{
@@ -427,7 +430,7 @@ app.get('/information', function(req,res){
 
 app.post('/information', function(req,res){
     if (req.session.employee && req.session.employee != null) {
-        employee.findOne({_id: req.session.employee._id}, function (err, result) {
+        employee.findOne({_id: req.session.employee}, function (err, result) {
             result.firstname = req.body.FirstName;
             result.lastname = req.body.LastName;
             result.maritalstatus = req.body.MaritalStatus;
@@ -444,7 +447,7 @@ app.post('/information', function(req,res){
             result.coveragenumber = req.body.NumberofPeopleThatNeedCoverage;
             result.ss = req.body.PrimarySocialSecurity;
             result.save(function (err) {
-                res.redirect('/login');
+                res.redirect('/information');
             });
         });
     }
