@@ -66,23 +66,14 @@ app.get('/test', function(req, res)
     });
  
     spawn('pdftk', ['./public/pdf/cignaApplicationForInsurance.pdf', 'fill_form','data.fdf', 'output', 'filled.pdf', 'flatten']);
-    
     var AppSID = 'f8f6d6ec-85e7-4de5-bba6-724005fb7808';
     var AppKey = 'a201c40896b23c2e39334d2c7c3d6117';
-
     var BaseProductUri = 'http://api.aspose.com/v1.1/';
-
-
     var asposeapp = new AsposeCloud({'appSID':AppSID,'appKey':AppKey,'baseURI':BaseProductUri});
-    console.log(asposeapp);
-
     var pdf = new AsposePdf(asposeapp);
-    console.log(pdf);
-
     var storage = new AsposeStorage(asposeapp);
-    console.log(storage);
-    
-    storage.uploadFile('./public/pdf/cignaApplicationForInsurance.pdf', '', 'default', function (err, data) {
+
+    storage.uploadFile('data.fdf', '', 'default', function (err, data) {
         if(err) {
             console.log(err);
         } else {
