@@ -403,11 +403,9 @@ app.get('/recovery', function(req,res){
 });
 
 app.post('/recovery', function(req, res){
-    var optionsRadios1 = req.body.optionsRadios1
-    var optionsRadios2 = req.body.optionsRadios2
-    var optionsRadios3 = req.body.optionsRadios3
+    var optionsRadios = req.body.optionsRadios
     
-    if (optionsRadios1 == 'option1') {
+    if (optionsRadios == 'option1') {
         employee.findOne({ 'email' :  req.body.email }, function(err, user) {
             if (err) {
                 console.log("error");
@@ -445,9 +443,9 @@ app.post('/recovery', function(req, res){
                 });
             }
         });
-    } else if (optionsRadios2 == 'option2') {
+    } else if (optionsRadios == 'option2') {
         console.log("option2 not setup.");
-    } else if (optionsRadios3 == 'option3') {
+    } else if (optionsRadios == 'option3') {
         console.log("option3 not setup.");
     }
     
