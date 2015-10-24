@@ -52,6 +52,9 @@ module.exports = function(passport) {
                     // check to see if theres already a user with that email
                     if (user) {
                         return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+                    }
+                    else if (req.body.password != req.body.passwordverify) {
+                            return done(null, false, req.flash('signupMessage', 'Passwords are not the same'));
                     } else {
                         if (req.body.agentcode == 'nathantoal56712') //check to make sure they know agent code
                         {

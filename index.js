@@ -376,7 +376,12 @@ app.post('/signup2', function(req,res){
         }
         if (user) {
             res.render('pages/signup2', {message : "Email already taken" });
-        } else
+        }
+        else if (req.body.password != req.body.passwordverify)
+        {
+            res.render('pages/signup2', {message : "Passwords are not the same" });
+        }
+        else
         {
             var newuser = new employee();
             newuser.email = req.body.email;
