@@ -52,7 +52,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 app.get('/', function(request, response) {
   response.render('pages/index');
 });
-
+//
 app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
 {
     employee.findOne({_id: req.params.employeeid}, function (err, result) {
