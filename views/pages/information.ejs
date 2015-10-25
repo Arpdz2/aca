@@ -2,6 +2,13 @@
 <html>
     <head>
         <% include ../partials/header.ejs %>
+        <style>
+            div#signature_container canvas,
+            div#signature_container img
+            {
+                border:dashed 1px #CCCCCC;
+            }
+        </style>
     </head>
     <body>
         <div class="page-wrapper">
@@ -282,6 +289,10 @@
                                     <span><label for="Dependent4NeedsCoverage">Dependent 4 Needs Coverage</label></span>
                                 </div>
                                 <div class="row">
+                                    <div id="signature_container"><canvas data-processing-sources="signature.pde" id="signature"></canvas></div>
+                                    <script src="//cdnjs.cloudflare.com/ajax/libs/processing.js/1.4.8/processing.min.js"></script>
+                                </div>
+                                <div class="row">
                                     <input type="submit" value="Save">
                                 </div>
                             </form>
@@ -291,5 +302,12 @@
             </div>
         </div>
         <% include ../partials/footer.ejs %>
+        <script>
+        function savedSignature()
+        {
+        var img = document.getElementById("signature_image");
+        window.open(img.getAttribute('src'))
+        }
+        </script>
     </body>
 </html>
