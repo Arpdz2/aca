@@ -24,6 +24,7 @@
     "passport": "^0.3.0",
     "passport-local": "^1.0.0",
     "path": "*",
+    "pdfkit": "^0.7.1",
     "random-js": "^1.0.6",
     "util": "^0.10.3"
   },

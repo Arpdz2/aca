@@ -20,6 +20,7 @@ var express = require('express'),
     fs = require('fs'),
     spawn = require('child_process').spawn;
     util = require('util');
+    PDFDocument = require ('pdfkit');
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -62,7 +63,22 @@ app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
             var buf = new Buffer(data, 'base64');
             fs.writeFile(result._id + '.png', buf, function (err) {
                 console.log("image produced");
+                var doc = new PDFDocument;
+                doc.pipe(fs.createWriteStream(result._id + 'stamp.pdf'));
+                doc.image(result._id + '.png', 60, 432, {width: 160, height: 12});
+                doc.end()
+                var refreshIntervalId3 = setInterval(function() {
+                    fs.stat(result._id + 'stamp.pdf', function(err, exists) {
+                        if (exists) {
+                            clearInterval(refreshIntervalId3);
+                            spawn('cpdf', ['-stamp-on', result._id + 'stamp.pdf', './public/pdf/ClientInformation.pdf', '2', '-o', result._id + '.pdf']);
+                        }
+                    });
+                }, 1000);
             });
+        }
+        else {
+            res.redirect(req.get('referer'));
         }
         var single = "Off";
         var married = "Off";
@@ -89,15 +105,21 @@ app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
             "Email" : result.email,
             "Birth date" : result.birthdate,
             "Number of People" : result.coveragenumber,
-            "Primary Social Security" : result.ss,
-            "clientsign" : result._id + '.png'
+            "Primary Social Security" : result.ss
         });
 
         fs.writeFile(result._id + '.fdf', data, function (err) {
         });
-        spawn('pdftk', ['./public/pdf/ClientInformation.pdf', 'fill_form', result._id + ".fdf", 'output', result._id + '.pdf', 'flatten']);
-        var refreshIntervalId = setInterval(function() {
+        var refreshIntervalId2 = setInterval(function() {
             fs.stat(result._id + '.pdf', function(err, exists) {
+                if (exists) {
+                    clearInterval(refreshIntervalId2);
+                    spawn('pdftk', [result._id + '.pdf', 'fill_form', result._id + ".fdf", 'output', result._id + 'final.pdf', 'flatten']);
+                }
+            });
+        }, 1000);
+        var refreshIntervalId = setInterval(function() {
+            fs.stat(result._id + 'final.pdf', function(err, exists) {
                 if (exists) {
                     clearInterval(refreshIntervalId);
                     res.redirect('/pdf/' + result.id);
@@ -108,7 +130,7 @@ app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
 });
 
 app.get('/pdf/:employeeid', isLoggedIn, function(request, response){
-    var tempFile= request.params.employeeid + ".pdf";
+    var tempFile= request.params.employeeid + "final.pdf";
     fs.readFile(tempFile, function (err,data){
         response.contentType("application/pdf");
         response.send(data);
