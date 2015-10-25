@@ -52,7 +52,7 @@ String redo_text = 'redo signature';
 ** @param save_text {string}
 ** @description string text for the save button
 */
-String save_text = 'save signature';
+String save_text = 'Save';
 
 /*
 ** @param helper_text_size {int}
@@ -64,7 +64,7 @@ int helper_text_size = 14;
 ** @param helper_text {string}
 ** @description string text for the helper instruction text
 */
-String helper_text = 'sign here';
+String helper_text = 'sign here (Signature required on every save)';
 
 /*
 ** @param helper_text_color {int}
@@ -174,8 +174,9 @@ void buttons()
 	});
 
 	var canvas = document.getElementById(container_id);
-	canvas.appendChild(redo);
+	//canvas.appendChild(redo);
 	canvas.appendChild(save);
+
 }
 
 /*
@@ -196,7 +197,7 @@ void retake()
 
 	fill(helper_text_color);
 	textSize(helper_text_size);
-	text(helper_text, w/2-50, h/2);
+	text(helper_text, w/2-150, h/2);
 
 	pen();
 
@@ -209,6 +210,8 @@ void retake()
 */
 void capture()
 {
+if (tap == true)
+	{
 	noFill();
 	stroke(255);
 	rect(0, 0, w, h);
@@ -219,11 +222,12 @@ void capture()
 
 	var canvas = document.getElementById(canvas_id);
 	canvas.style.display = 'none';
-
+	}
 	if(callback)
 	{
 		window[callback_function]();
 	}
+
 }
 
 

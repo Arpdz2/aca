@@ -19,6 +19,7 @@ var express = require('express'),
     fdf = require('fdf'),
     fs = require('fs'),
     spawn = require('child_process').spawn;
+    util = require('util');
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -54,7 +55,15 @@ app.get('/', function(request, response) {
 app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
 {
     employee.findOne({_id: req.params.employeeid}, function (err, result) {
-        console.log(result);
+        if (result.signature) {
+            var img = result.signature;
+            // strip off the data: url prefix to get just the base64-encoded bytes
+            var data = img.replace(/^data:image\/\w+;base64,/, "");
+            var buf = new Buffer(data, 'base64');
+            fs.writeFile(result._id + '.png', buf, function (err) {
+                console.log("image produced");
+            });
+        }
         var single = "Off";
         var married = "Off";
         var spousefirst = result.spousefirstname;
@@ -62,8 +71,6 @@ app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
         var datetime = new Date();
         if (result.maritalstatus == 'Single') {single = "Yes"; spousefirst = ""; spouselast = "";}
         if (result.maritalstatus == 'Married') {married = "Yes";}
-        console.log(single);
-        console.log(married);
         var data = fdf.generate({
             "first name": result.firstname,
             "last name": result.lastname,
@@ -82,12 +89,11 @@ app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
             "Email" : result.email,
             "Birth date" : result.birthdate,
             "Number of People" : result.coveragenumber,
-            "Primary Social Security" : result.ss
+            "Primary Social Security" : result.ss,
+            "clientsign" : result._id + '.png'
         });
 
         fs.writeFile(result._id + '.fdf', data, function (err) {
-            console.log('done');
-            //res.redirect('/');
         });
         spawn('pdftk', ['./public/pdf/ClientInformation.pdf', 'fill_form', result._id + ".fdf", 'output', result._id + '.pdf', 'flatten']);
         var refreshIntervalId = setInterval(function() {
@@ -109,35 +115,7 @@ app.get('/pdf/:employeeid', isLoggedIn, function(request, response){
     });
 });
 
-/*app.get('/test', function(req, res)
-{
-    var data = fdf.generate({
-        "Applicants Name" : "Dante",
-        "Last" : "Nguyen",
-        "MI": ""
-    });
- 
-    fs.writeFile('data.fdf', data, function(err){
-        console.log('done');
-    });
- 
-    spawn('pdftk', ['./public/pdf/cignaApplicationForInsurance.pdf', 'fill_form','data.fdf', 'output', 'filled.pdf', 'flatten']);
-    var AppSID = 'f8f6d6ec-85e7-4de5-bba6-724005fb7808';
-    var AppKey = 'a201c40896b23c2e39334d2c7c3d6117';
-    var BaseProductUri = 'http://api.aspose.com/v1.1/';
-    var asposeapp = new AsposeCloud({'appSID':AppSID,'appKey':AppKey,'baseURI':BaseProductUri});
-    var pdf = new AsposePdf(asposeapp);
-    var storage = new AsposeStorage(asposeapp);
 
-    storage.uploadFile('data.fdf', '', 'default', function (err, data) {
-        if(err) {
-            console.log(err);
-        } else {
-            console.log(data);
-        }
-        res.redirect('/');
-    });
-});*/
 
 app.get('/quote', function(request, response) {
   response.render('pages/quote');
@@ -488,6 +466,7 @@ app.get('/information', function(req,res){
 app.post('/information', function(req,res){
     if (req.session.employee && req.session.employee != null) {
         employee.findOne({_id: req.session.employee}, function (err, result) {
+            if (req.body.signatureid) {result.signature = req.body.signatureid;}
             result.firstname = req.body.FirstName;
             result.lastname = req.body.LastName;
             result.maritalstatus = req.body.MaritalStatus;

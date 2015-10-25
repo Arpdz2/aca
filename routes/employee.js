@@ -19,7 +19,8 @@ var employeeSchema = mongoose.Schema({
         zip: String,
         birthdate: String,
         coveragenumber: String,
-        ss: String
+        ss: String,
+        signature: String
 });
 
 // methods ======================

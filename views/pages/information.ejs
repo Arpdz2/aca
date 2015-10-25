@@ -289,12 +289,18 @@
                                     <span><label for="Dependent4NeedsCoverage">Dependent 4 Needs Coverage</label></span>
                                 </div>
                                 <div class="row">
+                                    <label for="FirstName">SignatureId</label>
+                                    <input id="signatureid" name="signatureid" type="text" value="<%= employee.signature %>" disabled>
+                                </div>
+                                <div class="row">
                                     <div id="signature_container"><canvas data-processing-sources="signature.pde" id="signature"></canvas></div>
                                     <script src="//cdnjs.cloudflare.com/ajax/libs/processing.js/1.4.8/processing.min.js"></script>
                                 </div>
+                                <!--
                                 <div class="row">
                                     <input type="submit" value="Save">
                                 </div>
+                                -->
                             </form>
                         </div>
                     </div>
@@ -306,7 +312,11 @@
         function savedSignature()
         {
         var img = document.getElementById("signature_image");
-        window.open(img.getAttribute('src'))
+        var id = img.getAttribute('src');
+        if (id != null) {
+            document.getElementById('signatureid').disabled = false;
+            document.getElementById('signatureid').value = id;
+        }
         }
         </script>
     </body>
