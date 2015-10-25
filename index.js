@@ -128,7 +128,7 @@ app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
         }, 1000);
     });
 });
-
+//
 app.get('/pdf/:employeeid', isLoggedIn, function(request, response){
     var tempFile= request.params.employeeid + "final.pdf";
     fs.readFile(tempFile, function (err,data){
