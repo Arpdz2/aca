@@ -46,13 +46,13 @@ String image_id = 'signature_image';
 ** @param redo_text {string}
 ** @description string text for the redo button
 */
-String redo_text = 'redo signature';
+String redo_text = 'Redo signature';
 
 /*
 ** @param save_text {string}
 ** @description string text for the save button
 */
-String save_text = 'Save';
+String save_text = 'Save Signature';
 
 /*
 ** @param helper_text_size {int}
@@ -160,6 +160,7 @@ void image()
 void buttons()
 {
 	var redo = document.createElement('button');
+	redo.setAttribute('type', 'button');
 	redo.innerHTML = redo_text;
 	redo.addEventListener('click', function(){
 		Processing.getInstanceById('signature').retake();
@@ -167,6 +168,7 @@ void buttons()
 	});
 
 	var save = document.createElement('button');
+	save.setAttribute('type', 'button');
 	save.innerHTML = save_text;
 	save.addEventListener('click', function(){
 		Processing.getInstanceById('signature').capture();
@@ -174,8 +176,8 @@ void buttons()
 	});
 
 	var canvas = document.getElementById(container_id);
-	//canvas.appendChild(redo);
 	canvas.appendChild(save);
+	canvas.appendChild(redo);
 
 }
 
