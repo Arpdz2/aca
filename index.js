@@ -130,10 +130,22 @@ app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
 });
 
 app.get('/pdf/:employeeid', isLoggedIn, function(request, response){
+    var emp = request.params.employeeid;
     var tempFile= request.params.employeeid + "final.pdf";
     fs.readFile(tempFile, function (err,data){
         response.contentType("application/pdf");
         response.send(data);
+    });
+    fs.unlink(emp + '.fdf', function(err) {
+        fs.unlink(emp + '.pdf', function(err) {
+            fs.unlink(emp + '.png', function(err) {
+                fs.unlink(emp + 'stamp.pdf', function(err) {
+                    fs.unlink(emp + 'final.pdf', function(err) {
+                        console.log("All files successfully removed");
+                    });
+                });
+            });
+        });
     });
 });
 
