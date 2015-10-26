@@ -53,6 +53,15 @@ app.get('/', function(request, response) {
   response.render('pages/index');
 });
 
+app.get('/test', function(req, res){
+    console.log(spawn('ls'));
+    spawn('chmod', ['+x', 'cpdf']);
+    spawn('cpdf');
+    console.log("done");
+    res.redirect('/');
+})
+
+
 app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
 {
     employee.findOne({_id: req.params.employeeid}, function (err, result) {
@@ -71,9 +80,6 @@ app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
                     fs.stat(result._id + 'stamp.pdf', function(err, exists) {
                         if (exists) {
                             clearInterval(refreshIntervalId3);
-                            console.log(spawn('ls'));
-                            spawn('chmod', ['+x', 'cpdf']);
-                            spawn('cd', ['..']);
                             spawn('cpdf', ['-stamp-on', result._id + 'stamp.pdf', './public/pdf/ClientInformation.pdf', '2', '-o', result._id + '.pdf']);
                         }
                     });
