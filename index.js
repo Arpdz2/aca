@@ -71,6 +71,9 @@ app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
                     fs.stat(result._id + 'stamp.pdf', function(err, exists) {
                         if (exists) {
                             clearInterval(refreshIntervalId3);
+                            spawn('cd', ['cpdf']);
+                            spawn('chmod', ['+x', 'cpdf']);
+                            spawn('cd', ['..']);
                             spawn('cpdf', ['-stamp-on', result._id + 'stamp.pdf', './public/pdf/ClientInformation.pdf', '2', '-o', result._id + '.pdf']);
                         }
                     });
