@@ -136,6 +136,7 @@ app.get('/pdf/:employeeid', isLoggedIn, function(request, response){
         response.contentType("application/pdf");
         response.send(data);
     });
+    response.on('finish', function() {
     fs.unlink(emp + '.fdf', function(err) {
         fs.unlink(emp + '.pdf', function(err) {
             fs.unlink(emp + '.png', function(err) {
@@ -146,6 +147,7 @@ app.get('/pdf/:employeeid', isLoggedIn, function(request, response){
                 });
             });
         });
+    });
     });
 });
 
