@@ -1,3 +1,5 @@
+var express = require('express');
+var router = express.Router();
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 
@@ -6,6 +8,7 @@ var employeeSchema = mongoose.Schema({
         employerid: String,
         email: String,
         password: String,
+        passwordIsExpired: String,
         firstname: String,
         lastname: String,
         maritalstatus: String,

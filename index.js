@@ -1,5 +1,6 @@
 var express = require('express'),
     sendEmail = require('./routes/sendEmail.js'),
+    passwordExpired = require('./routes/passwordExpired.js'),
     bodyParser = require('body-parser'),
     app = express(),
     dbConfig = require('./routes/db.js'),
@@ -151,7 +152,34 @@ app.get('/pdf/:employeeid', isLoggedIn, function(request, response){
     });
 });
 
+app.get('/passwordExpired', function(req, res){
+    console.log(req.session.email);
+    emailAddress = req.session.email;
+    res.render('pages/passwordExpired', {emailAddress : emailAddress, message : ''});
+});
 
+app.post('/passwordExpired', function(req, res){
+    employee.findOne({ 'email' :  req.body.email }, function(err, user) {
+        if (err) {
+            console.log("error");
+        }
+        if (req.body.password != req.body.passwordverify)
+        {
+            res.render('pages/passwordExpired', {emailAddress : emailAddress, message : "Passwords are not the same" });
+        }
+        else
+        {
+            employee.findOne({_id: req.session.employee}, function (err, result) {
+                var mongo = new employee();
+                result.password = mongo.generateHash(req.body.password);
+                result.passwordIsExpired = "FALSE";
+                result.save(function (err) {
+                    res.redirect('/information');
+                });
+            });
+        }  
+    });
+});
 
 app.get('/quote', function(request, response) {
   response.render('pages/quote');
@@ -412,51 +440,41 @@ app.get('/login', function(req,res){
     res.render('pages/login2', {message : "" });
 });
 
-app.get('/recovery', function(req,res){
+app.post('/login', function(req,res){
+    employee.findOne({ 'email' :  req.body.email }, function(err, user) {
+        if (err) {
+            console.log(err);
+        // if no user is found, return the message
+        } else if (!user) {
+            res.render('pages/login2', {message : "No user exists" });
+        // if the user is found but the password is wrong
+        } else if (!user.validPassword(req.body.password)) {
+            res.render('pages/login2', {message : "Invalid Password" });
+        // if the user's password is expired
+        } else if (user.passwordIsExpired == "TRUE") {
+            console.log("Password is expired.")
+            req.session.email = req.body.email;
+            req.session.employee = user._id
+            res.redirect('/passwordExpired');
+        // all is well, return successful user
+        } else {
+            req.session.employee = user._id;
+            res.redirect('/information');
+        }
+    });
+});
+
+app.get('/recovery', function(req, res){
     res.render('pages/recovery');
 });
 
 app.post('/recovery', function(req, res){
-    var optionsRadios = req.body.optionsRadios
+    
+    var optionsRadios = req.body.optionsRadios;
     
     if (optionsRadios == 'option1') {
-        employee.findOne({ 'email' :  req.body.email }, function(err, user) {
-            if (err) {
-                console.log("error");
-            } else if (user) {
-                var transport = nodemailer.createTransport(mandrillTransport({
-                    auth: {
-                        apiKey: 'y-Z7eNsStP65JC4YKJD3Lg'
-                    }
-                }));
-                transport.sendMail({
-                    from: 'ACA Insurance Group  <noreply@acainsuresme.com>',
-                    to: 'brenden.mckamey@gmail.com',
-            //        to: user.email,
-                    subject: 'ACA Insurance Credentials',
-                    html: '<p>Dear ' + user.firstname + ',<br/>Your temporary password for ACA Insurance is below. Your username will be sent in a separate email. Please use the link below to login.<br/><b>Password: </b>' + user.password + '<br/><b>Link to site: </b>' + req.protocol + '://' + req.get("host") + '<br/>If you have any questions or issues regarding access to ACA Insurance, please e-mail EMAILHERE or call TEAMHERE at NUMBERHERE.</p><p>Thank you,<br/>ACA Insurance Group</p>'
-                }, function(err, info) {
-                    if (err) {
-                        console.error(err);
-                    } else {
-                        console.log('Message sent: ' + info.response);
-                    }
-                });
-                transport.sendMail({
-                    from: 'ACA Insurance Group  <noreply@acainsuresme.com>',
-                    to: 'brenden.mckamey@gmail.com',
-            //        to: user.email,
-                    subject: 'ACA Insurance Credentials',
-                    html: '<p>Dear ' + user.firstname + ',<br/>Your username for ACA Insurance is below. Your temporary password will be sent in a separate email. Please use the link below to login.<br/><b>Username: </b>' + user.email + '<br/><b>Link to site: </b>' + req.protocol + '://' + req.get("host") + '<br/>If you have any questions or issues regarding access to ACA Insurance, please e-mail EMAILHERE or call TEAMHERE at NUMBERHERE.</p><p>Thank you,<br/>ACA Insurance Group</p>'
-                }, function(err, info) {
-                    if (err) {
-                        console.error(err);
-                    } else {
-                        console.log('Message sent: ' + info.response);
-                    }
-                });
-            }
-        });
+        sendEmail.passwordReset(req);
+        console.log("Password reset sent to " + req.body.email);
     } else if (optionsRadios == 'option2') {
         console.log("option2 not setup.");
     } else if (optionsRadios == 'option3') {
@@ -464,24 +482,6 @@ app.post('/recovery', function(req, res){
     }
     
     res.redirect("/");
-});
-
-app.post('/login', function(req,res){
-    employee.findOne({ 'email' :  req.body.email }, function(err, user) {
-        if (err)
-            console.log(err);
-        // if no user is found, return the message
-        else if (!user)
-            res.render('pages/login2', {message : "No user exists" });
-        // if the user is found but the password is wrong
-        else if (!user.validPassword(req.body.password))
-            res.render('pages/login2', {message : "Invalid Password" });
-        // all is well, return successful user
-        else {
-            req.session.employee = user._id;
-            res.redirect('/information');
-        }
-});
 });
 
 app.get('/information', function(req,res){
@@ -636,4 +636,3 @@ app.post('/confirm', function(req, res){
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
-
