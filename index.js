@@ -53,15 +53,6 @@ app.get('/', function(request, response) {
   response.render('pages/index');
 });
 
-app.get('/test', function(req, res){
-    console.log(spawn('ls'));
-    spawn('chmod', ['+x', '/app/cpdf/cpdf']);
-    spawn('cpdf');
-    console.log("done");
-    res.redirect('/');
-})
-
-
 app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
 {
     employee.findOne({_id: req.params.employeeid}, function (err, result) {
