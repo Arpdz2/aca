@@ -76,7 +76,7 @@ String helper_text_color = 203;
 ** @param signature_color {int}
 ** @description grayscale interger for signature pen color (0-255)
 */
-String signature_color = 102;
+String signature_color = 0;
 
 /*
 ** @param signature_stroke {int}
