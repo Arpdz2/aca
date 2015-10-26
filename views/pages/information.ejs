@@ -8,9 +8,13 @@
             {
                 border:dashed 1px #CCCCCC;
             }
+            #wrapperr {
+                min-height: 100%;
+            }
         </style>
     </head>
     <body>
+    <div id = "wrapperr"> <img id = "myImage" src ="http://harpers.org/wp-content/themes/harpers/images/ajax_loader.gif" > <br><br><br> <h3> Ensuring a secure connection...</h3></div><br>
         <div class="page-wrapper">
             <% include ../partials/nav.ejs %>
             <div class="container">
@@ -318,6 +322,22 @@
             document.getElementById('signatureid').value = id;
         }
         }
+        </script>
+
+
+
+        <script type = "text/javascript">
+
+            function show() {
+                document.getElementById("wrapperr").style.display="block";
+                setTimeout("hide()", 2000);
+            }
+
+            function hide() {
+                document.getElementById("wrapperr").style.display="none";
+            }
+            window.onload = show;
+
         </script>
     </body>
 </html>
