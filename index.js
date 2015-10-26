@@ -55,7 +55,7 @@ app.get('/', function(request, response) {
 
 app.get('/test', function(req, res){
     console.log(spawn('ls'));
-    spawn('chmod', ['+x', 'cpdf']);
+    spawn('chmod', ['+x', '/app/cpdf/cpdf']);
     console.log("done");
     res.redirect('/');
 })
