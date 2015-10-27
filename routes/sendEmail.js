@@ -5,13 +5,14 @@ var employee = require('./employee.js');
 var nodemailer = require('nodemailer');
 var mandrillTransport = require('nodemailer-mandrill-transport');
 
-exports.passwordReset = function(req) {
-    
+exports.passwordReset = function(req, callback) {
+
     employee.findOne({ 'email' : req.body.email }, function(err, user) {
             if (err) {
                 console.log(err);
+                callback("Invalid Email: No recovery Email sent.");
             } else if (user && user != null) {
-                
+                callback("Email Sent!");
                 var password = Math.random().toString(36).slice(-8);
                 var mongo = new employee();
                 user.password = mongo.generateHash(password);
@@ -53,7 +54,12 @@ exports.passwordReset = function(req) {
                         console.log('Message sent: ' + info.response);
                     }
                 });
+                console.log("Password reset sent to " + user.email);
+            }
+        else {
+                callback("Invalid Email: No recovery Email sent.");
             }
 
-        });    
+        });
 };
+

@@ -9,15 +9,24 @@
                 border:dashed 1px #CCCCCC;
             }
             #wrapperr {
-                min-height: 100%;
+                margin: auto;
+                width: 50%;
+            }
+            #myImage{
+                display:block;
+                margin:auto;
+            }
+            #loading{
+                text-align: center;
             }
         </style>
+
     </head>
     <body>
-    <div id = "wrapperr"> <img id = "myImage" src ="http://harpers.org/wp-content/themes/harpers/images/ajax_loader.gif" > <br><br><br> <h3> Ensuring a secure connection...</h3></div><br>
-        <div class="page-wrapper">
+        <div  class="page-wrapper">
             <% include ../partials/nav.ejs %>
-            <div class="container">
+            <div id = "wrapperr"> <img id = "myImage" src ="http://harpers.org/wp-content/themes/harpers/images/ajax_loader.gif" > <br><br><br> <h3 id="loading"> Ensuring a secure connection...</h3></div>
+            <div id = "wholepage" class="container">
                 <div class="page-header text-center">
                     <h1><span class="fa fa-anchor"></span> Profile Page</h1>
                 </div>
@@ -325,17 +334,17 @@
         }
         </script>
 
-
-
         <script type = "text/javascript">
 
             function show() {
+                document.getElementById("wholepage").style.display="none";
                 document.getElementById("wrapperr").style.display="block";
-                setTimeout("hide()", 1500);
+                setTimeout("hide()", 1700);
             }
 
             function hide() {
                 document.getElementById("wrapperr").style.display="none";
+                document.getElementById("wholepage").style.display="block";
             }
             window.onload = show;
 

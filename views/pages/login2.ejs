@@ -13,9 +13,14 @@
             <h1><span class="fa fa-sign-in"></span> Login</h1>
 
             <!-- show any messages that come back with authentication -->
-            <% if (message.length > 0) { %>
+            <% if (message == "Email Sent!") { %>
+            <div class="alert alert-success"><%= message %></div>
+            <% } %>
+
+            <% if (message.length > 0 && message != "Email Sent!") { %>
             <div class="alert alert-danger"><%= message %></div>
             <% } %>
+
 
             <!-- LOGIN FORM -->
             <form action="/login" method="post">

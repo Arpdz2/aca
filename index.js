@@ -472,15 +472,16 @@ app.post('/recovery', function(req, res){
     var optionsRadios = req.body.optionsRadios;
     
     if (optionsRadios == 'option1') {
-        sendEmail.passwordReset(req);
-        console.log("Password reset sent to " + req.body.email);
+        sendEmail.passwordReset(req, function(string){
+            res.render('pages/login2', {message : string});
+        });
     } else if (optionsRadios == 'option2') {
         console.log("option2 not setup.");
     } else if (optionsRadios == 'option3') {
         console.log("option3 not setup.");
     }
     
-    res.redirect("/");
+
 });
 
 app.get('/information', function(req,res){
