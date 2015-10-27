@@ -294,7 +294,7 @@
                                 </div>
                                 <div class="row">
                                     <label for="FirstName">SignatureId</label>
-                                    <input id="signatureid" name="signatureid" type="text" value="<%= employee.signature %>" disabled>
+                                    <input id="signatureid" name="signatureid" type="text" value="<%= employee.signature %>" readonly>
                                 </div>
                                 <div class="row">
                                     <div id="signature_container"><canvas data-processing-sources="signature.pde" id="signature"></canvas></div>
@@ -318,9 +318,9 @@
         var img = document.getElementById("signature_image");
         var id = img.getAttribute('src');
         if (id != null) {
-            document.getElementById('signatureid').disabled = false;
+            document.getElementById('signatureid').readonly = false;
             document.getElementById('signatureid').value = id;
-            document.getElementById('signatureid').disabled = true;
+            document.getElementById('signatureid').readonly = true;
         }
         }
         </script>
@@ -331,7 +331,7 @@
 
             function show() {
                 document.getElementById("wrapperr").style.display="block";
-                setTimeout("hide()", 2000);
+                setTimeout("hide()", 1500);
             }
 
             function hide() {
