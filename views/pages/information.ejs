@@ -337,9 +337,9 @@
         <script type = "text/javascript">
 
             function show() {
-                //var x = document.cookie.toString().split(';');
+                var x = document.cookie.toString().split(';'); //for localhost cookies
 
-                if(document.cookie == "https=True") {
+                if(document.cookie == "https=True" || x[1] == " https=True") {
                     hide();
                 }
                 else {
