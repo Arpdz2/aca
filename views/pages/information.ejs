@@ -337,9 +337,22 @@
         <script type = "text/javascript">
 
             function show() {
-                document.getElementById("wholepage").style.display="none";
-                document.getElementById("wrapperr").style.display="block";
-                setTimeout("hide()", 1700);
+                var x = document.cookie.toString().split(';');
+                if(x[1] == " https=True") {
+                    hide();
+                }
+                else {
+                    var d = new Date();
+                    console.log(d);
+                    var newd = new Date();
+                    //based on +5 hrs
+                    newd.setMinutes(newd.getMinutes() + 320);
+                    console.log(newd);
+                    document.getElementById("wholepage").style.display = "none";
+                    document.getElementById("wrapperr").style.display = "block";
+                    document.cookie="https=True; expires=" + newd.toString() +";";
+                    setTimeout("hide()", 1700);
+                }
             }
 
             function hide() {
@@ -349,5 +362,6 @@
             window.onload = show;
 
         </script>
+
     </body>
 </html>
