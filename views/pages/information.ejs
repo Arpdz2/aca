@@ -337,6 +337,11 @@
         <script type = "text/javascript">
 
             function show() {
+                if (window.location.protocol == 'https:') {
+                }
+                else {
+                    window.location = "/";
+                }
                 var x = document.cookie.toString().split(';'); //for localhost cookies
 
                 if(document.cookie == "https=True" || x[1] == " https=True") {
