@@ -23,6 +23,7 @@ var express = require('express'),
     util = require('util');
     PDFDocument = require ('pdfkit');
     enforce = require('express-sslify');
+    https = -1;
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -50,20 +51,27 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
+
 //used to enforce https on get requests
 app.use('*', function(req,res,next){
     var requestedurl = req.protocol + '://' + req.get('Host') + req.url;
     if (requestedurl.indexOf('localhost') != -1){
         console.log("no https enforced");
+        https = 0;
         next();
-        //dont encforce https
+        //dont enforce https
     }
     else {
-        app.use(enforce.HTTPS({trustProtoHeader: true}));
+        https = 1;
         console.log("https enforced");
         next();
     }
 });
+
+if(https == 1)
+{
+    app.use(enforce.HTTPS({ trustProtoHeader: true }));
+}
 
 app.get('/', function(request, response) {
   response.render('pages/index');
