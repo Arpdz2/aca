@@ -22,6 +22,7 @@ var express = require('express'),
     spawn = require('child_process').spawn;
     util = require('util');
     PDFDocument = require ('pdfkit');
+    enforce = require('express-sslify');
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -48,6 +49,18 @@ app.use(session({ secret: 'qwdqwdqwdqwdrfergwefdwcwcqcqwdlkqwjmqwdi' })); // ses
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
+
+//used to enforce https on get requests
+app.use('*', function(req,res,next){
+    if (req.url.toString().indexOf('localhost' > -1)){
+        next();
+        //dont encforce https
+    }
+    else {
+        app.use(enforce.HTTPS({trustProtoHeader: true}));
+        next();
+    }
+});
 
 app.get('/', function(request, response) {
   response.render('pages/index');
