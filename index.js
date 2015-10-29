@@ -51,7 +51,7 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 
-//used to enforce https on get requests
+/*used to enforce https on get requests
 app.use('*', function(req,res,next){
     var requestedurl = req.protocol + '://' + req.get('Host') + req.url;
     if (requestedurl.indexOf('localhost') != -1){
@@ -60,12 +60,15 @@ app.use('*', function(req,res,next){
         //dont enforce https
     }
     else {
-        app.all(enforce.HTTPS({ trustProtoHeader: true }));
+        app.use(enforce.HTTPS({ trustProtoHeader: true }));
         console.log("https enforced");
         next();
     }
 });
+*/
 
+
+app.use(enforce.HTTPS({ trustProtoHeader: true })); //*****Enable for production to force https******
 
 app.get('/', function(request, response) {
   response.render('pages/index');
