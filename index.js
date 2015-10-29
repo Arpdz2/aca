@@ -23,7 +23,6 @@ var express = require('express'),
     util = require('util');
     PDFDocument = require ('pdfkit');
     enforce = require('express-sslify');
-    https = -1;
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -57,21 +56,16 @@ app.use('*', function(req,res,next){
     var requestedurl = req.protocol + '://' + req.get('Host') + req.url;
     if (requestedurl.indexOf('localhost') != -1){
         console.log("no https enforced");
-        https = 0;
         next();
         //dont enforce https
     }
     else {
-        https = 1;
+        app.all(enforce.HTTPS({ trustProtoHeader: true }));
         console.log("https enforced");
         next();
     }
 });
 
-if(https == 1)
-{
-    app.use(enforce.HTTPS({ trustProtoHeader: true }));
-}
 
 app.get('/', function(request, response) {
   response.render('pages/index');
