@@ -337,7 +337,9 @@
         <script type = "text/javascript">
 
             function show() {
-                if (window.location.protocol == 'https:') {
+                var string = window.location.toString();
+
+                if (window.location.protocol == 'https:' || string.indexOf("localhost") != -1) {
                 }
                 else {
                     window.location = "/";
