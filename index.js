@@ -52,6 +52,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 //used to enforce https on get requests
 app.use('*', function(req,res,next){
+    console.log(req.url.toString().indexOf('localhost'));
     if (req.url.toString().indexOf('localhost' > -1)){
         next();
         //dont encforce https
