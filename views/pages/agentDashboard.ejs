@@ -3,6 +3,16 @@
 <html>
 <head>
     <% include ../partials/header.ejs %></head>
+<style>
+    iframe {
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 400px;
+        width: 100%;
+    }
+</style>
 <body>
     <div class="page-wrapper">
         <% include ../partials/nav.ejs %>
@@ -40,28 +50,28 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="well">
-                        <h3><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</h3>
+                        <h3><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Calendar</h3>
                         <p>
-                            <form class="form-inline" action="/search" method="post">
-                                <div class="form-group">
-                                    <input type="search" class="form-control" id="search">
-                                </div>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-default">Search</button>
-                                </div>
-                            </form>
+                            <iframe src="https://calendar.google.com/calendar/embed?src=acainsuresme%40gmail.com&ctz=America/Chicago" style="border: 0" frameborder="0" scrolling="no"></iframe>
                         </p>
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="well">
-                        <h3><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Calendar</h3>
+                        <h3><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</h3>
                         <p>
+                        <form class="form-inline" action="/search" method="post">
+                            <div class="form-group">
+                                <input type="search" class="form-control" id="search">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-default">Search</button>
+                            </div>
+                        </form>
                         </p>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
     <% include ../partials/footer.ejs %>
