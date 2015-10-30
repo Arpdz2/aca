@@ -268,7 +268,7 @@ app.get('/agentDashboard', isLoggedIn, function(req, res) {
 });
 
 app.post('/search', isLoggedIn, function(req, res) {
-    res.render('pages/search', {
+    res.render('pages/agentDashboard', {
         user : req.user // get the user out of session and pass to template
     });
 });
