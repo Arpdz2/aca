@@ -350,8 +350,7 @@ app.get('/:employer/sendemail/:id/:eid/:employeremail', isLoggedIn, function(req
     }));
     transport.sendMail({
         from: 'ACA Insurance Group  <noreply@acainsuresme.com>',
-        to: 'brenden.mckamey@gmail.com',
-//        to: req.params.employeremail,
+        to: req.params.employeremail,
         subject: 'ACA Insurance Employee Registration Link',
         html: '<p>Dear ' + req.params.employer + ',</p><p>Please forward the below link to your employees in order to register for ACA coverage:</p><p>' + req.protocol + '://' + req.get("host") + '/signup/' + req.params.id + '/' + req.params.eid + '</p><br/><p>Thank you,</p><p>ACA Insurance Group</p>'
     }, function(err, info) {
