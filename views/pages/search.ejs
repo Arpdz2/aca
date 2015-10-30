@@ -3,69 +3,102 @@
 <html>
 <head>
     <% include ../partials/header.ejs %></head>
+<style>
+    iframe {
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 400px;
+        width: 100%;
+    }
+</style>
 <body>
-    <div class="page-wrapper">
-        <% include ../partials/nav.ejs %>
-        <div class="container">
+<div class="page-wrapper">
+    <% include ../partials/nav.ejs %>
+    <div class="container">
 
-            <div class="page-header text-center">
-                <h1>Agent Dashboard</h1>
-                <!-- <a href="/logout" class="btn btn-default btn-sm">Logout</a> -->
-            </div>
-
-            <div class="row">
-
-                <!-- LOCAL INFORMATION -->
-                <div class="col-sm-6">
-                    <div class="well">
-                        <h3><span class="fa fa-user"></span> Agent Info</h3>
-
-                        <p>
-                            <strong>Agent ID</strong>: <%= user._id %><br>
-                            <strong>Name</strong>: <%= user.employer[0].empname %><br>
-                            <strong>E-mail</strong>: <%= user.local.email %>
-                            <!--
-                            <strong>password</strong>: <%= user.local.password %>
-                            -->
-                        </p>
-
-                    </div>
+        <div class="page-header text-center">
+            <h1><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Agent Dashboard</h1>
+        </div>
+        <div class="row">
+            <!-- LOCAL INFORMATION -->
+            <div class="col-sm-6">
+                <div class="well">
+                    <h3><span class="fa fa-user"></span> Agent Info</h3>
+                    <p>
+                        <strong>Agent ID</strong>: <%= user._id %><br>
+                        <strong>Name</strong>: <%= user.local.firstName %> <%= user.local.lastName %><br>
+                        <strong>E-mail</strong>: <%= user.local.email %>
+                    </p>
                 </div>
-                <div class="col-sm-6">
-                    <div class="well">
-                        <h3>Agent Cases</h3>
-                        <p>
+            </div>
+            <div class="col-sm-6">
+                <div class="well">
+                    <h3><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Agent Cases</h3>
+                    <p>
                         <% user.employer.forEach(function(employer) { %>
-                        <a href="/<%= user._id %>/<%= employer._id %>"><%= employer._id %> <%= employer.firstname %> <%= employer.lastname %></a>   <br>
+                        <a href="/<%= user._id %>/<%= employer._id %>"><%= employer.empname %></a>   <br>
                         <% }); %>
-
-                        </p>
-                        <p>
-                            <a href="/profile/case" class="btn btn-default"> Add New Case</a>
-                        </p>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="well">
-                        <h3><span class="fa fa-user"></span> Search</h3>
-
-                        <p>
-                            <form class="form-inline" action="/search" method="post">
-                                <div class="form-group">
-                                    <input type="search" class="form-control" id="search">
-                                </div>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-default">Search</button>
-                                </div>
-                            </form>
-                        </p>
-
-                    </div>
+                    </p>
+                    <p>
+                        <a href="/profile/case" class="btn btn-default"> Add New Case</a>
+                    </p>
                 </div>
             </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="well">
+                    <h3><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Calendar</h3>
+                    <p>
+                        <iframe src="https://calendar.google.com/calendar/embed?src=acainsuresme%40gmail.com&ctz=America/Chicago" style="border: 0" frameborder="0" scrolling="yes"></iframe>
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="well">
+                    <h3><span class="glyphicon glyphicon-search" aria-hidden="true"></span>Employee Search</h3>
+                    <p>
+                    <form class="form-inline" action="/search" method="post">
+                        <div class="form-group">
+                            <input type="search" name="search" class="form-control" id="search">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-default">Search</button>
+                        </div>
+                    </form>
+                    </p>
 
+                    <h5>Results:</h5>
+                    <% search.forEach(function(employee) { %>
+                    <% var check = false; %>
+                    <% user.employer.forEach(function(employer) { %>
+                    <% if (check == false) { %>
+                    <% if(employee.employerid == employer._id) { %>
+                    <% check = true %>
+                    <div class="row">
+                        <div class="col-md-6">
+                        <b>Email:</b> <%= employee.email %><br>
+                        <b>DOB:</b>   <%= employee.birthdate %><br>
+                        <b>Phone#:</b>  <%= employee.phonenumber %><br>
+                        </div>
+                        <div class="col-md-6">
+                        <b>First Name:</b> <%= employee.firstname%><br>
+                        <b>Last Name:</b> <%= employee.lastname%><br>
+                        <b>Employer:</b> <%= employer.empname %> <br><br><br><br>
+                        </div>
+                    </div>
+                    <% } %>
+                    <% } %>
+                    <% }); %>
+                    <% }); %>
+
+                </div>
+            </div>
         </div>
     </div>
-    <% include ../partials/footer.ejs %>
+</div>
+<% include ../partials/footer.ejs %>
 </body>
 </html>

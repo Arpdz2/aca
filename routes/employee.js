@@ -26,6 +26,11 @@ var employeeSchema = mongoose.Schema({
         signature: String
 });
 
+employeeSchema.index(
+    { "$**": "text" },
+    { name: "textScore" }
+);
+
 // methods ======================
 // generating a hash
 employeeSchema.methods.generateHash = function(password) {

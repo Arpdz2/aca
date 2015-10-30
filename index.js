@@ -268,10 +268,27 @@ app.get('/agentDashboard', isLoggedIn, function(req, res) {
 });
 
 app.post('/search', isLoggedIn, function(req, res) {
-    res.render('pages/agentDashboard', {
-        user : req.user // get the user out of session and pass to template
+    console.log(req.body.search);
+    employee.find(
+        { $text : { $search : req.body.search } },
+        { score : { $meta: "textScore" } }
+    )
+        .sort({ score : { $meta : 'textScore' } })
+        .exec(function(err, results) {
+            if (err) {
+                res.redirect('/agentDashboard');
+            }
+            else if (results) {
+                res.render('pages/search', {
+                    user: req.user, search: results // get the user out of session and pass to template
+                });
+            }
+            else {
+                res.redirect('/agentDashboard');
+            }
     });
 });
+
 
 app.get('/logout', function(req, res) {
     req.logout();
