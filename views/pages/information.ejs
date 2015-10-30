@@ -343,7 +343,7 @@
                 if (window.location.protocol == 'https:' || string.indexOf("localhost") != -1) {
                 }
                 else {
-                    window.location = "/";
+                    window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
                 }
                 var x = document.cookie.toString().split(';'); //for localhost cookies
 
