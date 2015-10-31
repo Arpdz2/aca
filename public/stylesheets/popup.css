@@ -1,0 +1,36 @@
+#abc {
+    width:100%;
+    height:100%;
+    opacity:.95;
+    top:0;
+    left:0;
+    z-index: 1000;
+    position:fixed;
+    background-color:#313131;
+    overflow:auto
+}
+img#close {
+    position:absolute;
+    right:-14px;
+    top:-14px;
+    cursor:pointer
+}
+div#popupContact {
+    position:absolute;
+    left:45%;
+    top:17%;
+    margin-left:-202px;
+    font-family:'Raleway',sans-serif
+    z-index: 1001;
+    background-color:#ffffff;
+    padding-top: 25px;
+    padding-right: 50px;
+    padding-bottom: 25px;
+    padding-left: 50px;
+}
+
+
+
+
+
+

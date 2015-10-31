@@ -3,6 +3,125 @@
 <head>
     <% include ../partials/header.ejs %></head>
 <body>
+<link rel="stylesheet" href="/stylesheets/popup.css">
+<% user.employer.forEach(function(employer) { %>
+<%if (employer._id == page) { %>
+<div id="abc" style="display: none;">
+    <!-- Popup Div Starts Here -->
+    <div id="popupContact">
+        <!-- Contact Us Form -->
+        <form class="form-horizontal" action="/update/employer/<%= employer._id%>" method="post">
+            <img id="close" src="/img/close.png" onclick ="div_hide()">
+            <h2>Update Info</h2>
+                <div class="form-group">
+                    <label for="firstName" class="col-sm-2 control-label">Employer Name:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="empname" id="empname" placeholder="Employer Name" value="<%= employer.empname%>" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="streetAddress" class="col-sm-2 control-label">Street Address:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="streetaddress" id="streetaddress" placeholder="Street Address" value="<%= employer.streetaddress%>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="city" class="col-sm-2 control-label">City:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="city" id="city" placeholder="City" value="<%= employer.city%>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="state" class="col-sm-2 control-label">State:</label>
+                    <div class="col-sm-10">
+                        <select name="state" id="state" class="form-control">
+                            <option value="AL" <%= (employer.state == 'AL')?'selected':'' %> >AL </option>
+                            <option value="AK" <%= (employer.state == 'AK')?'selected':'' %> >AK </option>
+                            <option value="AZ" <%= (employer.state == 'AZ')?'selected':'' %> >AZ </option>
+                            <option value="AR" <%= (employer.state == 'AR')?'selected':'' %> >AR</option>
+                            <option value="CA" <%= (employer.state == 'CA')?'selected':'' %> >CA</option>
+                            <option value="CO" <%= (employer.state == 'CO')?'selected':'' %> >CO</option>
+                            <option value="CT" <%= (employer.state == 'CT')?'selected':'' %> >CT</option>
+                            <option value="DE" <%= (employer.state == 'DE')?'selected':'' %> >DE</option>
+                            <option value="FL" <%= (employer.state == 'FL')?'selected':'' %> >FL</option>
+                            <option value="GA" <%= (employer.state == 'GA')?'selected':'' %> >GA</option>
+                            <option value="HI" <%= (employer.state == 'HI')?'selected':'' %> >HI</option>
+                            <option value="ID" <%= (employer.state == 'ID')?'selected':'' %> >ID</option>
+                            <option value="IL" <%= (employer.state == 'IL')?'selected':'' %> >IL</option>
+                            <option value="IN" <%= (employer.state == 'IN')?'selected':'' %> >IN</option>
+                            <option value="IA" <%= (employer.state == 'IA')?'selected':'' %> >IA</option>
+                            <option value="KS" <%= (employer.state == 'KS')?'selected':'' %> >KS</option>
+                            <option value="KY" <%= (employer.state == 'KY')?'selected':'' %> >KY</option>
+                            <option value="LA" <%= (employer.state == 'LA')?'selected':'' %> >LA</option>
+                            <option value="ME" <%= (employer.state == 'ME')?'selected':'' %> >ME</option>
+                            <option value="MD" <%= (employer.state == 'MD')?'selected':'' %> >MD</option>
+                            <option value="MA" <%= (employer.state == 'MA')?'selected':'' %> >MA</option>
+                            <option value="MI" <%= (employer.state == 'MI')?'selected':'' %> >MI</option>
+                            <option value="MN" <%= (employer.state == 'MN')?'selected':'' %> >MN</option>
+                            <option value="MS" <%= (employer.state == 'MS')?'selected':'' %> >MS</option>
+                            <option value="MO" <%= (employer.state == 'MO')?'selected':'' %> >MO</option>
+                            <option value="MT" <%= (employer.state == 'MT')?'selected':'' %> >MT</option>
+                            <option value="NE" <%= (employer.state == 'NE')?'selected':'' %> >NE</option>
+                            <option value="NV" <%= (employer.state == 'NV')?'selected':'' %> >NV</option>
+                            <option value="NH" <%= (employer.state == 'NH')?'selected':'' %> >NH</option>
+                            <option value="NJ" <%= (employer.state == 'NJ')?'selected':'' %> >NJ</option>
+                            <option value="NM" <%= (employer.state == 'NM')?'selected':'' %> >NM</option>
+                            <option value="NY" <%= (employer.state == 'NY')?'selected':'' %> >NY</option>
+                            <option value="NC" <%= (employer.state == 'NC')?'selected':'' %> >NC</option>
+                            <option value="ND" <%= (employer.state == 'ND')?'selected':'' %> >ND</option>
+                            <option value="OH" <%= (employer.state == 'OH')?'selected':'' %> >OH</option>
+                            <option value="OK" <%= (employer.state == 'OK')?'selected':'' %> >OK</option>
+                            <option value="OR" <%= (employer.state == 'OR')?'selected':'' %> >OR</option>
+                            <option value="PA" <%= (employer.state == 'PA')?'selected':'' %> >PA</option>
+                            <option value="RI" <%= (employer.state == 'RI')?'selected':'' %> >RI</option>
+                            <option value="SC" <%= (employer.state == 'SC')?'selected':'' %> >SC</option>
+                            <option value="SD" <%= (employer.state == 'SD')?'selected':'' %> >SD</option>
+                            <option value="TN" <%= (employer.state == 'TN')?'selected':'' %> >TN</option>
+                            <option value="TX" <%= (employer.state == 'TX')?'selected':'' %> >TX</option>
+                            <option value="UT" <%= (employer.state == 'UT')?'selected':'' %> >UT</option>
+                            <option value="VT" <%= (employer.state == 'VT')?'selected':'' %> >VT</option>
+                            <option value="VA" <%= (employer.state == 'VA')?'selected':'' %> >VA</option>
+                            <option value="WA" <%= (employer.state == 'WA')?'selected':'' %> >WA</option>
+                            <option value="WV" <%= (employer.state == 'WV')?'selected':'' %> >WV</option>
+                            <option value="WI" <%= (employer.state == 'WI')?'selected':'' %> >WI</option>
+                            <option value="WY" <%= (employer.state == 'WY')?'selected':'' %> >WY</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="zipCode" class="col-sm-2 control-label">Zip Code:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="zipcode" id="zipcode" placeholder="Zip Code" value="<%= employer.zipcode%>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber" class="col-sm-2 control-label">Phone Number:</label>
+                    <div class="col-sm-10">
+                        <input type="tel" class="form-control" name="phonenumber" id="phonenumber" placeholder="Phone Number" value="<%= employer.phonenumber%>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="emailAddress" class="col-sm-2 control-label">Employer E-mail Address:</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Employer E-mail Address" value="<%= employer.email%>" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="comments" class="col-sm-2 control-label">Comments:</label>
+                    <div class="col-sm-10">
+                        <textarea type="text" class="form-control" name="comments" id="comments" placeholder="Enter comments here!"  rows="3"> <%= employer.comments%> </textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" value="submit" class="btn btn-success">Submit</button>
+                        <button type="reset" class="btn btn-danger">Reset</button>
+                    </div>
+                </div>
+            </form>
+    </div>
+    <!-- Popup Div Ends Here -->
+</div>
     <div class="page-wrapper">
         <% include ../partials/nav.ejs %>
         <div class="container">
@@ -15,10 +134,7 @@
                 <div class="col-sm-6">
                     <div class="well">
                         <h2>Employer Data</h2>
-
                         <p>
-                            <% user.employer.forEach(function(employer) { %>
-                            <%if (employer._id == page) { %>
                             <strong>Id</strong>: <%= employer._id %><br>
                             <strong>Name</strong>: <%= employer.empname %><br>
                             <strong>Street Address</strong>: <%= employer.streetaddress %><br>
@@ -39,6 +155,7 @@
                             <center>
                                 <a href="/<%= employer.empname %>/sendemail/<%= user._id %>/<%= employer._id %>/<%= employer.email%>" class="btn btn-info"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Send Registration Info</a>
                                 <a href="/delete" name="delete" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete Record</a>
+                                <a onclick="div_show()" class="btn btn-info"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Update Info </a>
                             </center>
                         </p>
                     </div>
@@ -57,18 +174,17 @@
                     </div>
                 </div>
             </div>
-            <% } %>
-            <% }); %>
+
             <ul class="nav nav-tabs nav-justified">
                 <li role="presentation"><a href="/agentDashboard"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back</a></li>
             </ul>
         </div>
     </div>
-
     <!--
     <h2><strong>Employee Signup Link</strong>: <%= url %> </h2>
     -->
-
+<% } %>
+<% }); %>
     <% include ../partials/footer.ejs %>
 
     <script type="text/javascript">
@@ -78,6 +194,14 @@
         };
         for (var i = 0, l = elems.length; i < l; i++) {
             elems[i].addEventListener('click', confirmIt, false);
+        }
+    </script>
+    <script>
+        function div_show() {
+            document.getElementById('abc').style.display = "block";
+        }
+        function div_hide(){
+            document.getElementById('abc').style.display = "none";
         }
     </script>
 </body>

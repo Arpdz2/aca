@@ -424,6 +424,26 @@ app.get('/delete', isLoggedIn, function(req, res) {
     }
 });
 
+app.post('/update/employer/:employerid', isLoggedIn, function(req, res){
+    var a = req.user;
+    var id = req.params.employerid;
+    user.update({"_id" : a._id, "employer._id" : id},{$set : {
+        "employer.$.empname": req.body.empname,
+        "employer.$.streetaddress": req.body.streetaddress,
+        "employer.$.city": req.body.city,
+        "employer.$.state": req.body.state,
+        "employer.$.zipcode": req.body.zipcode,
+        "employer.$.phonenumber": req.body.phonenumber,
+        "employer.$.email": req.body.email,
+        "employer.$.comments": req.body.comments
+    }}, function(err, docs) {
+        if (err) console.log(err);
+        else if (docs) console.log(docs);
+        else console.log("failure");
+    });
+    res.redirect('/' + a._id + '/' + id);
+});
+
 app.get('/signup/:agentid/:employerid', function(req,res){
     req.session.agentid = req.params.agentid;
     req.session.employerid = req.params.employerid;
