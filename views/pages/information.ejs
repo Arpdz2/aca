@@ -25,7 +25,7 @@
     <body>
         <div  class="page-wrapper">
             <% include ../partials/nav.ejs %>
-            <div id = "wrapperr" class="well"> <img id = "myImage" src ="/img/ajax_loader.gif" > <br><br><br> <h3 id="loading"> Ensuring a secure connection...</h3></div>
+            <!--<div id = "wrapperr" class="well"> <img id = "myImage" src ="/img/ajax_loader.gif" > <br><br><br> <h3 id="loading"> Ensuring a secure connection...</h3></div>-->
             <div id = "wholepage" class="container">
                 <div class="page-header text-center">
                     <h1><span class="fa fa-anchor"></span> Profile Page</h1>
@@ -334,44 +334,44 @@
         }
         </script>
 
-        <script type = "text/javascript">
+        <!--<script type = "text/javascript">-->
 
-            function show() {
-                document.getElementById("wholepage").style.display = "none";
-                var string = window.location.toString();
+            <!--function show() {-->
+                <!--document.getElementById("wholepage").style.display = "none";-->
+                <!--var string = window.location.toString();-->
+                <!-- -->
+                <!--if (window.location.protocol == 'https:' || string.indexOf("localhost") != -1) {-->
+                <!--}-->
+                <!--else {-->
+                    <!--window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);-->
+                <!--}-->
+                <!--var x = document.cookie.toString().split(';'); //for localhost cookies-->
 
-                if (window.location.protocol == 'https:' || string.indexOf("localhost") != -1) {
-                }
-                else {
-                    window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
-                }
-                var x = document.cookie.toString().split(';'); //for localhost cookies
+                <!--if(document.cookie == "https=True" || x[1] == " https=True" || x[2] == " https=True") {-->
+                    <!--hide();-->
+                <!--}-->
+                <!--else {-->
+                    <!--var d = new Date();-->
+                    <!--console.log(d);-->
+                    <!--var newd = new Date();-->
+                    <!--//based on +5 hrs-->
+                    <!--newd.setMinutes(newd.getMinutes() + 320);-->
+                    <!--console.log(newd);-->
+                    <!--document.getElementById("wholepage").style.display = "none";-->
+                    <!--document.getElementById("wrapperr").style.display = "block";-->
+                    <!--document.cookie="https=True; expires=" + newd.toString() +";";-->
+                    <!--setTimeout("hide()", 1700);-->
+                <!--}-->
+            <!--}-->
 
-                if(document.cookie == "https=True" || x[1] == " https=True" || x[2] == " https=True") {
-                    hide();
-                }
-                else {
-                    var d = new Date();
-                    console.log(d);
-                    var newd = new Date();
-                    //based on +5 hrs
-                    newd.setMinutes(newd.getMinutes() + 320);
-                    console.log(newd);
-                    document.getElementById("wholepage").style.display = "none";
-                    document.getElementById("wrapperr").style.display = "block";
-                    document.cookie="https=True; expires=" + newd.toString() +";";
-                    setTimeout("hide()", 1700);
-                }
-            }
+            <!--function hide() {-->
+                <!--document.getElementById("wrapperr").style.display="none";-->
+                <!--document.getElementById("wholepage").style.display="block";-->
+                <!--setLoginSession();-->
+            <!--}-->
+            <!--window.onload = show;-->
 
-            function hide() {
-                document.getElementById("wrapperr").style.display="none";
-                document.getElementById("wholepage").style.display="block";
-                setLoginSession();
-            }
-            window.onload = show;
-
-        </script>
+        <!--</script>-->
         <script src="/js/setloginsession.js"> </script>
     </body>
 </html>
