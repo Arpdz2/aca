@@ -347,7 +347,7 @@
                 }
                 var x = document.cookie.toString().split(';'); //for localhost cookies
 
-                if(document.cookie == "https=True" || x[1] == " https=True") {
+                if(document.cookie == "https=True" || x[1] == " https=True" || x[2] == " https=True") {
                     hide();
                 }
                 else {
@@ -371,6 +371,6 @@
             window.onload = show;
 
         </script>
-
+        <script src="/js/setloginsession.js"> </script>
     </body>
 </html>
