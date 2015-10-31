@@ -1,13 +1,15 @@
 function checkLoginSession() {
     if(document.cookie == "login=True") {
         document.getElementById("status").class="btn btn-success";
-        document.getElementById("demo").innerHTML = "Logout";
+        document.getElementById("status").innerHTML = "Logout";
         document.getElementById("status").href="/logout";
+        document.getElementById("status").onclick= removeLoginSession;
+
     }
     else {
         document.getElementById("status").class="btn btn-danger";
-        document.getElementById("demo").innerHTML = "Login";
-        document.getElementById("abc").href="/login";
+        document.getElementById("status").innerHTML = "Login";
+        document.getElementById("status").href="/login";
     }
 }
 
