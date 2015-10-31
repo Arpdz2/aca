@@ -32,6 +32,7 @@
     {
     if (window.location.protocol == "https:")
         window.location.href = "http:" + window.location.href.substring(window.location.protocol.length);
+        checkLoginSession();
     }
     window.onload = switchToHttp;
 </script>
