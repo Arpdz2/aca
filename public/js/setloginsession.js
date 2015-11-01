@@ -1,5 +1,8 @@
 function setLoginSession() {
-    document.cookie="login=True";
+    var d = new Date();
+    //set 15 minute sessions
+    d.setMinutes(d.getMinutes() + 315);
+    document.cookie="login=True; expires=" + d.toString() + ";";
     checkLoginSession();
 }
 
