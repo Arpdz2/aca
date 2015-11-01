@@ -341,6 +341,9 @@ app.post('/profile/case', isLoggedIn,function (req, res, next){
                                 zipcode: req.body.zipcode,
                                 phonenumber: req.body.phonenumber,
                                 email: req.body.email,
+                                contact: req.body.contact,
+                                altemail: req.body.altemail,
+                                altcontact: req.body.altcontact,
                                 comments: req.body.comments,
                                 payroll: req.body.payroll,
                                 dental: req.body.dental,
@@ -359,7 +362,7 @@ app.post('/profile/case', isLoggedIn,function (req, res, next){
     );
 });
 
-app.get('/:employer/sendemail/:id/:eid/:employeremail', isLoggedIn, function(req, res) {
+app.get('/:employer/sendemail/:id/:eid/:employeremail/:altemail', isLoggedIn, function(req, res) {
     var transport = nodemailer.createTransport(mandrillTransport({
         auth: {
             apiKey: 'y-Z7eNsStP65JC4YKJD3Lg'
@@ -368,6 +371,7 @@ app.get('/:employer/sendemail/:id/:eid/:employeremail', isLoggedIn, function(req
     transport.sendMail({
         from: 'ACA Insurance Group  <noreply@acainsuresme.com>',
         to: req.params.employeremail,
+        cc: req.params.altemail,
         subject: 'ACA Insurance Employee Registration Link',
         html: '<p>Dear ' + req.params.employer + ',</p><p>Please forward the below link to your employees in order to register for ACA coverage:</p><p>' + req.protocol + '://' + req.get("host") + '/signup/' + req.params.id + '/' + req.params.eid + '</p><br/><p>Thank you,</p><p>ACA Insurance Group</p>'
     }, function(err, info) {
@@ -429,6 +433,9 @@ app.post('/update/employer/:employerid', isLoggedIn, function(req, res){
     var id = req.params.employerid;
     user.update({"_id" : a._id, "employer._id" : id},{$set : {
         "employer.$.empname": req.body.empname,
+        "employer.$.contact": req.body.contact,
+        "employer.$.altemail": req.body.altemail,
+        "employer.$.altcontact": req.body.altcontact,
         "employer.$.streetaddress": req.body.streetaddress,
         "employer.$.city": req.body.city,
         "employer.$.state": req.body.state,

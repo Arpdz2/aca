@@ -18,7 +18,7 @@ img#close {
 div#popupContact {
     position:absolute;
     left:45%;
-    top:17%;
+    top:5%;
     margin-left:-202px;
     font-family:'Raleway',sans-serif
     z-index: 1001;
