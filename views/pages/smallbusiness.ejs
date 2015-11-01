@@ -30,9 +30,10 @@
 <script>
     function switchToHttp()
     {
-        if (window.location.protocol == "https:")
+        if (window.location.protocol == "https:") {
             window.location.href = "http:" + window.location.href.substring(window.location.protocol.length);
-        checkLoginSession();
+            checkLoginSession();
+        }
     else {
         checkLoginSession();
     }
