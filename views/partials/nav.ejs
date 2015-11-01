@@ -1,4 +1,11 @@
 <!-- header-10 -->
+<style>
+.dropdown {
+    position: relative;
+    top: -43px;
+    left: 87px;
+}
+</style>
 <header class="header-10">
     <div class="container">
         <div class="navbar col-sm-12" role="navigation">
@@ -13,7 +20,11 @@
                     <li><a href="/healthplan">Health Assurance Plan</a></li>
                     <li><a href="/contact">Contact Us</a></li>
                 <form class="navbar-form pull-left">
-                    <li><a id='status' class='' href=''></a></li>
+                    <a id='status' class='' href=''></a>
+                    <div class="dropdown" id="dropdown" style="display:none">
+                            <a class="btn btn-info btn-xs" href="/login"><b>Employee</b></a> <br>
+                            <a class="btn btn-info btn-xs" href="/agentlogin"><b>Agent</b></a>
+                    </div>
                 </form>
                 </ul>
             </div>

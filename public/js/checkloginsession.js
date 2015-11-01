@@ -14,9 +14,20 @@ function checkLoginSession() {
         else {
             document.getElementById("status").className ="btn btn-success";
             document.getElementById("status").innerHTML = "Login";
-            document.getElementById("status").href="/login";
+            document.getElementById("status").removeAttribute("href");
+            document.getElementById("status").onclick= addDropDown;
             console.log(document.cookie);
         }
+    }
+}
+
+function addDropDown(){
+    var style = document.getElementById("dropdown").style.display;
+    if (style == "block"){
+        document.getElementById("dropdown").style.display = 'none';
+    }
+    else {
+        document.getElementById("dropdown").style.display = 'block';
     }
 }
 
