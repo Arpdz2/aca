@@ -92,7 +92,7 @@ app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
                     fs.stat(result._id + 'stamp.pdf', function(err, exists) {
                         if (exists) {
                             clearInterval(refreshIntervalId3);
-                            spawn('cpdf', ['-stamp-on', result._id + 'stamp.pdf', './public/pdf/ClientInformation.pdf', '2', '-o', result._id + '.pdf']);
+                            spawn('cpdf', ['-stamp-on', result._id + 'stamp.pdf', './public/pdf/combinedpdf.pdf', '2', '-o', result._id + '.pdf']);
                         }
                     });
                 }, 1000);
@@ -105,7 +105,7 @@ app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
         var married = "Off";
         var spousefirst = result.spousefirstname;
         var spouselast = result.spouselastname;
-        var datetime = new Date();
+        var datetime = new Date().toDateString();
         if (result.maritalstatus == 'Single') {single = "Yes"; spousefirst = ""; spouselast = "";}
         if (result.maritalstatus == 'Married') {married = "Yes";}
         var data = fdf.generate({
@@ -566,6 +566,8 @@ app.get('/information', function(req,res){
 app.post('/information', function(req,res){
     if (req.session.employee && req.session.employee != null) {
         employee.findOne({_id: req.session.employee}, function (err, result) {
+            var birthdate = req.body.BirthDate.split("-");
+            var finalbirthdate = birthdate[1] + "/" + birthdate[2] + "/" + birthdate[0];
             if (req.body.signatureid) {result.signature = req.body.signatureid;}
             result.firstname = req.body.FirstName;
             result.lastname = req.body.LastName;
@@ -579,7 +581,7 @@ app.post('/information', function(req,res){
             result.state = req.body.State;
             result.zip = req.body.Zip;
             result.email = req.body.Email;
-            result.birthdate = req.body.BirthDate;
+            result.birthdate = finalbirthdate;
             result.coveragenumber = req.body.NumberofPeopleThatNeedCoverage;
             result.ss = req.body.PrimarySocialSecurity;
             result.save(function (err) {
