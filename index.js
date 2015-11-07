@@ -23,6 +23,7 @@ var express = require('express'),
     util = require('util');
     PDFDocument = require ('pdfkit');
     enforce = require('express-sslify');
+    utility = require('./routes/utility.js');
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -124,7 +125,7 @@ app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
             "State" : result.state,
             "Zip" : result.zip,
             "Email" : result.email,
-            "Birth date" : result.birthdate,
+            "Birth date" : utility.convertDate(result.birthdate),
             "Number of People" : result.coveragenumber,
             "Primary Social Security" : result.ss
         });
@@ -566,8 +567,6 @@ app.get('/information', function(req,res){
 app.post('/information', function(req,res){
     if (req.session.employee && req.session.employee != null) {
         employee.findOne({_id: req.session.employee}, function (err, result) {
-            var birthdate = req.body.BirthDate.split("-");
-            var finalbirthdate = birthdate[1] + "/" + birthdate[2] + "/" + birthdate[0];
             if (req.body.signatureid) {result.signature = req.body.signatureid;}
             result.firstname = req.body.FirstName;
             result.lastname = req.body.LastName;
@@ -581,7 +580,7 @@ app.post('/information', function(req,res){
             result.state = req.body.State;
             result.zip = req.body.Zip;
             result.email = req.body.Email;
-            result.birthdate = finalbirthdate;
+            result.birthdate = req.body.BirthDate;
             result.coveragenumber = req.body.NumberofPeopleThatNeedCoverage;
             result.ss = req.body.PrimarySocialSecurity;
             result.save(function (err) {
