@@ -54,8 +54,6 @@
                                 Vision Plan <br>
                                 <% } %>
                             <p>
-                                <% } %>
-                                <% }); %>
                         </div>
                     </div>
                     <!--<div class="col-sm-6">-->
@@ -244,40 +242,40 @@
                                     <h5 style="text-align:center;">Dependent 1</h5>
                                     <label for="Dependent1FirstName" class="col-sm-2 control-label">Dependent 1 First Name</label>
                                     <div class="col-sm-10">
-                                    <input class="form-control" id="Dependent1FirstName" name="Dependent1FirstName" type="text">
+                                    <input class="form-control" id="Dependent1FirstName" name="Dependent1FirstName" value="<%= employee.d1firstname %>" type="text">
                                 </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="Dependent1LastName" class="col-sm-2 control-label">Dependent 1 Last Name</label>
                                     <div class="col-sm-10">
-                                    <input class="form-control" id="Dependent1LastName" name="Dependent1LastName" type="text">
+                                    <input class="form-control" id="Dependent1LastName" name="Dependent1LastName" value="<%= employee.d1lastname %>" type="text">
                                 </div>
                                     </div>
                                 <div class="form-group">
                                     <label for="Dependent1BirthDate" class="col-sm-2 control-label">Dependent 1 Birth Date </label>
                                     <div class="col-sm-10">
-                                    <input class="form-control" id="Dependent1BirthDate" name="Dependent1BirthDate" type="date">
+                                    <input class="form-control" id="Dependent1BirthDate" name="Dependent1BirthDate" value="<%= employee.d1birthdate %>"type="date">
                                 </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="Dependent1SocialSecurity#"  class="col-sm-2 control-label">Dependent 1 Social Security #</label>
                                     <div class="col-sm-10">
-                                    <input class="form-control" pattern="\d{3}-\d{2}-\d{4}" placeholder= "###-##-####" id="Dependent1SocialSecurity#" name="Dependent1SocialSecurity#" type="text">
+                                    <input class="form-control" pattern="\d{3}-\d{2}-\d{4}" placeholder= "###-##-####" id="Dependent1SocialSecurity#" value="<%= employee.d1ss %>" name="Dependent1SocialSecurity" type="text">
                                 </div>
                                 </div>
                                 <div class="form-group">
                                     <fieldset>
                                         <label for="Dependent1Gender"  class="col-sm-2 control-label">Dependent 1 Gender</label>
                                         <div class="col-sm-10">
-                                        <span><input value="Male" id="Dependent1Gender" name="Dependent1Gender" type="radio"> <label for="Dependent1Gender">Male</label></span>
-                                        <span><input value="Female" id="Dependent1Gender" name="Dependent1Gender" type="radio"> <label for="Dependent1Gender">Female</label></span>
+                                        <span><input value="Male" id="Dependent1Gender" <%= (employee.d1gender == 'Male')?'checked="checked"':'' %> name="Dependent1Gender" type="radio"> <label for="Dependent1Gender">Male</label></span>
+                                        <span><input value="Female" id="Dependent1Gender" <%= (employee.d1gender == 'Female')?'checked="checked"':'' %> name="Dependent1Gender" type="radio"> <label for="Dependent1Gender">Female</label></span>
                                         </div>
                                     </fieldset>
                                 </div>
                                 <div class="form-group">
                                     <span><label for="Dependent1NeedsCoverage" class="col-sm-2 control-label">Dependent 1 Needs Coverage</label></span>
                                     <div class="col-sm-10">
-                                    <input  id="Dependent1NeedsCoverage" name="Dependent1NeedsCoverage" type="checkbox">
+                                    <input  id="Dependent1NeedsCoverage" name="Dependent1NeedsCoverage" <%= (employee.d1coverage == 'on')?'checked="checked"':'' %> type="checkbox">
                                 </div>
                                     </div>
                             </div>
@@ -287,40 +285,40 @@
                                     <h5 style="text-align:center;">Dependent 2</h5>
                                     <label for="Dependent2FirstName" class="col-sm-2 control-label">Dependent 2 First Name</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" id="Dependent2FirstName" name="Dependent2FirstName" type="text">
+                                        <input class="form-control" id="Dependent2FirstName" value="<%= employee.d2firstname %>" name="Dependent2FirstName" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="Dependent2LastName" class="col-sm-2 control-label">Dependent 2 Last Name</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" id="Dependent2LastName" name="Dependent2LastName" type="text">
+                                        <input class="form-control" id="Dependent2LastName" value="<%= employee.d2lastname %>" name="Dependent2LastName" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="Dependent2BirthDate" class="col-sm-2 control-label">Dependent 2 Birth Date </label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" id="Dependent2BirthDate" name="Dependent2BirthDate" type="date">
+                                        <input class="form-control" id="Dependent2BirthDate" value="<%= employee.d2birthdate %>" name="Dependent2BirthDate" type="date">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="Dependent2SocialSecurity#"  class="col-sm-2 control-label">Dependent 2 Social Security #</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" pattern="\d{3}-\d{2}-\d{4}" placeholder= "###-##-####" id="Dependent2SocialSecurity#" name="Dependent2SocialSecurity#" type="text">
+                                        <input class="form-control" pattern="\d{3}-\d{2}-\d{4}" placeholder= "###-##-####" id="Dependent2SocialSecurity#" value="<%= employee.d2ss %>" name="Dependent2SocialSecurity" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <fieldset>
                                         <label for="Dependent2Gender"  class="col-sm-2 control-label">Dependent 2 Gender</label>
                                         <div class="col-sm-10">
-                                            <span><input value="Male" id="Dependent2Gender" name="Dependent2Gender" type="radio"> <label for="Dependent2Gender">Male</label></span>
-                                            <span><input value="Female" id="Dependent2Gender" name="Dependent2Gender" type="radio"> <label for="Dependent2Gender">Female</label></span>
+                                            <span><input value="Male" id="Dependent2Gender" <%= (employee.d2gender == 'Male')?'checked="checked"':'' %> name="Dependent2Gender" type="radio"> <label for="Dependent2Gender">Male</label></span>
+                                            <span><input value="Female" id="Dependent2Gender" <%= (employee.d2gender == 'Female')?'checked="checked"':'' %> name="Dependent2Gender" type="radio"> <label for="Dependent2Gender">Female</label></span>
                                         </div>
                                     </fieldset>
                                 </div>
                                 <div class="form-group">
                                     <span><label for="Dependent2NeedsCoverage" class="col-sm-2 control-label">Dependent 2 Needs Coverage</label></span>
                                     <div class="col-sm-10">
-                                        <input  id="Dependent2NeedsCoverage" name="Dependent2NeedsCoverage" type="checkbox">
+                                        <input  id="Dependent2NeedsCoverage" name="Dependent2NeedsCoverage" <%= (employee.d2coverage == 'on')?'checked="checked"':'' %> type="checkbox">
                                     </div>
                                 </div>
                             </div>
@@ -330,40 +328,40 @@
                                     <h5 style="text-align:center;">Dependent 3</h5>
                                     <label for="Dependent3FirstName" class="col-sm-2 control-label">Dependent 3 First Name</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" id="Dependent3FirstName" name="Dependent3FirstName" type="text">
+                                        <input class="form-control" id="Dependent3FirstName" value="<%= employee.d3firstname %>" name="Dependent3FirstName" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="Dependent3LastName" class="col-sm-2 control-label">Dependent 3 Last Name</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" id="Dependent3LastName" name="Dependent3LastName" type="text">
+                                        <input class="form-control" id="Dependent3LastName" value="<%= employee.d3lastname %>" name="Dependent3LastName" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="Dependent3BirthDate" class="col-sm-2 control-label">Dependent 3 Birth Date </label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" id="Dependent3BirthDate" name="Dependent3BirthDate" type="date">
+                                        <input class="form-control" id="Dependent3BirthDate" value="<%= employee.d3birthdate %>" name="Dependent3BirthDate" type="date">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="Dependent3SocialSecurity#"  class="col-sm-2 control-label">Dependent 3 Social Security #</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" pattern="\d{3}-\d{2}-\d{4}" placeholder= "###-##-####" id="Dependent3SocialSecurity#" name="Dependent3SocialSecurity#" type="text">
+                                        <input class="form-control" pattern="\d{3}-\d{2}-\d{4}" placeholder= "###-##-####" value="<%= employee.d3ss %>" id="Dependent3SocialSecurity#" name="Dependent3SocialSecurity" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <fieldset>
                                         <label for="Dependent3Gender"  class="col-sm-2 control-label">Dependent 3 Gender</label>
                                         <div class="col-sm-10">
-                                            <span><input value="Male" id="Dependent3Gender" name="Dependent3Gender" type="radio"> <label for="Dependent3Gender">Male</label></span>
-                                            <span><input value="Female" id="Dependent3Gender" name="Dependent3Gender" type="radio"> <label for="Dependent3Gender">Female</label></span>
+                                            <span><input value="Male" id="Dependent3Gender" <%= (employee.d3gender == 'Male')?'checked="checked"':'' %> name="Dependent3Gender" type="radio"> <label for="Dependent3Gender">Male</label></span>
+                                            <span><input value="Female" id="Dependent3Gender" <%= (employee.d3gender == 'Female')?'checked="checked"':'' %> name="Dependent3Gender" type="radio"> <label for="Dependent3Gender">Female</label></span>
                                         </div>
                                     </fieldset>
                                 </div>
                                 <div class="form-group">
                                     <span><label for="Dependent3NeedsCoverage" class="col-sm-2 control-label">Dependent 3 Needs Coverage</label></span>
                                     <div class="col-sm-10">
-                                        <input  id="Dependent3NeedsCoverage" name="Dependent3NeedsCoverage" type="checkbox">
+                                        <input  id="Dependent3NeedsCoverage" <%= (employee.d3coverage == 'on')?'checked="checked"':'' %> name="Dependent3NeedsCoverage" type="checkbox">
                                     </div>
                                 </div>
                             </div>
@@ -373,43 +371,49 @@
                                     <h5 style="text-align:center;">Dependent 4</h5>
                                     <label for="Dependent4FirstName" class="col-sm-2 control-label">Dependent 4 First Name</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" id="Dependent4FirstName" name="Dependent4FirstName" type="text">
+                                        <input class="form-control" id="Dependent4FirstName" value="<%= employee.d4firstname %>" name="Dependent4FirstName" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="Dependent4LastName" class="col-sm-2 control-label">Dependent 4 Last Name</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" id="Dependent4LastName" name="Dependent4LastName" type="text">
+                                        <input class="form-control" id="Dependent4LastName" value="<%= employee.d4lastname %>" name="Dependent4LastName" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="Dependent4BirthDate" class="col-sm-2 control-label">Dependent 4 Birth Date </label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" id="Dependent4BirthDate" name="Dependent4BirthDate" type="date">
+                                        <input class="form-control" id="Dependent4BirthDate" value="<%= employee.d4birthdate %>" name="Dependent4BirthDate" type="date">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="Dependent4SocialSecurity#"  class="col-sm-2 control-label">Dependent 4 Social Security #</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" pattern="\d{3}-\d{2}-\d{4}" placeholder= "###-##-####" id="Dependent4SocialSecurity#" name="Dependent4SocialSecurity#" type="text">
+                                        <input class="form-control" pattern="\d{3}-\d{2}-\d{4}" placeholder= "###-##-####" value="<%= employee.d4ss %>" id="Dependent4SocialSecurity#" name="Dependent4SocialSecurity" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <fieldset>
                                         <label for="Dependent4Gender"  class="col-sm-2 control-label">Dependent 4 Gender</label>
                                         <div class="col-sm-10">
-                                            <span><input value="Male" id="Dependent4Gender" name="Dependent4Gender" type="radio"> <label for="Dependent4Gender">Male</label></span>
-                                            <span><input value="Female" id="Dependent4Gender" name="Dependent4Gender" type="radio"> <label for="Dependent4Gender">Female</label></span>
+                                            <span><input value="Male" id="Dependent4Gender" <%= (employee.d4gender == 'Male')?'checked="checked"':'' %> name="Dependent4Gender" type="radio"> <label for="Dependent4Gender">Male</label></span>
+                                            <span><input value="Female" id="Dependent4Gender" <%= (employee.d4gender == 'Female')?'checked="checked"':'' %> name="Dependent4Gender" type="radio"> <label for="Dependent4Gender">Female</label></span>
                                         </div>
                                     </fieldset>
                                 </div>
                                 <div class="form-group">
                                     <span><label for="Dependent4NeedsCoverage" class="col-sm-2 control-label">Dependent 4 Needs Coverage</label></span>
                                     <div class="col-sm-10">
-                                        <input  id="Dependent4NeedsCoverage" name="Dependent4NeedsCoverage" type="checkbox">
+                                        <input  id="Dependent4NeedsCoverage" <%= (employee.d4coverage == 'on')?'checked="checked"':'' %> name="Dependent4NeedsCoverage" type="checkbox">
                                     </div>
                                 </div>
                             </div>
+                                <div class="form-group">
+                                    <label for="employer"  class="col-sm-2 control-label">Employer</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="employer" name="employer" type="text" value="<%= employer.empname %>" readonly>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label for="signatureid"  class="col-sm-2 control-label">SignatureId</label>
                                     <div class="col-sm-10">
@@ -429,6 +433,8 @@
                 </div>
             </div>
         </div>
+        <% } %>
+        <% }); %>
         <% include ../partials/footer.ejs %>
         <script>
         function savedSignature()

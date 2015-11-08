@@ -6,6 +6,7 @@ var bcrypt   = require('bcrypt-nodejs');
 var employeeSchema = mongoose.Schema({
         agentid: String,
         employerid: String,
+        employername: String,
         email: String,
         password: String,
         passwordIsExpired: String,
@@ -24,7 +25,31 @@ var employeeSchema = mongoose.Schema({
         coveragenumber: String,
         ss: String,
         signature: String,
-        gender: String
+        gender: String,
+        d1firstname: String,
+        d1lastname: String,
+        d1birthdate: String,
+        d1ss: String,
+        d1gender: String,
+        d1coverage: String,
+        d2firstname: String,
+        d2lastname: String,
+        d2birthdate: String,
+        d2ss: String,
+        d2gender: String,
+        d2coverage: String,
+        d3firstname: String,
+        d3lastname: String,
+        d3birthdate: String,
+        d3ss: String,
+        d3gender: String,
+        d3coverage: String,
+        d4firstname: String,
+        d4lastname: String,
+        d4birthdate: String,
+        d4ss: String,
+        d4gender: String,
+        d4coverage: String
 });
 
 employeeSchema.index(
