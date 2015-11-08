@@ -19,6 +19,9 @@
             #loading{
                 text-align: center;
             }
+            #info {
+                text-align: center;
+            }
         </style>
 
     </head>
@@ -31,9 +34,9 @@
                     <h1><span class="fa fa-anchor"></span> Profile Page</h1>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6">
-                        <div class="well">
-                            <%= employee.email%> <br>
+                    <!--<div class="col-sm-6">-->
+                        <div id= "info" class="well">
+                            <h4><%= employee.email%> <br></h4>
                             <p>
                                 Your coverage: <br>
                                 <% user.employer.forEach(function(employer) { %>
@@ -55,68 +58,95 @@
                                 <% }); %>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <!--<div class="col-sm-6">-->
+
                         <div class="well">
-                            <form method="post">
-                                <div class="row requiredRow">
-                                    <h5>Primary</h5>
-                                    <label for="FirstName">First Name</label>
-                                    <input id="FirstName" name="FirstName" type="text" class="required" title="First Name" placeholder="First Name" value="<%= employee.firstname %>"required>
+                            <form class="form-horizontal" method="post">
+                                <div class="row" style="margin: auto;">
+                                    <input type="submit" value="Save">
                                 </div>
-                                <div class="row requiredRow">
-                                    <label for="LastName">Last Name</label>
-                                    <input id="LastName" name="LastName" type="text" class="required" title="Last Name" placeholder="Last Name" value="<%= employee.lastname %>"required>
+                                <div class="form-group">
+                                <h5 style="text-align:center;">Primary</h5>
+                                    <label for="FirstName"  class="col-sm-2 control-label">First Name</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="FirstName" name="FirstName" type="text" class="required" title="First Name" placeholder="First Name" value="<%= employee.firstname %>"required>
                                 </div>
-                                <div class="row requiredRow">
+                                </div>
+                                <div class="form-group">
+                                    <label for="LastName"  class="col-sm-2 control-label">Last Name</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control"  id="LastName" name="LastName" type="text" class="required" title="Last Name" placeholder="Last Name" value="<%= employee.lastname %>"required>
+                                </div>
+                                </div>
+                                <div class="form-group">
                                     <% if (employee.maritalstatus == "Single") { %>
                                     <fieldset>
-                                        Marital Status &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <div class="col-sm-12">
+                                        <label for="MaritalStatus"  class="col-sm-2 control-label"> Marital Status</label>
                                         <span><input value="Single" id="MaritalStatus_21" name="MaritalStatus" type="radio" class="required" title="Single" checked="checked" required> <label for="MaritalStatus_21">Single</label></span>
                                         <span><input value="Married" id="MaritalStatus_22" name="MaritalStatus" type="radio" class="required" title="Married" required> <label for="MaritalStatus_22">Married</label></span>
+                                        </div>
                                     </fieldset>
                                     <% } %>
                                     <% if (employee.maritalstatus == "Married") { %>
                                     <fieldset>
-                                        Marital Status &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <span><input value="Single" id="MaritalStatus_21" name="MaritalStatus" type="radio" class="required" title="Single"  required> <label for="MaritalStatus_21">Single</label></span>
-                                        <span><input value="Married" id="MaritalStatus_22" name="MaritalStatus" type="radio" class="required" title="Married" checked="checked" required> <label for="MaritalStatus_22">Married</label></span>
+                                        <div class="col-sm-12">
+                                        <label for="MaritalStatus"  class="col-sm-2 control-label">Marital Status</label>
+                                        <span><input  value="Single" id="MaritalStatus_21" name="MaritalStatus" type="radio" class="required" title="Single"  required> <label for="MaritalStatus_21">Single</label></span>
+                                        <span><input  value="Married" id="MaritalStatus_22" name="MaritalStatus" type="radio" class="required" title="Married" checked="checked" required> <label for="MaritalStatus_22">Married</label></span>
+                                        </div>
                                     </fieldset>
                                     <% } %>
                                     <% if (employee.maritalstatus == null) { %>
                                     <fieldset>
-                                        Marital Status &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <div class="col-sm-12">
+                                        <label for="MaritalStatus"  class="col-sm-2 control-label">Marital Status</label>
                                         <span><input value="Single" id="MaritalStatus_21" name="MaritalStatus" type="radio" class="required" title="Single"  required> <label for="MaritalStatus_21">Single</label></span>
                                         <span><input value="Married" id="MaritalStatus_22" name="MaritalStatus" type="radio" class="required" title="Married" required> <label for="MaritalStatus_22">Married</label></span>
+                                        </div>
                                     </fieldset>
                                     <% } %>
+                                    </div>
+                                <div class="form-group">
+                                    <label for="SpouseFirstName" class="col-sm-2 control-label">Spouse First Name</label>
+                                    <div class="col-sm-10">
+                                    <input  class="form-control" id="SpouseFirstName" name="SpouseFirstName" type="text" placeholder="First Name" value="<%= employee.spousefirstname %>">
                                 </div>
-                                <div class="row">
-                                    <label for="SpouseFirstName">Spouse First Name</label>
-                                    <input id="SpouseFirstName" name="SpouseFirstName" type="text" placeholder="First Name" value="<%= employee.spousefirstname %>">
+                                    </div>
+                                <div class="form-group">
+                                    <label for="SpouseLastName" class="col-sm-2 control-label">Spouse Last Name</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="SpouseLastName" name="SpouseLastName" type="text" placeholder="Last Name" value="<%= employee.spouselastname %>">
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <label for="SpouseLastName">Spouse Last Name</label>
-                                    <input id="SpouseLastName" name="SpouseLastName" type="text" placeholder="Last Name" value="<%= employee.spouselastname %>">
+                                <div class="form-group">
+                                    <label for="PhoneNumber" class="col-sm-2 control-label">Phone Number</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" pattern="\d{3}-\d{3}-\d{4}" id="PhoneNumber" name="PhoneNumber" type="tel" class="required" placeholder="###-###-####" value="<%= employee.phonenumber %>" required>
+                                    </div>
                                 </div>
-                                <div class="row requiredRow">
-                                    <label for="PhoneNumber">Phone Number</label>
-                                    <input id="PhoneNumber" name="PhoneNumber" type="tel" class="required" placeholder="Phone Number" value="<%= employee.phonenumber %>" required>
+                                <div class="form-group">
+                                    <label for="AlternatePhoneNumber" class="col-sm-2 control-label">Alternate Phone Number</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" pattern="\d{3}-\d{3}-\d{4}" id="AlternatePhoneNumber" name="AlternatePhoneNumber" type="tel" class="required" placeholder="###-###-####" value="<%= employee.altphonenumber %>" required>
                                 </div>
-                                <div class="row requiredRow">
-                                    <label for="AlternatePhoneNumber">Alternate Phone Number</label>
-                                    <input id="AlternatePhoneNumber" name="AlternatePhoneNumber" type="tel" class="required" placeholder="Alternate Phone Number" value="<%= employee.altphonenumber %>" required>
+                                    </div>
+                                <div class="form-group">
+                                    <label for="Address" class="col-sm-2 control-label">Address</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="Address" name="Address" type="text" class="required" title="Address" placeholder="Address" value="<%= employee.address %>" required>
                                 </div>
-                                <div class="row requiredRow">
-                                    <label for="Address">Address</label>
-                                    <input id="Address" name="Address" type="text" class="required" title="Address" placeholder="Address" value="<%= employee.address %>" required>
+                                    </div>
+                                <div class="form-group">
+                                    <label for="City" class="col-sm-2 control-label">City</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="City" name="City" type="text" class="required" title="City" placeholder="City" value="<%= employee.city %>" required>
                                 </div>
-                                <div class="row requiredRow">
-                                    <label for="City">City</label>
-                                    <input id="City" name="City" type="text" class="required" title="City" placeholder="City" value="<%= employee.city %>" required>
                                 </div>
-                                <div class="row requiredRow">
-                                    <label for="State">State</label>
-                                    <select id="State" name="State" class="required" title="State" onload="myFunction();" required>
+                                <div class="form-group">
+                                    <label for="State" class="col-sm-2 control-label">State</label>
+                                    <div class="col-sm-10">
+                                    <select class="form-control" id="State" name="State" class="required" title="State" onload="myFunction();" required>
                                         <option value="AL" <%= (employee.state == 'AL')?'selected':'' %> >AL </option>
                                         <option value="AK" <%= (employee.state == 'AK')?'selected':'' %> >AK </option>
                                         <option value="AZ" <%= (employee.state == 'AZ')?'selected':'' %> >AZ </option>
@@ -169,151 +199,210 @@
                                         <option value="WY" <%= (employee.state == 'WY')?'selected':'' %> >WY</option>
                                     </select>
                                 </div>
-                                <div class="row requiredRow">
-                                    <label for="Zip">Zip</label>
-                                    <input id="Zip" name="Zip" type="text" class="required" title="Zip" placeholder="Zip" value="<%= employee.zip %>" required>
                                 </div>
-                                <div class="row requiredRow">
-                                    <label for="Email">Email</label>
-                                    <input id="Email" name="Email" type="email" class="required" title="Email" placeholder="Email" value="<%= employee.email %>" required>
+                                <div class="form-group">
+                                    <label for="Zip" class="col-sm-2 control-label">Zip</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="Zip" name="Zip" type="text" pattern="\d{5}-?(\d{4})?" class="required" title="Zip" placeholder="##### or #####-####" value="<%= employee.zip %>" required>
                                 </div>
-                                <div class="row requiredRow">
-                                    <label for="BirthDate">Birth Date</label>
-                                    <input id="BirthDate" name="BirthDate" type="date" class="required" title="Birth Date" value="<%= employee.birthdate %>" required>
                                 </div>
-                                <div class="row requiredRow">
-                                    <label for="NumberofPeopleThatNeedCoverage">Number of People That Need Coverage</label>
-                                    <input id="NumberofPeopleThatNeedCoverage" name="NumberofPeopleThatNeedCoverage" type="number" class="required" title="Number of People That Need Coverage" placeholder="0" value="<%= employee.coveragenumber %>"required>
+                                <div class="form-group">
+                                    <label for="Email" class="col-sm-2 control-label">Email</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="Email" name="Email" type="email" class="required" title="Email" placeholder="Email" value="<%= employee.email %>" required>
                                 </div>
-                                <div class="row requiredRow">
-                                    <label for="PrimarySocialSecurity">Primary Social Security #</label>
-                                    <input id="PrimarySocialSecurity" name="PrimarySocialSecurity" type="text" class="required" title="Primary Social Security #" placeholder="SS#" value="<%= employee.ss %>"required>
+                                    </div>
+                                <div class="form-group">
+                                    <label for="BirthDate" class="col-sm-2 control-label">Birth Date</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="BirthDate" name="BirthDate" type="date" class="required" title="Birth Date" value="<%= employee.birthdate %>" required>
                                 </div>
-                                <div class="row">
-                                    <h5>Dependent 1</h5>
-                                    <label for="Dependent1FirstName">Dependent 1 First Name</label>
-                                    <input id="Dependent1FirstName" name="Dependent1FirstName" type="text">
                                 </div>
-                                <div class="row">
-                                    <label for="Dependent1LastName">Dependent 1 Last Name</label>
-                                    <input id="Dependent1LastName" name="Dependent1LastName" type="text">
+                                <div class="form-group">
+                                    <label for="NumberofPeopleThatNeedCoverage" class="col-sm-2 control-label">Number of People That Need Coverage</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="NumberofPeopleThatNeedCoverage" name="NumberofPeopleThatNeedCoverage" type="number" class="required" title="Number of People That Need Coverage" placeholder="0" value="<%= employee.coveragenumber %>"required>
                                 </div>
-                                <div class="row">
-                                    <label for="Dependent1BirthDate">Dependent 1 Birth Date </label>
-                                    <input id="Dependent1BirthDate" name="Dependent1BirthDate" type="date">
                                 </div>
-                                <div class="row">
-                                    <label for="Dependent1SocialSecurity#">Dependent 1 Social Security #</label>
-                                    <input id="Dependent1SocialSecurity#" name="Dependent1SocialSecurity#" type="text">
+                                    <div class="form-group">
+                                    <label for="PrimarySocialSecurity" class="col-sm-2 control-label">Primary Social Security #</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="PrimarySocialSecurity" pattern="\d{3}-\d{2}-\d{4}" name="PrimarySocialSecurity" type="text" class="required" title="Primary Social Security #" placeholder="###-##-####" value="<%= employee.ss %>"required>
                                 </div>
-                                <div class="row">
+                                    </div>
+                                <div class="form-group">
+                                    <h5 style="text-align:center;">Dependent 1</h5>
+                                    <label for="Dependent1FirstName" class="col-sm-2 control-label">Dependent 1 First Name</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="Dependent1FirstName" name="Dependent1FirstName" type="text">
+                                </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Dependent1LastName" class="col-sm-2 control-label">Dependent 1 Last Name</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="Dependent1LastName" name="Dependent1LastName" type="text">
+                                </div>
+                                    </div>
+                                <div class="form-group">
+                                    <label for="Dependent1BirthDate" class="col-sm-2 control-label">Dependent 1 Birth Date </label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="Dependent1BirthDate" name="Dependent1BirthDate" type="date">
+                                </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Dependent1SocialSecurity#"  class="col-sm-2 control-label">Dependent 1 Social Security #</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" pattern="\d{3}-\d{2}-\d{4}" placeholder= "###-##-####" id="Dependent1SocialSecurity#" name="Dependent1SocialSecurity#" type="text">
+                                </div>
+                                </div>
+                                <div class="form-group">
                                     <fieldset>
-                                        Dependent 1 Gender&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <span><input value="Male" id="Dependent1Gender_23" name="Dependent1Gender" type="radio"> <label for="Dependent1Gender_23">Male</label></span>
-                                        <span><input value="Female" id="Dependent1Gender_24" name="Dependent1Gender" type="radio"> <label for="Dependent1Gender_24">Female</label></span>
+                                        <label for="Dependent1SocialSecurity#"  class="col-sm-2 control-label">Dependent 1 Gender</label>
+                                        <div class="col-sm-10">
+                                        <span><input value="Male" id="Dependent1Gender" name="Dependent1Gender" type="radio"> <label for="Dependent1Gender">Male</label></span>
+                                        <span><input value="Female" id="Dependent1Gender" name="Dependent1Gender" type="radio"> <label for="Dependent1Gender">Female</label></span>
+                                        </div>
                                     </fieldset>
                                 </div>
-                                <div class="row">
-                                    <input id="Dependent1NeedsCoverage" name="Dependent1NeedsCoverage" type="checkbox">
-                                    <span><label for="Dependent1NeedsCoverage">Dependent 1 Needs Coverage</label></span>
+                                <div class="form-group">
+                                    <span><label for="Dependent1NeedsCoverage" class="col-sm-2 control-label">Dependent 1 Needs Coverage</label></span>
+                                    <div class="col-sm-10">
+                                    <input  id="Dependent1NeedsCoverage" name="Dependent1NeedsCoverage" type="checkbox">
                                 </div>
-                                <div class="row">
-                                    <h5>Dependent 2</h5>
-                                    <label for="Dependent2FirstName">Dependent 2 First Name</label>
-                                    <input id="Dependent2FirstName" name="Dependent2FirstName" type="text">
+                                    </div>
+                                <div class="form-group">
+                                    <h5 style="text-align:center;">Dependent 2</h5>
+                                    <label for="Dependent2FirstName" class="col-sm-2 control-label">Dependent 2 First Name</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="Dependent2FirstName" name="Dependent2FirstName" type="text">
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <label for="Dependent2LastName">Dependent 2 Last Name</label>
-                                    <input id="Dependent2LastName" name="Dependent2LastName" type="text">
+                                <div class="form-group">
+                                    <label for="Dependent2LastName" class="col-sm-2 control-label">Dependent 2 Last Name</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="Dependent2LastName" name="Dependent2LastName" type="text">
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <label for="Dependent2BirthDate">Dependent 2 Birth Date </label>
-                                    <input id="Dependent2BirthDate" name="Dependent2BirthDate" type="date">
+                                <div class="form-group">
+                                    <label for="Dependent2BirthDate" class="col-sm-2 control-label">Dependent 2 Birth Date </label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="Dependent2BirthDate" name="Dependent2BirthDate" type="date">
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <label for="Dependent2SocialSecurity#">Dependent 2 Social Security #</label>
-                                    <input id="Dependent2SocialSecurity#" name="Dependent2SocialSecurity#" type="text">
+                                <div class="form-group">
+                                    <label for="Dependent2SocialSecurity#"  class="col-sm-2 control-label">Dependent 2 Social Security #</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" pattern="\d{3}-\d{2}-\d{4}" placeholder= "###-##-####" id="Dependent2SocialSecurity#" name="Dependent2SocialSecurity#" type="text">
+                                    </div>
                                 </div>
-                                <div class="row">
+                                <div class="form-group">
                                     <fieldset>
-                                        Dependent 2 Gender&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <span><input value="Male" id="Dependent2Gender_25" name="Dependent2Gender" type="radio"> <label for="Dependent2Gender_25">Male</label></span>
-                                        <span><input value="Female" id="Dependent2Gender_26" name="Dependent2Gender" type="radio"> <label for="Dependent2Gender_26">Female</label></span>
+                                        <label for="Dependent2SocialSecurity#"  class="col-sm-2 control-label">Dependent 2 Gender</label>
+                                        <div class="col-sm-10">
+                                            <span><input value="Male" id="Dependent2Gender" name="Dependent2Gender" type="radio"> <label for="Dependent2Gender">Male</label></span>
+                                            <span><input value="Female" id="Dependent2Gender" name="Dependent2Gender" type="radio"> <label for="Dependent2Gender">Female</label></span>
+                                        </div>
                                     </fieldset>
                                 </div>
-                                <div class="row">
-                                    <input id="Dependent2NeedsCoverage" name="Dependent2NeedsCoverage" type="checkbox">
-                                    <span><label for="Dependent2NeedsCoverage">Dependent 2 Needs Coverage</label></span>
+                                <div class="form-group">
+                                    <span><label for="Dependent2NeedsCoverage" class="col-sm-2 control-label">Dependent 2 Needs Coverage</label></span>
+                                    <div class="col-sm-10">
+                                        <input  id="Dependent2NeedsCoverage" name="Dependent2NeedsCoverage" type="checkbox">
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <h5>Dependent 3</h5>
-                                    <label for="Dependent3FirstName">Dependent 3 First Name</label>
-                                    <input id="Dependent3FirstName" name="Dependent3FirstName" type="text">
+                                <div class="form-group">
+                                    <h5 style="text-align:center;">Dependent 3</h5>
+                                    <label for="Dependent3FirstName" class="col-sm-2 control-label">Dependent 3 First Name</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="Dependent3FirstName" name="Dependent3FirstName" type="text">
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <label for="Dependent3LastName">Dependent 3 Last Name</label>
-                                    <input id="Dependent3LastName" name="Dependent3LastName" type="text">
+                                <div class="form-group">
+                                    <label for="Dependent3LastName" class="col-sm-2 control-label">Dependent 3 Last Name</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="Dependent3LastName" name="Dependent3LastName" type="text">
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <label for="Dependent3BirthDate">Dependent 3 Birth Date </label>
-                                    <input id="Dependent3BirthDate" name="Dependent3BirthDate" type="date">
+                                <div class="form-group">
+                                    <label for="Dependent3BirthDate" class="col-sm-2 control-label">Dependent 3 Birth Date </label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="Dependent3BirthDate" name="Dependent3BirthDate" type="date">
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <label for="Dependent3SocialSecurity#">Dependent 3 Social Security #</label>
-                                    <input id="Dependent3SocialSecurity#" name="Dependent3SocialSecurity#" type="text">
+                                <div class="form-group">
+                                    <label for="Dependent3SocialSecurity#"  class="col-sm-2 control-label">Dependent 3 Social Security #</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" pattern="\d{3}-\d{2}-\d{4}" placeholder= "###-##-####" id="Dependent3SocialSecurity#" name="Dependent3SocialSecurity#" type="text">
+                                    </div>
                                 </div>
-                                <div class="row">
+                                <div class="form-group">
                                     <fieldset>
-                                        Dependent 3 Gender&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <span><input value="Male" id="Dependent3Gender_27" name="Dependent3Gender" type="radio"> <label for="Dependent3Gender_27">Male</label></span>
-                                        <span><input value="Female" id="Dependent3Gender_28" name="Dependent3Gender" type="radio"> <label for="Dependent3Gender_28">Female</label></span>
+                                        <label for="Dependent3SocialSecurity#"  class="col-sm-2 control-label">Dependent 3 Gender</label>
+                                        <div class="col-sm-10">
+                                            <span><input value="Male" id="Dependent3Gender" name="Dependent3Gender" type="radio"> <label for="Dependent3Gender">Male</label></span>
+                                            <span><input value="Female" id="Dependent3Gender" name="Dependent3Gender" type="radio"> <label for="Dependent3Gender">Female</label></span>
+                                        </div>
                                     </fieldset>
                                 </div>
-                                <div class="row">
-                                    <input id="Dependent3NeedsCoverage" name="Dependent3NeedsCoverage" type="checkbox">
-                                    <span><label for="Dependent3NeedsCoverage">Dependent 3 Needs Coverage</label></span>
+                                <div class="form-group">
+                                    <span><label for="Dependent3NeedsCoverage" class="col-sm-2 control-label">Dependent 3 Needs Coverage</label></span>
+                                    <div class="col-sm-10">
+                                        <input  id="Dependent3NeedsCoverage" name="Dependent3NeedsCoverage" type="checkbox">
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <h5>Dependent 4</h5>
-                                    <label for="Dependent4FirstName">Dependent 4 First Name</label>
-                                    <input id="Dependent4FirstName" name="Dependent4FirstName" type="text">
+                                <div class="form-group">
+                                    <h5 style="text-align:center;">Dependent 4</h5>
+                                    <label for="Dependent4FirstName" class="col-sm-2 control-label">Dependent 4 First Name</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="Dependent4FirstName" name="Dependent4FirstName" type="text">
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <label for="Dependent4LastName">Dependent 4 Last Name</label>
-                                    <input id="Dependent4LastName" name="Dependent4LastName" type="text">
+                                <div class="form-group">
+                                    <label for="Dependent4LastName" class="col-sm-2 control-label">Dependent 4 Last Name</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="Dependent4LastName" name="Dependent4LastName" type="text">
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <label for="Dependent4BirthDate">Dependent 4 Birth Date </label>
-                                    <input id="Dependent4BirthDate" name="Dependent4BirthDate" type="date">
+                                <div class="form-group">
+                                    <label for="Dependent4BirthDate" class="col-sm-2 control-label">Dependent 4 Birth Date </label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="Dependent4BirthDate" name="Dependent4BirthDate" type="date">
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <label for="Dependent4SocialSecurity#">Dependent 4 Social Security #</label>
-                                    <input id="Dependent4SocialSecurity#" name="Dependent4SocialSecurity#" type="text">
+                                <div class="form-group">
+                                    <label for="Dependent4SocialSecurity#"  class="col-sm-2 control-label">Dependent 4 Social Security #</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" pattern="\d{3}-\d{2}-\d{4}" placeholder= "###-##-####" id="Dependent4SocialSecurity#" name="Dependent4SocialSecurity#" type="text">
+                                    </div>
                                 </div>
-                                <div class="row">
+                                <div class="form-group">
                                     <fieldset>
-                                        Dependent 4 Gender&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <span><input value="Male" id="Dependent4Gender_29" name="Dependent4Gender" type="radio"> <label for="Dependent4Gender_29">Male</label></span>
-                                        <span><input value="Female" id="Dependent4Gender_30" name="Dependent4Gender" type="radio"> <label for="Dependent4Gender_30">Female</label></span>
+                                        <label for="Dependent4SocialSecurity#"  class="col-sm-2 control-label">Dependent 4 Gender</label>
+                                        <div class="col-sm-10">
+                                            <span><input value="Male" id="Dependent4Gender" name="Dependent4Gender" type="radio"> <label for="Dependent4Gender">Male</label></span>
+                                            <span><input value="Female" id="Dependent4Gender" name="Dependent4Gender" type="radio"> <label for="Dependent4Gender">Female</label></span>
+                                        </div>
                                     </fieldset>
                                 </div>
-                                <div class="row">
-                                    <input id="Dependent4NeedsCoverage" name="Dependent4NeedsCoverage" type="checkbox">
-                                    <span><label for="Dependent4NeedsCoverage">Dependent 4 Needs Coverage</label></span>
+                                <div class="form-group">
+                                    <span><label for="Dependent4NeedsCoverage" class="col-sm-2 control-label">Dependent 4 Needs Coverage</label></span>
+                                    <div class="col-sm-10">
+                                        <input  id="Dependent4NeedsCoverage" name="Dependent4NeedsCoverage" type="checkbox">
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <label for="FirstName">SignatureId</label>
-                                    <input id="signatureid" name="signatureid" type="text" value="<%= employee.signature %>" readonly>
+                                <div class="form-group">
+                                    <label for="signatureid"  class="col-sm-2 control-label">SignatureId</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="signatureid" name="signatureid" type="text" value="<%= employee.signature %>" readonly>
                                 </div>
-                                <div class="row">
-                                    <div id="signature_container"><canvas data-processing-sources="signature.pde" id="signature"></canvas></div>
+                                    </div>
+                                <div class="row" style="text-align: center;">
+                                    <div id="signature_container"><canvas style="margin-left: auto; margin-right: auto;" data-processing-sources="signature.pde" id="signature"></canvas></div>
                                     <script src="//cdnjs.cloudflare.com/ajax/libs/processing.js/1.4.8/processing.min.js"></script>
                                 </div>
-
-                                <div class="row">
+                                <div class="row" style="margin: auto;">
                                     <input type="submit" value="Save">
                                 </div>
-
                             </form>
                         </div>
                     </div>

@@ -220,7 +220,7 @@ if (tap == true)
 	var img = document.getElementById(image_id);
 	img.style.display = 'block';
 	img.setAttribute('src', document.getElementById('signature').toDataURL());
-
+	img.style.margin = "0 auto";
 	var canvas = document.getElementById(canvas_id);
 	canvas.style.display = 'none';
 	}
