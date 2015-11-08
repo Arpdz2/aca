@@ -7,6 +7,7 @@ var employeeSchema = mongoose.Schema({
         agentid: String,
         employerid: String,
         employername: String,
+        employerphone: String,
         email: String,
         password: String,
         passwordIsExpired: String,
@@ -49,7 +50,19 @@ var employeeSchema = mongoose.Schema({
         d4birthdate: String,
         d4ss: String,
         d4gender: String,
-        d4coverage: String
+        d4coverage: String,
+        income: String,
+        physician: String,
+        physicianspecialty: String,
+        ailment1: String,
+        ailment2: String,
+        ailment3: String,
+        prescription1: String,
+        prescription2: String,
+        prescription3: String,
+        dosage1: String,
+        dosage2: String,
+        dosage3: String
 });
 
 employeeSchema.index(

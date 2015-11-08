@@ -24,6 +24,7 @@ var express = require('express'),
     PDFDocument = require ('pdfkit');
     enforce = require('express-sslify');
     utility = require('./routes/utility.js');
+    fdfgenerator = require('./routes/fdfdata.js')
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -102,34 +103,7 @@ app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
         else {
             res.redirect(req.get('referer'));
         }
-        var single = "Off";
-        var married = "Off";
-        var spousefirst = result.spousefirstname;
-        var spouselast = result.spouselastname;
-        var datetime = new Date().toDateString();
-        if (result.maritalstatus == 'Single') {single = "Yes"; spousefirst = ""; spouselast = "";}
-        if (result.maritalstatus == 'Married') {married = "Yes";}
-        var data = fdf.generate({
-            "first name": result.firstname,
-            "last name": result.lastname,
-            "agent_id": result.agentid,
-            "Agent Date": datetime,
-            "single" : single,
-            "married" : married,
-            "spousefirstname" : spousefirst,
-            "spouselastname" : spouselast,
-            "Phone" : result.phonenumber,
-            "ALT" : result.altphonenumber,
-            "Address" : result.address,
-            "City" : result.city,
-            "State" : result.state,
-            "Zip" : result.zip,
-            "Email" : result.email,
-            "Birth date" : utility.convertDate(result.birthdate),
-            "Number of People" : result.coveragenumber,
-            "Primary Social Security" : result.ss
-        });
-
+        var data = fdfgenerator.generate(result);
         fs.writeFile(result._id + '.fdf', data, function (err) {
         });
         var refreshIntervalId2 = setInterval(function() {
@@ -609,6 +583,19 @@ app.post('/information', function(req,res){
             result.d4gender = req.body.Dependent4Gender;
             result.d4coverage = req.body.Dependent4NeedsCoverage;
             result.employername = req.body.employer;
+            result.employerphone = req.body.employerphone;
+            result.income = req.body.income;
+            result.physician = req.body.physician;
+            result.physicianspecialty = req.body.physicianspecialty;
+            result.ailment1 = req.body.ailment1;
+            result.ailment2 = req.body.ailment2;
+            result.ailment3 = req.body.ailment3;
+            result.prescription1 = req.body.prescription1;
+            result.prescription2 = req.body.prescription2;
+            result.prescription3 = req.body.prescription3;
+            result.dosage1 = req.body.dosage1;
+            result.dosage2 = req.body.dosage2;
+            result.dosage3 = req.body.dosage3;
             result.save(function (err) {
                 res.redirect('/information');
             });
