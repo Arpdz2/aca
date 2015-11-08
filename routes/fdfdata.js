@@ -1,5 +1,5 @@
 var fdf = require('fdf')
-utility = require('./routes/utility.js');
+utility = require('./utility.js');
 
 exports.generate = function(result) {
     var single = "Off";
