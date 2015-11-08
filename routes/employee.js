@@ -23,7 +23,8 @@ var employeeSchema = mongoose.Schema({
         birthdate: String,
         coveragenumber: String,
         ss: String,
-        signature: String
+        signature: String,
+        gender: String
 });
 
 employeeSchema.index(

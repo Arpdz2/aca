@@ -79,6 +79,15 @@
                                 </div>
                                 </div>
                                 <div class="form-group">
+                                    <fieldset>
+                                        <label for="GenderPrimary"  class="col-sm-2 control-label">Gender</label>
+                                        <div class="col-sm-10">
+                                            <span><input value="Male" id="Gender" name="Gender" type="radio" <%= (employee.gender == 'Male')?'checked="checked"':'' %>> <label for="GenderPrimary">Male</label></span>
+                                            <span><input value="Female" id="Gender" name="Gender" type="radio" <%= (employee.gender == 'Female')?'checked="checked"':'' %>> <label for="GenderPrimary">Female</label></span>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="form-group">
                                     <% if (employee.maritalstatus == "Single") { %>
                                     <fieldset>
                                         <div class="col-sm-12">
@@ -230,6 +239,7 @@
                                     <input class="form-control" id="PrimarySocialSecurity" pattern="\d{3}-\d{2}-\d{4}" name="PrimarySocialSecurity" type="text" class="required" title="Primary Social Security #" placeholder="###-##-####" value="<%= employee.ss %>"required>
                                 </div>
                                     </div>
+                            <div id="Dependent1div">
                                 <div class="form-group">
                                     <h5 style="text-align:center;">Dependent 1</h5>
                                     <label for="Dependent1FirstName" class="col-sm-2 control-label">Dependent 1 First Name</label>
@@ -257,7 +267,7 @@
                                 </div>
                                 <div class="form-group">
                                     <fieldset>
-                                        <label for="Dependent1SocialSecurity#"  class="col-sm-2 control-label">Dependent 1 Gender</label>
+                                        <label for="Dependent1Gender"  class="col-sm-2 control-label">Dependent 1 Gender</label>
                                         <div class="col-sm-10">
                                         <span><input value="Male" id="Dependent1Gender" name="Dependent1Gender" type="radio"> <label for="Dependent1Gender">Male</label></span>
                                         <span><input value="Female" id="Dependent1Gender" name="Dependent1Gender" type="radio"> <label for="Dependent1Gender">Female</label></span>
@@ -270,6 +280,9 @@
                                     <input  id="Dependent1NeedsCoverage" name="Dependent1NeedsCoverage" type="checkbox">
                                 </div>
                                     </div>
+                            </div>
+                                <input type="button" id="dependent2button" value="add/show next dependent" onclick="showDependent2()" />
+                            <div id="Dependent2div" style="display: none">
                                 <div class="form-group">
                                     <h5 style="text-align:center;">Dependent 2</h5>
                                     <label for="Dependent2FirstName" class="col-sm-2 control-label">Dependent 2 First Name</label>
@@ -297,7 +310,7 @@
                                 </div>
                                 <div class="form-group">
                                     <fieldset>
-                                        <label for="Dependent2SocialSecurity#"  class="col-sm-2 control-label">Dependent 2 Gender</label>
+                                        <label for="Dependent2Gender"  class="col-sm-2 control-label">Dependent 2 Gender</label>
                                         <div class="col-sm-10">
                                             <span><input value="Male" id="Dependent2Gender" name="Dependent2Gender" type="radio"> <label for="Dependent2Gender">Male</label></span>
                                             <span><input value="Female" id="Dependent2Gender" name="Dependent2Gender" type="radio"> <label for="Dependent2Gender">Female</label></span>
@@ -310,6 +323,9 @@
                                         <input  id="Dependent2NeedsCoverage" name="Dependent2NeedsCoverage" type="checkbox">
                                     </div>
                                 </div>
+                            </div>
+                                <input type="button" id="dependent3button" value="add/show next dependent" style="display: none" onclick="showDependent3()" />
+                            <div id="Dependent3div" style="display: none">
                                 <div class="form-group">
                                     <h5 style="text-align:center;">Dependent 3</h5>
                                     <label for="Dependent3FirstName" class="col-sm-2 control-label">Dependent 3 First Name</label>
@@ -337,7 +353,7 @@
                                 </div>
                                 <div class="form-group">
                                     <fieldset>
-                                        <label for="Dependent3SocialSecurity#"  class="col-sm-2 control-label">Dependent 3 Gender</label>
+                                        <label for="Dependent3Gender"  class="col-sm-2 control-label">Dependent 3 Gender</label>
                                         <div class="col-sm-10">
                                             <span><input value="Male" id="Dependent3Gender" name="Dependent3Gender" type="radio"> <label for="Dependent3Gender">Male</label></span>
                                             <span><input value="Female" id="Dependent3Gender" name="Dependent3Gender" type="radio"> <label for="Dependent3Gender">Female</label></span>
@@ -350,6 +366,9 @@
                                         <input  id="Dependent3NeedsCoverage" name="Dependent3NeedsCoverage" type="checkbox">
                                     </div>
                                 </div>
+                            </div>
+                                <input type="button" id="dependent4button" value="add/show next dependent" style="display: none" onclick="showDependent4()" />
+                            <div id="Dependent4div" style="display: none">
                                 <div class="form-group">
                                     <h5 style="text-align:center;">Dependent 4</h5>
                                     <label for="Dependent4FirstName" class="col-sm-2 control-label">Dependent 4 First Name</label>
@@ -377,7 +396,7 @@
                                 </div>
                                 <div class="form-group">
                                     <fieldset>
-                                        <label for="Dependent4SocialSecurity#"  class="col-sm-2 control-label">Dependent 4 Gender</label>
+                                        <label for="Dependent4Gender"  class="col-sm-2 control-label">Dependent 4 Gender</label>
                                         <div class="col-sm-10">
                                             <span><input value="Male" id="Dependent4Gender" name="Dependent4Gender" type="radio"> <label for="Dependent4Gender">Male</label></span>
                                             <span><input value="Female" id="Dependent4Gender" name="Dependent4Gender" type="radio"> <label for="Dependent4Gender">Female</label></span>
@@ -390,6 +409,7 @@
                                         <input  id="Dependent4NeedsCoverage" name="Dependent4NeedsCoverage" type="checkbox">
                                     </div>
                                 </div>
+                            </div>
                                 <div class="form-group">
                                     <label for="signatureid"  class="col-sm-2 control-label">SignatureId</label>
                                     <div class="col-sm-10">
@@ -461,5 +481,6 @@
 
         <!--</script>-->
         <script src="/js/setloginsession.js"> </script>
+        <script src="/js/dependentbuttons.js"> </script>
     </body>
 </html>

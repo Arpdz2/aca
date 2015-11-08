@@ -583,6 +583,7 @@ app.post('/information', function(req,res){
             result.birthdate = req.body.BirthDate;
             result.coveragenumber = req.body.NumberofPeopleThatNeedCoverage;
             result.ss = req.body.PrimarySocialSecurity;
+            result.gender = req.body.Gender;
             result.save(function (err) {
                 res.redirect('/information');
             });
