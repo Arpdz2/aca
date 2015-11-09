@@ -16,7 +16,7 @@
                                 <label>
                                     <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" onclick="recoveryOptionSelected();" data-toggle="collapse" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
                                     I don't know my password
-                                    <div class="collapse" id="collapse1">
+                                    <div class="collapse" id="collapse1" style="display: none;">
                                         <div class="well">
                                             To reset your password, enter the email address you use to sign in to ACA.
                                             <input type="email" class="form-control" name="email" id="email" placeholder="E-mail Address">
@@ -34,7 +34,7 @@
                                 <label>
                                     <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" onclick="recoveryOptionSelected();" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
                                     I'm having other problems signing in
-                                    <div class="collapse" id="collapse2">
+                                    <div class="collapse" id="collapse2" style="display: none">
                                         <div class="well">
                                             Enter the username you use to sign in to ACA.
                                             <input type="email" class="form-control" name="email2" id="email2" placeholder="E-mail Address">
@@ -57,11 +57,17 @@
                 var optionThreeSelected = document.getElementById("optionsRadios3").checked;
                 if (optionOneSelected == true) {
                     $('#collapse2').collapse('hide');
+                    document.getElementById("collapse2").style.display = "none";
+                    document.getElementById("collapse1").style.display = "block";
                 } else if (optionTwoSelected == true) {
                     $('#collapse1').collapse('hide');
                     $('#collapse2').collapse('hide');
+                    document.getElementById("collapse1").style.display = "none";
+                    document.getElementById("collapse2").style.display = "none";
                 } else if (optionThreeSelected == true) {
                     $('#collapse1').collapse('hide');
+                    document.getElementById("collapse1").style.display = "none";
+                    document.getElementById("collapse2").style.display = "block";
                 }
             };
         </script>
