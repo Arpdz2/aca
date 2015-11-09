@@ -24,7 +24,8 @@ var express = require('express'),
     PDFDocument = require ('pdfkit');
     enforce = require('express-sslify');
     utility = require('./routes/utility.js');
-    fdfgenerator = require('./routes/fdfdata.js')
+    fdfgenerator = require('./routes/fdfdata.js');
+    updateEmail = require('./routes/updateEmail.js');
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -541,63 +542,68 @@ app.get('/information', function(req,res){
 app.post('/information', function(req,res){
     if (req.session.employee && req.session.employee != null) {
         employee.findOne({_id: req.session.employee}, function (err, result) {
-            if (req.body.signatureid) {result.signature = req.body.signatureid;}
-            result.firstname = req.body.FirstName;
-            result.lastname = req.body.LastName;
-            result.maritalstatus = req.body.MaritalStatus;
-            result.spousefirstname = req.body.SpouseFirstName;
-            result.spouselastname = req.body.SpouseLastName;
-            result.phonenumber = req.body.PhoneNumber;
-            result.altphonenumber = req.body.AlternatePhoneNumber;
-            result.address = req.body.Address;
-            result.city = req.body.City;
-            result.state = req.body.State;
-            result.zip = req.body.Zip;
-            result.email = req.body.Email;
-            result.birthdate = req.body.BirthDate;
-            result.coveragenumber = req.body.NumberofPeopleThatNeedCoverage;
-            result.ss = req.body.PrimarySocialSecurity;
-            result.gender = req.body.Gender;
-            result.d1firstname = req.body.Dependent1FirstName;
-            result.d1lastname = req.body.Dependent1LastName;
-            result.d1birthdate = req.body.Dependent1BirthDate;
-            result.d1ss = req.body.Dependent1SocialSecurity;
-            result.d1gender = req.body.Dependent1Gender;
-            result.d1coverage = req.body.Dependent1NeedsCoverage;
-            result.d2firstname = req.body.Dependent2FirstName;
-            result.d2lastname = req.body.Dependent2LastName;
-            result.d2birthdate = req.body.Dependent2BirthDate;
-            result.d2ss = req.body.Dependent2SocialSecurity;
-            result.d2gender = req.body.Dependent2Gender;
-            result.d2coverage = req.body.Dependent2NeedsCoverage;
-            result.d3firstname = req.body.Dependent3FirstName;
-            result.d3lastname = req.body.Dependent3LastName;
-            result.d3birthdate = req.body.Dependent3BirthDate;
-            result.d3ss = req.body.Dependent3SocialSecurity;
-            result.d3gender = req.body.Dependent3Gender;
-            result.d3coverage = req.body.Dependent3NeedsCoverage;
-            result.d4firstname = req.body.Dependent4FirstName;
-            result.d4lastname = req.body.Dependent4LastName;
-            result.d4birthdate = req.body.Dependent4BirthDate;
-            result.d4ss = req.body.Dependent4SocialSecurity;
-            result.d4gender = req.body.Dependent4Gender;
-            result.d4coverage = req.body.Dependent4NeedsCoverage;
-            result.employername = req.body.employer;
-            result.employerphone = req.body.employerphone;
-            result.income = req.body.income;
-            result.physician = req.body.physician;
-            result.physicianspecialty = req.body.physicianspecialty;
-            result.ailment1 = req.body.ailment1;
-            result.ailment2 = req.body.ailment2;
-            result.ailment3 = req.body.ailment3;
-            result.prescription1 = req.body.prescription1;
-            result.prescription2 = req.body.prescription2;
-            result.prescription3 = req.body.prescription3;
-            result.dosage1 = req.body.dosage1;
-            result.dosage2 = req.body.dosage2;
-            result.dosage3 = req.body.dosage3;
-            result.save(function (err) {
-                res.redirect('/information');
+            updateEmail.update(req, result, function(message) {
+                console.log(message);
+                if (req.body.signatureid) {
+                    result.signature = req.body.signatureid;
+                }
+                result.firstname = req.body.FirstName;
+                result.lastname = req.body.LastName;
+                result.maritalstatus = req.body.MaritalStatus;
+                result.spousefirstname = req.body.SpouseFirstName;
+                result.spouselastname = req.body.SpouseLastName;
+                result.phonenumber = req.body.PhoneNumber;
+                result.altphonenumber = req.body.AlternatePhoneNumber;
+                result.address = req.body.Address;
+                result.city = req.body.City;
+                result.state = req.body.State;
+                result.zip = req.body.Zip;
+                result.email = req.body.Email;
+                result.birthdate = req.body.BirthDate;
+                result.coveragenumber = req.body.NumberofPeopleThatNeedCoverage;
+                result.ss = req.body.PrimarySocialSecurity;
+                result.gender = req.body.Gender;
+                result.d1firstname = req.body.Dependent1FirstName;
+                result.d1lastname = req.body.Dependent1LastName;
+                result.d1birthdate = req.body.Dependent1BirthDate;
+                result.d1ss = req.body.Dependent1SocialSecurity;
+                result.d1gender = req.body.Dependent1Gender;
+                result.d1coverage = req.body.Dependent1NeedsCoverage;
+                result.d2firstname = req.body.Dependent2FirstName;
+                result.d2lastname = req.body.Dependent2LastName;
+                result.d2birthdate = req.body.Dependent2BirthDate;
+                result.d2ss = req.body.Dependent2SocialSecurity;
+                result.d2gender = req.body.Dependent2Gender;
+                result.d2coverage = req.body.Dependent2NeedsCoverage;
+                result.d3firstname = req.body.Dependent3FirstName;
+                result.d3lastname = req.body.Dependent3LastName;
+                result.d3birthdate = req.body.Dependent3BirthDate;
+                result.d3ss = req.body.Dependent3SocialSecurity;
+                result.d3gender = req.body.Dependent3Gender;
+                result.d3coverage = req.body.Dependent3NeedsCoverage;
+                result.d4firstname = req.body.Dependent4FirstName;
+                result.d4lastname = req.body.Dependent4LastName;
+                result.d4birthdate = req.body.Dependent4BirthDate;
+                result.d4ss = req.body.Dependent4SocialSecurity;
+                result.d4gender = req.body.Dependent4Gender;
+                result.d4coverage = req.body.Dependent4NeedsCoverage;
+                result.employername = req.body.employer;
+                result.employerphone = req.body.employerphone;
+                result.income = req.body.income;
+                result.physician = req.body.physician;
+                result.physicianspecialty = req.body.physicianspecialty;
+                result.ailment1 = req.body.ailment1;
+                result.ailment2 = req.body.ailment2;
+                result.ailment3 = req.body.ailment3;
+                result.prescription1 = req.body.prescription1;
+                result.prescription2 = req.body.prescription2;
+                result.prescription3 = req.body.prescription3;
+                result.dosage1 = req.body.dosage1;
+                result.dosage2 = req.body.dosage2;
+                result.dosage3 = req.body.dosage3;
+                result.save(function (err) {
+                    res.redirect('/information');
+                });
             });
         });
     }
