@@ -13,11 +13,11 @@
             <h1><span class="fa fa-sign-in"></span> Login</h1>
 
             <!-- show any messages that come back with authentication -->
-            <% if (message == "Email Sent!") { %>
+            <% if (message == "Email Sent!" || message.indexOf("Your Email is") > -1) { %>
             <div class="alert alert-success"><%= message %></div>
             <% } %>
 
-            <% if (message.length > 0 && message != "Email Sent!") { %>
+            <% if (message.length > 0 && message != "Email Sent!" && message.indexOf("Your Email is") < 0) { %>
             <div class="alert alert-danger"><%= message %></div>
             <% } %>
 

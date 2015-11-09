@@ -63,3 +63,19 @@ exports.passwordReset = function(req, callback) {
         });
 };
 
+exports.forgotEmail = function(req, callback) {
+
+    employee.findOne({ 'ss' : req.body.ss }, function(err, user) {
+        if (err) {
+            console.log(err);
+            callback("No account was created with this SSN.");
+        } else if (user && user != null) {
+            callback("Your Email is " + user.email);
+        }
+        else {
+            callback("No account was created with this SSN.");
+        }
+
+    });
+};
+

@@ -516,7 +516,9 @@ app.post('/recovery', function(req, res){
             res.render('pages/login2', {message : string});
         });
     } else if (optionsRadios == 'option2') {
-        console.log("option2 not setup.");
+        sendEmail.forgotEmail(req, function(string) {
+            res.render('pages/login2', {message : string});
+        });
     } else if (optionsRadios == 'option3') {
         console.log("option3 not setup.");
     }

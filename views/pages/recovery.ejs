@@ -26,15 +26,21 @@
                             </div>
                             <div class="radio-option">
                                 <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" onclick="recoveryOptionSelected();">
+                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" onclick="recoveryOptionSelected();"data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
                                     I don't know my username
+                                    <div class="collapse" id="collapse2" style="display: none;">
+                                        <div class="well">
+                                            Enter your SSN and we will redirect you to the login with your email.
+                                            <input type="text" pattern="\d{3}-\d{2}-\d{4}" class="form-control" name="ss" id="ss" placeholder="###-##-####">
+                                        </div>
+                                    </div>
                                 </label>
                             </div>
                             <div class="radio-option">
                                 <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" onclick="recoveryOptionSelected();" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                                    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" onclick="recoveryOptionSelected();" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
                                     I'm having other problems signing in
-                                    <div class="collapse" id="collapse2" style="display: none">
+                                    <div class="collapse" id="collapse3" style="display: none">
                                         <div class="well">
                                             Enter the username you use to sign in to ACA.
                                             <input type="email" class="form-control" name="email2" id="email2" placeholder="E-mail Address">
@@ -57,17 +63,22 @@
                 var optionThreeSelected = document.getElementById("optionsRadios3").checked;
                 if (optionOneSelected == true) {
                     $('#collapse2').collapse('hide');
+                    $('#collapse3').collapse('hide');
                     document.getElementById("collapse2").style.display = "none";
+                    document.getElementById("collapse3").style.display = "none";
                     document.getElementById("collapse1").style.display = "block";
                 } else if (optionTwoSelected == true) {
+                    $('#collapse1').collapse('hide');
+                    $('#collapse3').collapse('hide');
+                    document.getElementById("collapse1").style.display = "none";
+                    document.getElementById("collapse3").style.display = "none";
+                    document.getElementById("collapse2").style.display = "block";
+                } else if (optionThreeSelected == true) {
                     $('#collapse1').collapse('hide');
                     $('#collapse2').collapse('hide');
                     document.getElementById("collapse1").style.display = "none";
                     document.getElementById("collapse2").style.display = "none";
-                } else if (optionThreeSelected == true) {
-                    $('#collapse1').collapse('hide');
-                    document.getElementById("collapse1").style.display = "none";
-                    document.getElementById("collapse2").style.display = "block";
+                    document.getElementById("collapse3").style.display = "block";
                 }
             };
         </script>
