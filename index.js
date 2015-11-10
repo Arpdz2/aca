@@ -104,8 +104,10 @@ app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
         else {
             res.redirect(req.get('referer'));
         }
-        var data = fdfgenerator.generate(result);
-        fs.writeFile(result._id + '.fdf', data, function (err) {
+        fdfgenerator.generate(result, function(fdfdata){
+            var data = fdfdata;
+            fs.writeFile(result._id + '.fdf', data, function (err) {
+            });
         });
         var refreshIntervalId2 = setInterval(function() {
             fs.stat(result._id + '.pdf', function(err, exists) {

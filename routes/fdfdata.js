@@ -1,7 +1,7 @@
 var fdf = require('fdf')
 utility = require('./utility.js');
 
-exports.generate = function(result) {
+exports.generate = function(result, callback) {
     var single = "Off";
     var married = "Off";
     var spousefirst = result.spousefirstname;
@@ -72,5 +72,5 @@ exports.generate = function(result) {
         "dosage3" : result.dosage2,
         "gender" : result.gender
     });
-    return data;
+    callback(data);
 }
