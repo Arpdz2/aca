@@ -88,43 +88,34 @@ app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
             fs.writeFile(result._id + '.png', buf, function (err) {
                 console.log("image produced");
                 var doc = new PDFDocument;
-                doc.pipe(fs.createWriteStream(result._id + 'stamp.pdf'));
+                var writeStream = fs.createWriteStream(result._id + 'stamp.pdf');
+                doc.pipe(writeStream);
                 doc.image(result._id + '.png', 60, 432, {width: 160, height: 12});
-                doc.end()
-                var refreshIntervalId3 = setInterval(function() {
-                    fs.stat(result._id + 'stamp.pdf', function(err, exists) {
-                        if (exists) {
-                            clearInterval(refreshIntervalId3);
-                            spawn('cpdf', ['-stamp-on', result._id + 'stamp.pdf', './public/pdf/combinedpdf.pdf', '2', '-o', result._id + '.pdf']);
-                        }
+                doc.end();
+                writeStream.on('finish', function () {
+                console.log("stamp pdf");
+                    var stamped = spawn('cpdf', ['-stamp-on', result._id + 'stamp.pdf', './public/pdf/combinedpdf.pdf', '2', '-o', result._id + '.pdf']);
+                    stamped.on('close', function(code){
+                    console.log("stamped pdf");
+                        fdfgenerator.generate(result, function(fdfdata){
+                        var data = fdfdata;
+                        fs.writeFile(result._id + '.fdf', data, function (err) {
+                        console.log("fdf");
+                            var final = spawn('pdftk', [result._id + '.pdf', 'fill_form', result._id + ".fdf", 'output', result._id + 'final.pdf', 'flatten']);
+                            final.on('close', function(code){
+                                console.log("final pdf");
+                                    res.redirect('/pdf/' + result.id);
+                                    console.log("redirect");
+                            });
+                        });
                     });
-                }, 1000);
-            });
-        }
-        else {
-            res.redirect(req.get('referer'));
-        }
-        fdfgenerator.generate(result, function(fdfdata){
-            var data = fdfdata;
-            fs.writeFile(result._id + '.fdf', data, function (err) {
+                });
             });
         });
-        var refreshIntervalId2 = setInterval(function() {
-            fs.stat(result._id + '.pdf', function(err, exists) {
-                if (exists) {
-                    clearInterval(refreshIntervalId2);
-                    spawn('pdftk', [result._id + '.pdf', 'fill_form', result._id + ".fdf", 'output', result._id + 'final.pdf', 'flatten']);
-                }
-            });
-        }, 1000);
-        var refreshIntervalId = setInterval(function() {
-            fs.stat(result._id + 'final.pdf', function(err, exists) {
-                if (exists) {
-                    clearInterval(refreshIntervalId);
-                    res.redirect('/pdf/' + result.id);
-                }
-            });
-        }, 1000);
+    }
+        else {
+        res.redirect(req.get('referer'));
+        }
     });
 });
 
@@ -134,19 +125,20 @@ app.get('/pdf/:employeeid', isLoggedIn, function(request, response){
     fs.readFile(tempFile, function (err,data){
         response.contentType("application/pdf");
         response.send(data);
-    });
-    response.on('finish', function() {
-    fs.unlink(emp + '.fdf', function(err) {
-        fs.unlink(emp + '.pdf', function(err) {
-            fs.unlink(emp + '.png', function(err) {
-                fs.unlink(emp + 'stamp.pdf', function(err) {
-                    fs.unlink(emp + 'final.pdf', function(err) {
-                        console.log("All files successfully removed");
+        console.log("pdf load")
+        response.on('finish', function() {
+        fs.unlink(emp + '.fdf', function(err) {
+            fs.unlink(emp + '.pdf', function(err) {
+                fs.unlink(emp + '.png', function(err) {
+                    fs.unlink(emp + 'stamp.pdf', function(err) {
+                        fs.unlink(emp + 'final.pdf', function(err) {
+                            console.log("All files successfully removed");
+                            });
+                        });
                     });
                 });
             });
         });
-    });
     });
 });
 
