@@ -104,7 +104,7 @@ app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
                             var final = spawn('pdftk', [result._id + '.pdf', 'fill_form', result._id + ".fdf", 'output', result._id + 'final.pdf', 'flatten']);
                             final.on('close', function(code){
                                 console.log("final pdf");
-                                    res.redirect('/pdf/' + result.id);
+                                    res.redirect('/pdf/' + result.id + "/pdffile.pdf");
                                     console.log("redirect");
                             });
                         });
@@ -119,7 +119,7 @@ app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
     });
 });
 
-app.get('/pdf/:employeeid', isLoggedIn, function(request, response){
+app.get('/pdf/:employeeid/pdffile.pdf', isLoggedIn, function(request, response){
     var emp = request.params.employeeid;
     var tempFile= request.params.employeeid + "final.pdf";
     fs.readFile(tempFile, function (err,data){
