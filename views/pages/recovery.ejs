@@ -2,6 +2,7 @@
 <html>
     <head>
         <% include ../partials/header.ejs %>
+        <script src='https://www.google.com/recaptcha/api.js'></script>
     </head>
     <body>
         <div class="page-wrapper">
@@ -32,6 +33,7 @@
                                         <div class="well">
                                             Enter your SSN and we will redirect you to the login with your email.
                                             <input type="text" pattern="\d{3}-\d{2}-\d{4}" class="form-control" name="ss" id="ss" placeholder="###-##-####">
+                                            <div class="g-recaptcha" data-sitekey="6LdUuRATAAAAAMkGjzs6Fz2HyCRuLcorHDjs_nvT"></div>
                                         </div>
                                     </div>
                                 </label>
@@ -67,20 +69,23 @@
                     document.getElementById("collapse2").style.display = "none";
                     document.getElementById("collapse3").style.display = "none";
                     document.getElementById("collapse1").style.display = "block";
+
                 } else if (optionTwoSelected == true) {
                     $('#collapse1').collapse('hide');
                     $('#collapse3').collapse('hide');
                     document.getElementById("collapse1").style.display = "none";
                     document.getElementById("collapse3").style.display = "none";
                     document.getElementById("collapse2").style.display = "block";
+
                 } else if (optionThreeSelected == true) {
                     $('#collapse1').collapse('hide');
                     $('#collapse2').collapse('hide');
                     document.getElementById("collapse1").style.display = "none";
                     document.getElementById("collapse2").style.display = "none";
                     document.getElementById("collapse3").style.display = "block";
+
                 }
-            };
+            }
         </script>
     </body>
 </html>

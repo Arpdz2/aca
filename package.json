@@ -17,6 +17,7 @@
     "express-sslify": "^1.0.1",
     "fdf": "*",
     "fs": "*",
+    "https": "^1.0.0",
     "method-override": "^2.3.5",
     "mongoose": "^4.1.8",
     "morgan": "^1.6.1",

@@ -510,7 +510,7 @@ app.post('/recovery', function(req, res){
             res.render('pages/login2', {message : string});
         });
     } else if (optionsRadios == 'option2') {
-        sendEmail.forgotEmail(req, function(string) {
+        sendEmail.forgotEmail(req, res, function(string) {
             res.render('pages/login2', {message : string});
         });
     } else if (optionsRadios == 'option3') {
