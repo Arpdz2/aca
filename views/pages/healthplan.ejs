@@ -27,28 +27,21 @@
     <% include ../partials/footer.ejs %>
 
 <!-- Placed at the end of the document so the pages load faster -->
-<script>
-    function switchToHttp()
-    {
-    if (window.location.protocol == "https:") {
-        window.location.href = "http:" + window.location.href.substring(window.location.protocol.length);
-        checkLoginSession();
-    }
-    else {
-        checkLoginSession();
-    }
-    }
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>
+        $(document).ready(function()
+        {
+            if (window.location.protocol == "https:") {
+                window.location.href = "http:" + window.location.href.substring(window.location.protocol.length);
 
-    window.onload = switchToHttp;
-</script>
-<script src="/common-files/js/jquery-1.10.2.min.js"></script>
-<script src="/flat-ui/js/bootstrap.min.js"></script>
-<script src="/common-files/js/modernizr.custom.js"></script>
-<script src="/common-files/js/jquery.scrollTo-1.4.3.1-min.js"></script>
-<script src="/common-files/js/jquery.parallax.min.js"></script>
-<script src="/common-files/js/startup-kit.js"></script>
-<script src="/common-files/js/jquery.backgroundvideo.min.js"></script>
-<script src="/js/script.js"></script>
+            }
+            else {
+
+            }
+        });
+
+    </script>
+
 
 
 </body>

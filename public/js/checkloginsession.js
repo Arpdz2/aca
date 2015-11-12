@@ -1,4 +1,6 @@
-function checkLoginSession() {
+src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
+
+$(document).ready(function() {
     var x = document.cookie.split(";");
     for (var i = 0; i < x.length ; i++) {
         str = x[i].replace(/\s+/g, '');
@@ -19,7 +21,7 @@ function checkLoginSession() {
             console.log(document.cookie);
         }
     }
-}
+});
 
 function addDropDown(){
     var style = document.getElementById("dropdown").style.display;
@@ -35,4 +37,3 @@ function removeLoginSession(){
     document.cookie = "login=;  path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 }
 
-window.onload = checkLoginSession;
