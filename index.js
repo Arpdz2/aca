@@ -269,13 +269,14 @@ app.get('/logout', function(req, res) {
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
-
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
+    
+    if (req.isAuthenticated()) {
+        // if user is authenticated in the session, carry on
         return next();
-
-    // if they aren't redirect them to the home page
-    res.redirect('/');
+    } else {
+        // if they aren't redirect them to the home page
+        res.redirect('/');
+    }
 }
 
 app.post('/signup', passport.authenticate('local-signup', {

@@ -21,7 +21,7 @@
                     <li><a href="/contact">Contact Us</a></li>
                 </ul>
                 <form class="navbar-form pull-left">
-                    <a class="btn btn-success" href="/login">Login</a>
+                    <a id="status" class="btn btn-success" href="/login"><b>Login</b></a> <br>
                 </form>
             </div>
         </div>
@@ -30,13 +30,12 @@
 </header>
 <script>
 $(function(){
-var url = window.location.href;
-var page = url.substr(url.lastIndexOf('/')+1);
+    var url = window.location.href;
+    var page = url.substr(url.lastIndexOf('/')+1);
     if(page == "") {
         page = "/";
         $('a[href="' + page + '"]').addClass('active');
-    }
-    else {
+    } else {
         $('a[href*="' + page + '"]').addClass('active');
     }
 });

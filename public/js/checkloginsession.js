@@ -12,11 +12,10 @@ $(document).ready(function() {
             document.getElementById("status").onclick= removeLoginSession;
             console.log(document.cookie);
             break;
-        }
-        else {
+        } else {
             document.getElementById("status").className ="btn btn-success";
             document.getElementById("status").innerHTML = "Login";
-            document.getElementById("status").removeAttribute("href");
+            document.getElementById("status").href="/login";
             document.getElementById("status").onclick= addDropDown;
             console.log(document.cookie);
         }
