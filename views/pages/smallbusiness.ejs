@@ -1,48 +1,37 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <% include ../partials/header.ejs %>
-    <style>
-        .container{
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-        }
-        iframe{
-            width: 100%;
-            height: 100%;
-        }
-    </style>
-</head>
-<body>
+    <head>
+        <% include ../partials/header.ejs %>
+    </head>
+    <body>
 
-<div class="page-wrapper">
-    <% include ../partials/nav.ejs %>
-    <div class="container">
-       <iframe src="http://acainsuresme.com/small-business.html"></iframe>
+    <div class="page-wrapper">
+        <% include ../partials/nav.ejs %>
+        <section>
+            <div class="container">
+                <div class="row v-center">
+                    <h1>The Small Business Insurance Market has changed.</h1>
+                    <p>The new PPACA laws allow us to offer new innovative ways for small business to support their employees and control cost for themselves. We offer several turn-key solutions for you unique situation.</p>
+                    <img src="../../img/1427838952.jpg" alt="">
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="container">
+                <div class="row v-center">
+                    <h1>Defined Contribution (Tax Free) Health Insurance</h1>
+                    <p>For small businesses that would like to start new coverage or stop purchasing health insurance but still contribute towards employees health coverage as a benefit of their employment the concept of a Section 105 Defined Contribution plan offers many benefits to both your business and your employees. As a result of the Affordable Care Act’s law that, as of January 1st, 2014, requires insurers to offer coverage without health questions and to cover pre-existing conditions, individual and family coverage is more freely available to your employees and the broader availability of coverage, combined with a proper Section 105 Defined Benefit Plan, can help your business and its bottom line as well as our employees and their budgets. In many cases it’s a ‘win–win’ for your business and employees.</p>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+        </section>
     </div>
-</div>
-<% include ../partials/footer.ejs %>
+    <% include ../partials/footer.ejs %>
 
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>
-    $(document).ready(function()
-    {
-        if (window.location.protocol == "https:") {
-            window.location.href = "http:" + window.location.href.substring(window.location.protocol.length);
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
-        }
-    else {
-
-    }
-    });
-
-</script>
-
-
-
-</body>
+    </body>
 </html>
