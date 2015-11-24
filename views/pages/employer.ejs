@@ -153,8 +153,8 @@
                     <div class="well">
                         <h2>Employer Data</h2>
                         <p>
-                            <strong>Id</strong>: <%= employer._id %><br>
-                            <strong>Name</strong>: <%= employer.empname %><br>
+                            <strong>Employer Id</strong>: <%= employer._id %><br>
+                            <strong>Employer Name</strong>: <%= employer.empname %><br>
                             <strong>Contact Name</strong>: <%= employer.contact %><br>
                             <strong>Alternate Contact</strong>: <%= employer.altcontact %><br>
                             <strong>Alternate Contact Email</strong>: <%= employer.altemail %><br>
@@ -188,7 +188,7 @@
                             <p>
                                 <% emp.forEach(function(employee) { %>
                                 <%if (employer._id == employee.employerid && user._id == employee.agentid) { %>
-                                <strong>Id/ Name</strong>:  <a href="/employee/pdf/generator/<%= employee._id %>"><%= employee._id %>/ <%= employee.firstname %>&nbsp;<%= employee.lastname%> </a> <br>
+                                <strong>Name</strong>:  <a href="/employee/pdf/generator/<%= employee._id %>"><%= employee.firstname %>&nbsp;<%= employee.lastname%> </a> <br>
                                 <% } %>
                                 <% }); %>
                         </p>
