@@ -67,7 +67,22 @@ module.exports = function(passport) {
                             newUser.local.password = newUser.generateHash(password);
                             newUser.local.firstName = req.body.firstname;
                             newUser.local.lastName = req.body.lastname;
+                            newUser.local.role = "agent";
                             // save the user
+                            newUser.save(function (err) {
+                                if (err)
+                                    throw err;
+                                return done(null, newUser);
+                            });
+                        } else if (req.body.agentcode == 'V,sG#g5[{]`*vBn^') {
+                            
+                            var newUser = new User();
+                            newUser.local.email = email;
+                            newUser.local.password = newUser.generateHash(password);
+                            newUser.local.firstName = req.body.firstname;
+                            newUser.local.lastName = req.body.lastname;
+                            newUser.local.role = "admin";
+                            
                             newUser.save(function (err) {
                                 if (err)
                                     throw err;
@@ -114,6 +129,10 @@ passport.use('local-login', new LocalStrategy({
             // if the user is found but the password is wrong
             if (!user.validPassword(password))
                 return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+            
+            console.log(user.local.role);
+            if (user.local.role == undefined)
+                return done(null, false, req.flash('loginMessage', 'No role defined for this user.'));
 
             // all is well, return successful user
             return done(null, user);

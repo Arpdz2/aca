@@ -14,17 +14,19 @@ var express = require('express'),
     user = require('./routes/user.js'),
     employee = require('./routes/employee.js'),
     agentDashboard = require('./routes/agentDashboard.js'),
-    search = require('./routes/search.js');
+    adminDashboard = require('./routes/adminDashboard.js'),
+    userFunctions = require('./routes/userFunctions.js'),
+    search = require('./routes/search.js'),
     nodemailer = require('nodemailer'),
     mandrillTransport = require('nodemailer-mandrill-transport'),
     fdf = require('fdf'),
     fs = require('fs'),
-    spawn = require('child_process').spawn;
-    util = require('util');
-    PDFDocument = require ('pdfkit');
-    enforce = require('express-sslify');
-    utility = require('./routes/utility.js');
-    fdfgenerator = require('./routes/fdfdata.js');
+    spawn = require('child_process').spawn,
+    util = require('util'),
+    PDFDocument = require ('pdfkit'),
+    enforce = require('express-sslify'),
+    utility = require('./routes/utility.js'),
+    fdfgenerator = require('./routes/fdfdata.js'),
     updateEmail = require('./routes/updateEmail.js');
 
 
@@ -39,7 +41,6 @@ app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 
 mongoose.connect(dbConfig.url);
-
 
 require('./routes/passport')(passport);
 
@@ -237,6 +238,15 @@ app.get('/agentDashboard', isLoggedIn, function(req, res) {
     });
 });
 
+app.get('/adminDashboard', isLoggedIn, function(req, res) {
+    userFunctions.list(function (err, data) {
+        res.render('pages/adminDashboard', {
+            user : req.user, // get the user out of session and pass to template
+            users : data
+        });
+    });
+});
+
 app.post('/search', isLoggedIn, function(req, res) {
     console.log(req.body.search);
     employee.find(
@@ -286,11 +296,23 @@ app.post('/signup', passport.authenticate('local-signup', {
 }));
 
 // process the login form
-app.post('/agentLogin', passport.authenticate('local-login', {
-    successRedirect : '/agentDashboard', // redirect to the secure agentDashboard section
-    failureRedirect : '/agentLogin', // redirect back to the signup page if there is an error
-    failureFlash : true // allow flash messages
-}));
+//app.post('/agentLogin', passport.authenticate('local-login', {
+//    successRedirect : '/agentDashboard', // redirect to the secure agentDashboard section
+//    failureRedirect : '/agentLogin', // redirect back to the signup page if there is an error
+//    failureFlash : true // allow flash messages
+//}));
+
+app.post('/agentLogin',
+         passport.authenticate('local-login', { failureRedirect : '/agentLogin', failureFlash : true }),
+        function(req, res) {
+            console.log(req.user.local.role);
+            if (req.user.local.role == "agent") {
+                res.redirect('/agentDashboard');
+            } else if (req.user.local.role == "admin") {
+                res.redirect('/adminDashboard');
+            }
+        }
+);
 
 //add a new case
 app.get('/profile/case', isLoggedIn, function(req, res)
@@ -360,19 +382,36 @@ app.get('/:id/:eid', isLoggedIn, function(req, res)
 {
     //var a = req.user;
     var signupUrl = req.protocol + '://' + req.get('host') + '/signup'  + req.originalUrl;
-    var url = req.originalUrl;
-    var eid = url.substr(url.lastIndexOf('/')+1);
-    var id = url.substr(1, url.indexOf(eid) - 2);
+    var eid = req.params.eid;
+    var id = req.params.id;
     req.session.empid = eid;
     console.log(req.session.empid);
-    //user.findOne({ id: id, eid: eid }, function (err, post) {
-    //   if (err) { throw(err); }
-    //    console.log("test");
-    //    res.render('pages/employer', {user : req.user, page : eid/*, title: post.title, url: post.URL */});
-    //});
+    user.findOne({'_id' : req.params.id }, function (err, user) {
+        if (err) {
+            throw(err);
+        }
+        console.log("User:" + user);
+        employee.find({}, function(err, docs){
+            if(err) {
+                throw(err);
+            }
+            res.render('pages/employer', {user : user, page : eid, emp : docs, url: signupUrl/*, title: post.title, url: post.URL */});
+        });
+    });
+});
+
+app.get('/:id/:eid/:firstName/:lastName', isLoggedIn, function(req, res)
+{
+    var url = req.originalUrl;
+    var eid = req.params.eid;
+    var id = req.params.id;
+    req.session.empid = eid;
+    console.log(req.session.empid);
     employee.find({}, function(err, docs){
-        if(err)res.json(err);
-    res.render('pages/employer', {user : req.user, page : eid, emp : docs, url: signupUrl/*, title: post.title, url: post.URL */});
+        if(err) {
+            res.json(err);
+        }
+        res.render('pages/adminEmployee');
     });
 });
 

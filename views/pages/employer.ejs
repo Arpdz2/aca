@@ -145,7 +145,7 @@
         <div class="container">
             <br>
             <ul class="nav nav-tabs nav-justified">
-                <li role="presentation"><a href="/agentDashboard"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back</a></li>
+                <li role="presentation"><button onclick="goBack()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back</button></li>
             </ul>
             <br>
             <div class="row">
@@ -197,7 +197,7 @@
             </div>
 
             <ul class="nav nav-tabs nav-justified">
-                <li role="presentation"><a href="/agentDashboard"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back</a></li>
+                <li role="presentation"><button onclick="goBack()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back</button></li>
             </ul>
         </div>
     </div>
@@ -223,6 +223,11 @@
         }
         function div_hide(){
             document.getElementById('abc').style.display = "none";
+        }
+    </script>
+    <script>
+        function goBack() {
+            window.history.back();
         }
     </script>
 </body>
