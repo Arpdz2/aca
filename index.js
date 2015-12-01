@@ -639,7 +639,7 @@ app.post('/information', function(req,res){
                 result.dosage2 = req.body.dosage2;
                 result.dosage3 = req.body.dosage3;
                 result.save(function (err) {
-                    res.redirect('/information');
+                    res.redirect('/information?=saved');
                 });
             });
         });

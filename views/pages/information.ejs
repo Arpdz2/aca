@@ -32,11 +32,27 @@
     </head>
     <body>
         <div  class="page-wrapper">
+            <div id="my-modal" style="display: none; margin-top: 160px;" class="modal fade in">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button id="closemodal" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Save Successful!</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>All your information has been saved, and you can check the information below for accuracy.<br><br>
+                            Your agent will be contacting you for further updates. <br><br>
+                            Thank you!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <% include ../partials/nav.ejs %>
             <!--<div id = "wrapperr" class="well"> <img id = "myImage" src ="/img/ajax_loader.gif" > <br><br><br> <h3 id="loading"> Ensuring a secure connection...</h3></div>-->
             <div id = "wholepage" class="container">
                 <div class="page-header text-center">
                     <% user.employer.forEach(function(employer) { %>
+                    <%if (employer._id == employerid) { %>
                     <h1>Employee Profile Page</h1>
                     <h3>Employer: <%= employer.empname %></h3>
                 </div>
@@ -47,7 +63,7 @@
                             <p>
                                 Your coverage: <br>
 
-                                <%if (employer._id == employerid) { %>
+
                                 <% if (employer.payroll == "True") { %>
                                 Payroll Deposit <br>
                                 <% } %>
@@ -572,5 +588,16 @@
 
         <!--</script>-->
         <script src="/js/dependentbuttons.js"> </script>
+        <script>
+            var queryString = window.location.search;
+            queryString = queryString.substring(2);
+            if(queryString == "saved"){
+                document.getElementById("my-modal").style.display = "block";
+            }
+
+            $("#closemodal").click(function () {
+                $("#my-modal").css("display", "none");
+            });
+        </script>
     </body>
 </html>
