@@ -68,20 +68,20 @@
                                 <div class="row" style="margin: auto;">
                                     <button type="submit" value="submit" class="btn btn-success">Save</button>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group required">
                                 <h5 style="text-align:center;">Primary</h5>
                                     <label for="FirstName"  class="col-sm-2 control-label">First Name</label>
                                     <div class="col-sm-10">
                                     <input class="form-control" id="FirstName" name="FirstName" type="text" class="required" title="First Name" placeholder="First Name" value="<%= employee.firstname %>"required>
                                 </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group required">
                                     <label for="LastName"  class="col-sm-2 control-label">Last Name</label>
                                     <div class="col-sm-10">
                                     <input class="form-control"  id="LastName" name="LastName" type="text" class="required" title="Last Name" placeholder="Last Name" value="<%= employee.lastname %>"required>
                                 </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group required">
                                     <fieldset>
                                         <label for="GenderPrimary"  class="col-sm-2 control-label">Gender</label>
                                         <div class="col-sm-10">
@@ -90,7 +90,7 @@
                                         </div>
                                     </fieldset>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group required">
                                     <% if (employee.maritalstatus == "Single") { %>
                                     <fieldset>
                                         <div class="col-sm-12">
@@ -131,31 +131,31 @@
                                     <input class="form-control" id="SpouseLastName" name="SpouseLastName" type="text" placeholder="Last Name" value="<%= employee.spouselastname %>">
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group required">
                                     <label for="PhoneNumber" class="col-sm-2 control-label">Phone Number</label>
                                     <div class="col-sm-10">
                                     <input class="form-control" pattern="\d{3}-\d{3}-\d{4}" id="PhoneNumber" name="PhoneNumber" type="tel" class="required" placeholder="###-###-####" value="<%= employee.phonenumber %>" required>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group required">
                                     <label for="AlternatePhoneNumber" class="col-sm-2 control-label">Alternate Phone Number</label>
                                     <div class="col-sm-10">
                                     <input class="form-control" pattern="\d{3}-\d{3}-\d{4}" id="AlternatePhoneNumber" name="AlternatePhoneNumber" type="tel" class="required" placeholder="###-###-####" value="<%= employee.altphonenumber %>" required>
                                 </div>
                                     </div>
-                                <div class="form-group">
+                                <div class="form-group required">
                                     <label for="Address" class="col-sm-2 control-label">Address</label>
                                     <div class="col-sm-10">
                                     <input class="form-control" id="Address" name="Address" type="text" class="required" title="Address" placeholder="Address" value="<%= employee.address %>" required>
                                 </div>
                                     </div>
-                                <div class="form-group">
+                                <div class="form-group required">
                                     <label for="City" class="col-sm-2 control-label">City</label>
                                     <div class="col-sm-10">
                                     <input class="form-control" id="City" name="City" type="text" class="required" title="City" placeholder="City" value="<%= employee.city %>" required>
                                 </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group required">
                                     <label for="State" class="col-sm-2 control-label">State</label>
                                     <div class="col-sm-10">
                                     <select class="form-control" id="State" name="State" class="required" title="State" onload="myFunction();" required>
@@ -212,31 +212,31 @@
                                     </select>
                                 </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group required">
                                     <label for="Zip" class="col-sm-2 control-label">Zip</label>
                                     <div class="col-sm-10">
                                     <input class="form-control" id="Zip" name="Zip" type="text" pattern="\d{5}-?(\d{4})?" class="required" title="Zip" placeholder="##### or #####-####" value="<%= employee.zip %>" required>
                                 </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group required">
                                     <label for="Email" class="col-sm-2 control-label">Email</label>
                                     <div class="col-sm-10">
                                     <input class="form-control" id="Email" name="Email" type="email" class="required" title="Email" placeholder="Email" value="<%= employee.email %>" readonly>
                                 </div>
                                     </div>
-                                <div class="form-group">
+                                <div class="form-group required">
                                     <label for="BirthDate" class="col-sm-2 control-label">Birth Date</label>
                                     <div class="col-sm-10">
                                     <input class="form-control" id="BirthDate" name="BirthDate" pattern="\d{4}-\d{2}-\d{2}" placeholder="YYYY-MM-DD" type="date" class="required" title="Birth Date" value="<%= employee.birthdate %>" required>
                                 </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group required">
                                     <label for="NumberofPeopleThatNeedCoverage" class="col-sm-2 control-label">Number of People That Need Coverage</label>
                                     <div class="col-sm-10">
                                     <input class="form-control" id="NumberofPeopleThatNeedCoverage" name="NumberofPeopleThatNeedCoverage" type="number" class="required" title="Number of People That Need Coverage" placeholder="0" value="<%= employee.coveragenumber %>"required>
                                 </div>
                                 </div>
-                                    <div class="form-group">
+                                    <div class="form-group required">
                                     <label for="PrimarySocialSecurity" class="col-sm-2 control-label">Primary Social Security #</label>
                                     <div class="col-sm-10">
                                     <input class="form-control" id="PrimarySocialSecurity" pattern="\d{3}-\d{2}-\d{4}" name="PrimarySocialSecurity" type="text" class="required" title="Primary Social Security #" placeholder="###-##-####" value="<%= employee.ss %>"required>
@@ -425,7 +425,7 @@
                                         <input class="form-control" id="employerphone" name="employerphone" type="tel" value="<%= employer.phonenumber %>" readonly>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group required">
                                     <label for="income"  class="col-sm-2 control-label">Household Income $</label>
                                     <div class="col-sm-10">
                                         <input class="form-control" id="income" name="income" type="number" value="<%= employee.income %>" required>
