@@ -439,8 +439,9 @@ app.get('/delete', isLoggedIn, function(req, res) {
     }
 });
 
-app.post('/update/employer/:employerid', isLoggedIn, function(req, res){
-    var a = req.user;
+app.post('/update/:id/:employerid', isLoggedIn, function(req, res){
+    //var a = req.user;
+    var a = req.params.id;
     var id = req.params.employerid;
     //user.update({"_id" : a._id, "employer._id" : id},{$set : {
     user.update({"employer._id" : id},{$set : {
@@ -460,7 +461,8 @@ app.post('/update/employer/:employerid', isLoggedIn, function(req, res){
         else if (docs) console.log(docs);
         else console.log("failure");
     });
-    res.redirect('/' + a._id + '/' + id);
+    //res.redirect('/' + a._id + '/' + id);
+    res.redirect('/' + a + '/' + id);
 });
 
 app.get('/signup/:agentid/:employerid', function(req,res){

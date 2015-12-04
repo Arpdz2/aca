@@ -11,7 +11,7 @@
     <!-- Popup Div Starts Here -->
     <div id="popupContact">
         <!-- Contact Us Form -->
-        <form class="form-horizontal" action="/update/employer/<%= employer._id%>" method="post">
+        <form class="form-horizontal" action="/update/<%= user._id%>/<%= employer._id%>" method="post">
             <img id="close" src="/img/close.png" onclick ="div_hide()">
             <h2 style="text-align:center;">Update Info</h2> <br>
                 <div class="form-group">
