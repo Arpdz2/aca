@@ -442,7 +442,8 @@ app.get('/delete', isLoggedIn, function(req, res) {
 app.post('/update/employer/:employerid', isLoggedIn, function(req, res){
     var a = req.user;
     var id = req.params.employerid;
-    user.update({"_id" : a._id, "employer._id" : id},{$set : {
+    //user.update({"_id" : a._id, "employer._id" : id},{$set : {
+    user.update({"employer._id" : id},{$set : {
         "employer.$.empname": req.body.empname,
         "employer.$.contact": req.body.contact,
         "employer.$.altemail": req.body.altemail,

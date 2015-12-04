@@ -92,7 +92,10 @@
                         <h3><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> All Agents</h3>
                         <p>
                         <% users.forEach(function(users) { %>
+                        <!--
                         <a href="/<%= user._id %>/<%= users._id %>/<%= users.local.firstName %>/<%= users.local.lastName %>"><%= users.local.firstName + " " + users.local.lastName %></a> <br>
+                        -->
+                        <p><%= users.local.firstName + " " + users.local.lastName %></p>
                         <% }); %>
                         </p>
                     </div>
