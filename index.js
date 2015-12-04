@@ -256,14 +256,7 @@ app.post('/search', isLoggedIn, function(req, res) {
         .sort({ score : { $meta : 'textScore' } })
         .exec(function(err, results) {
             if (err) {
-                function(req, res) {
-                    console.log(req.user.local.role);
-                    if (req.user.local.role == "agent") {
-                        res.redirect('/agentDashboard');
-                    } else if (req.user.local.role == "admin") {
-                        res.redirect('/adminDashboard');
-                    }
-                }
+                res.redirect('/agentDashboard');
             }
             else if (results) {
                 res.render('pages/search', {
@@ -271,14 +264,7 @@ app.post('/search', isLoggedIn, function(req, res) {
                 });
             }
             else {
-                function(req, res) {
-                    console.log(req.user.local.role);
-                    if (req.user.local.role == "agent") {
-                        res.redirect('/agentDashboard');
-                    } else if (req.user.local.role == "admin") {
-                        res.redirect('/adminDashboard');
-                    }
-                }
+                res.redirect('/agentDashboard');
             }
     });
 });
