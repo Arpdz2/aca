@@ -1452,101 +1452,2233 @@ exports.convertDate = function(string) {
 #### agentDashboard.ejs
 
 ```sh
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <% include ../partials/header.ejs %></head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="/js/setloginsession.js"> </script>
+<style>
+    iframe {
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 400px;
+        width: 100%;
+    }
+</style>
+<body>
+    <div class="page-wrapper">
+        <% include ../partials/nav.ejs %>
+        <div class="container">
+
+            <div class="page-header text-center">
+                <h1><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Agent Dashboard</h1>
+            </div>
+            <div class="row">
+                <!-- LOCAL INFORMATION -->
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h3><span class="fa fa-user"></span> Agent Info</h3>
+                        <p>
+                            <strong>Agent ID</strong>: <%= user._id %><br>
+                            <strong>Name</strong>: <%= user.local.firstName %> <%= user.local.lastName %><br>
+                            <strong>E-mail</strong>: <%= user.local.email %>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h3><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Agent Cases</h3>
+                        <p>
+                        <% user.employer.forEach(function(employer) { %>
+                        <a href="/<%= user._id %>/<%= employer._id %>"><%= employer.empname %></a>   <br>
+                        <% }); %>
+                        </p>
+                        <p>
+                            <a href="/profile/case" class="btn btn-default"> Add New Case</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h3><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Calendar</h3>
+                        <p>
+                            <iframe src="https://calendar.google.com/calendar/embed?src=acainsuresme%40gmail.com&ctz=America/Chicago" style="border: 0" frameborder="0" scrolling="yes"></iframe>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h3><span class="glyphicon glyphicon-search" aria-hidden="true"></span>Employee Search</h3>
+                        <p>
+                        <form class="form-inline" action="/search" method="post">
+                            <div class="form-group">
+                                <input type="search" name="search" class="form-control" id="search">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-default">Search</button>
+                            </div>
+                        </form>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% include ../partials/footer.ejs %>
+
+</body>
+</html>
 ```
 
 #### case.ejs
 
 ```sh
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../partials/header.ejs %>
+</head>
+
+<body>
+
+    <div class="page-wrapper">
+        <% include ../partials/nav.ejs %>
+        <div class="container">
+            <div class="well">
+            <div style="padding-top: 99px; text-align: center;">
+                <form class="form-horizontal" action="/profile/case" method="post">
+                    <div class="form-group">
+                        <label for="firstName" class="col-sm-2 control-label">Employer Name:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="empname" id="empname" placeholder="Employer Name" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactName" class="col-sm-2 control-label">Contact Name:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="contact" id="contact" placeholder="Contact Name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="altcontactName" class="col-sm-2 control-label">Alternate Contact Name:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="altcontact" id="altcontact" placeholder="Alternate Contact Name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="altcontactEmail" class="col-sm-2 control-label">Alternate Contact Email:</label>
+                        <div class="col-sm-10">
+                            <input type="email" class="form-control" name="altemail" id="altemail" placeholder="Alternate Contact Email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="streetAddress" class="col-sm-2 control-label">Street Address:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="streetaddress" id="streetaddress" placeholder="Street Address">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="city" class="col-sm-2 control-label">City:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="city" id="city" placeholder="City">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="state" class="col-sm-2 control-label">State:</label>
+                        <div class="col-sm-10">
+                            <select name="state" id="state" class="form-control">
+                                <option value="AL">AL</option>
+                                <option value="AK">AK</option>
+                                <option value="AZ">AZ</option>
+                                <option value="AR">AR</option>
+                                <option value="CA">CA</option>
+                                <option value="CO">CO</option>
+                                <option value="CT">CT</option>
+                                <option value="DE">DE</option>
+                                <option value="DC">DC</option>
+                                <option value="FL">FL</option>
+                                <option value="GA">GA</option>
+                                <option value="HI">HI</option>
+                                <option value="ID">ID</option>
+                                <option value="IL">IL</option>
+                                <option value="IN">IN</option>
+                                <option value="IA">IA</option>
+                                <option value="KS">KS</option>
+                                <option value="KY">KY</option>
+                                <option value="LA">LA</option>
+                                <option value="ME">ME</option>
+                                <option value="MD">MD</option>
+                                <option value="MA">MA</option>
+                                <option value="MI">MI</option>
+                                <option value="MN">MN</option>
+                                <option value="MS">MS</option>
+                                <option value="MO">MO</option>
+                                <option value="MT">MT</option>
+                                <option value="NE">NE</option>
+                                <option value="NV">NV</option>
+                                <option value="NH">NH</option>
+                                <option value="NJ">NJ</option>
+                                <option value="NM">NM</option>
+                                <option value="NY">NY</option>
+                                <option value="NC">NC</option>
+                                <option value="ND">ND</option>
+                                <option value="OH">OH</option>
+                                <option value="OK">OK</option>
+                                <option value="OR">OR</option>
+                                <option value="PA">PA</option>
+                                <option value="RI">RI</option>
+                                <option value="SC">SC</option>
+                                <option value="SD">SD</option>
+                                <option value="TN">TN</option>
+                                <option value="TX">TX</option>
+                                <option value="UT">UT</option>
+                                <option value="VT">VT</option>
+                                <option value="VA">VA</option>
+                                <option value="WA">WA</option>
+                                <option value="WV">WV</option>
+                                <option value="WI">WI</option>
+                                <option value="WY">WY</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="zipCode" class="col-sm-2 control-label">Zip Code:</label>
+                        <div class="col-sm-10">
+                            <input type="text" pattern="\d{5}-?(\d{4})?" class="form-control" name="zipcode" id="zipcode" placeholder="##### or #####-####">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneNumber" class="col-sm-2 control-label">Phone Number:</label>
+                        <div class="col-sm-10">
+                            <input type="tel" pattern="\d{3}-\d{3}-\d{4}" class="form-control" name="phonenumber" id="phonenumber" placeholder="###-###-####">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="emailAddress" class="col-sm-2 control-label">Employer E-mail Address:</label>
+                        <div class="col-sm-10">
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Employer E-mail Address" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-10">
+                            <input type="checkbox"  name="payroll" id="payroll" value="True"> Payroll Deposit &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox"  name="dental" id="dental" value="True"> Dental Plan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox"  name="cashadvantage" id="cashadvantage" value="True"> Cash Advantage Plan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox"  name="vision" id="vision" value="True"> Vision Plan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="comments" class="col-sm-2 control-label">Comments:</label>
+                        <div class="col-sm-10">
+                            <textarea type="text" class="form-control" name="comments" id="comments" placeholder="Enter comments here!" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" value="submit" class="btn btn-success">Submit</button>
+                            <button type="reset" class="btn btn-danger">Reset</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    <% include ../partials/footer.ejs %>
+
+
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/common-files/js/jquery-1.10.2.min.js"></script>
+<script src="/flat-ui/js/bootstrap.min.js"></script>
+<script src="/common-files/js/modernizr.custom.js"></script>
+<script src="/common-files/js/jquery.scrollTo-1.4.3.1-min.js"></script>
+<script src="/common-files/js/jquery.parallax.min.js"></script>
+<script src="/common-files/js/startup-kit.js"></script>
+<script src="/common-files/js/jquery.backgroundvideo.min.js"></script>
+<script src="/js/script.js"></script>
+
+
+</body>
+</html>
 ```
 
 #### confirm.ejs
 
 ```sh
+<form action="/confirm" method="post">
+<div class="form-group">
+    <label>Please enter your employer password <br></label>
+    <input type="password" class="form-control" name="password" required>
+</div>
+</form>
 ```
 
 #### contact.ejs
 
 ```sh
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../partials/header.ejs %>
+    <script src="/js/forcehttps.js"> </script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <% include ../partials/nav.ejs %>
+        <div class="container">
+            <div style="padding-top: 99px; text-align: center;">
+                <form class="form-horizontal" action="/submitContactForm/" method="post">
+                    <div class="form-group">
+                        <label for="firstName" class="col-sm-2 control-label">First Name:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First Name" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName" class="col-sm-2 control-label">Last Name:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last Name" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="company" class="col-sm-2 control-label">Company Name:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="company" id="company" placeholder="Company Name" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="emailAddress" class="col-sm-2 control-label">E-mail Address:</label>
+                        <div class="col-sm-10">
+                            <input type="email" class="form-control" name="emailAddress" id="emailAddress" placeholder="E-mail Address" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneNumber" class="col-sm-2 control-label">Phone Number:</label>
+                        <div class="col-sm-10">
+                            <input type="tel" class="form-control" pattern="\d{3}-\d{3}-\d{4}" name="phoneNumber" id="phoneNumber" placeholder="###-###-####" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="comments" class="col-sm-2 control-label">Comments:</label>
+                        <div class="col-sm-10">
+                            <textarea type="text" class="form-control" name="comments" id="comments" placeholder="Enter comments here!" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" value="submit" class="btn btn-success">Submit</button>
+                            <button type="reset" class="btn btn-danger">Reset</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <% include ../partials/footer.ejs %>
+
+
+</body>
+</html>
 ```
 
 #### db.ejs
 
 ```sh
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+
+<% include ../partials/nav.ejs %>
+
+<div class="container">
+<h2>Database Results</h2>
+
+<ul>
+    <% results.forEach(function(r) { %>
+        <li><%= r.id %> - <%= r.name %></li>
+    <% }); %>
+</ul>
+
+</div>
+
+</body>
+</html>
 ```
 
 #### employee.ejs
 
 ```sh
+<p>
+    <% user.employer.forEach(function(employer) { %>
+    <%if (employer._id == emp) { %>
+    New employee account created! with an agent id of <%= user.id %> and an employer id of
+    <%= employer._id %><br>
+
+</p>
+
+<br><br>
+
+<a href="/<%= user._id %>/<%= employer._id %>" class="btn btn-default"></span> Back to Employer Page</a>
+<% } %>
+<% }); %>
 ```
 
 #### employer.ejs
 
 ```sh
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../partials/header.ejs %></head>
+
+<body>
+<link rel="stylesheet" href="/stylesheets/popup.css">
+<% user.employer.forEach(function(employer) { %>
+<%if (employer._id == page) { %>
+<div id="abc" style="display: none;">
+    <!-- Popup Div Starts Here -->
+    <div id="popupContact">
+        <!-- Contact Us Form -->
+        <form class="form-horizontal" action="/update/<%= user._id%>/<%= employer._id%>" method="post">
+            <img id="close" src="/img/close.png" onclick ="div_hide()">
+            <h2 style="text-align:center;">Update Info</h2> <br>
+                <div class="form-group">
+                    <label for="firstName" class="col-sm-2 control-label">Employer Name:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="empname" id="empname" placeholder="Employer Name" value="<%= employer.empname%>" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="contactName" class="col-sm-2 control-label">Contact Name:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="contact" id="contact" value="<%= employer.contact%>" placeholder="Contact Name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="altcontactName" class="col-sm-2 control-label">Alternate Contact Name:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="altcontact" id="altcontact" value="<%= employer.altcontact%>" placeholder="Alternate Contact Name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="altcontactEmail" class="col-sm-2 control-label">Alternate Contact Email:</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control" name="altemail" id="altemail" value="<%= employer.altemail%>" placeholder="Alternate Contact Email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="streetAddress" class="col-sm-2 control-label">Street Address:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="streetaddress" id="streetaddress" placeholder="Street Address" value="<%= employer.streetaddress%>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="city" class="col-sm-2 control-label">City:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="city" id="city" placeholder="City" value="<%= employer.city%>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="state" class="col-sm-2 control-label">State:</label>
+                    <div class="col-sm-10">
+                        <select name="state" id="state" class="form-control">
+                            <option value="AL" <%= (employer.state == 'AL')?'selected':'' %> >AL </option>
+                            <option value="AK" <%= (employer.state == 'AK')?'selected':'' %> >AK </option>
+                            <option value="AZ" <%= (employer.state == 'AZ')?'selected':'' %> >AZ </option>
+                            <option value="AR" <%= (employer.state == 'AR')?'selected':'' %> >AR</option>
+                            <option value="CA" <%= (employer.state == 'CA')?'selected':'' %> >CA</option>
+                            <option value="CO" <%= (employer.state == 'CO')?'selected':'' %> >CO</option>
+                            <option value="CT" <%= (employer.state == 'CT')?'selected':'' %> >CT</option>
+                            <option value="DE" <%= (employer.state == 'DE')?'selected':'' %> >DE</option>
+                            <option value="FL" <%= (employer.state == 'FL')?'selected':'' %> >FL</option>
+                            <option value="GA" <%= (employer.state == 'GA')?'selected':'' %> >GA</option>
+                            <option value="HI" <%= (employer.state == 'HI')?'selected':'' %> >HI</option>
+                            <option value="ID" <%= (employer.state == 'ID')?'selected':'' %> >ID</option>
+                            <option value="IL" <%= (employer.state == 'IL')?'selected':'' %> >IL</option>
+                            <option value="IN" <%= (employer.state == 'IN')?'selected':'' %> >IN</option>
+                            <option value="IA" <%= (employer.state == 'IA')?'selected':'' %> >IA</option>
+                            <option value="KS" <%= (employer.state == 'KS')?'selected':'' %> >KS</option>
+                            <option value="KY" <%= (employer.state == 'KY')?'selected':'' %> >KY</option>
+                            <option value="LA" <%= (employer.state == 'LA')?'selected':'' %> >LA</option>
+                            <option value="ME" <%= (employer.state == 'ME')?'selected':'' %> >ME</option>
+                            <option value="MD" <%= (employer.state == 'MD')?'selected':'' %> >MD</option>
+                            <option value="MA" <%= (employer.state == 'MA')?'selected':'' %> >MA</option>
+                            <option value="MI" <%= (employer.state == 'MI')?'selected':'' %> >MI</option>
+                            <option value="MN" <%= (employer.state == 'MN')?'selected':'' %> >MN</option>
+                            <option value="MS" <%= (employer.state == 'MS')?'selected':'' %> >MS</option>
+                            <option value="MO" <%= (employer.state == 'MO')?'selected':'' %> >MO</option>
+                            <option value="MT" <%= (employer.state == 'MT')?'selected':'' %> >MT</option>
+                            <option value="NE" <%= (employer.state == 'NE')?'selected':'' %> >NE</option>
+                            <option value="NV" <%= (employer.state == 'NV')?'selected':'' %> >NV</option>
+                            <option value="NH" <%= (employer.state == 'NH')?'selected':'' %> >NH</option>
+                            <option value="NJ" <%= (employer.state == 'NJ')?'selected':'' %> >NJ</option>
+                            <option value="NM" <%= (employer.state == 'NM')?'selected':'' %> >NM</option>
+                            <option value="NY" <%= (employer.state == 'NY')?'selected':'' %> >NY</option>
+                            <option value="NC" <%= (employer.state == 'NC')?'selected':'' %> >NC</option>
+                            <option value="ND" <%= (employer.state == 'ND')?'selected':'' %> >ND</option>
+                            <option value="OH" <%= (employer.state == 'OH')?'selected':'' %> >OH</option>
+                            <option value="OK" <%= (employer.state == 'OK')?'selected':'' %> >OK</option>
+                            <option value="OR" <%= (employer.state == 'OR')?'selected':'' %> >OR</option>
+                            <option value="PA" <%= (employer.state == 'PA')?'selected':'' %> >PA</option>
+                            <option value="RI" <%= (employer.state == 'RI')?'selected':'' %> >RI</option>
+                            <option value="SC" <%= (employer.state == 'SC')?'selected':'' %> >SC</option>
+                            <option value="SD" <%= (employer.state == 'SD')?'selected':'' %> >SD</option>
+                            <option value="TN" <%= (employer.state == 'TN')?'selected':'' %> >TN</option>
+                            <option value="TX" <%= (employer.state == 'TX')?'selected':'' %> >TX</option>
+                            <option value="UT" <%= (employer.state == 'UT')?'selected':'' %> >UT</option>
+                            <option value="VT" <%= (employer.state == 'VT')?'selected':'' %> >VT</option>
+                            <option value="VA" <%= (employer.state == 'VA')?'selected':'' %> >VA</option>
+                            <option value="WA" <%= (employer.state == 'WA')?'selected':'' %> >WA</option>
+                            <option value="WV" <%= (employer.state == 'WV')?'selected':'' %> >WV</option>
+                            <option value="WI" <%= (employer.state == 'WI')?'selected':'' %> >WI</option>
+                            <option value="WY" <%= (employer.state == 'WY')?'selected':'' %> >WY</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="zipCode" class="col-sm-2 control-label">Zip Code:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" pattern="\d{5}-?(\d{4})?" name="zipcode" id="zipcode" placeholder="##### or #####-####" value="<%= employer.zipcode%>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber" class="col-sm-2 control-label">Phone Number:</label>
+                    <div class="col-sm-10">
+                        <input type="tel" class="form-control" pattern="\d{3}-\d{3}-\d{4}" name="phonenumber" id="phonenumber" placeholder="###-###-####" value="<%= employer.phonenumber%>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="emailAddress" class="col-sm-2 control-label">Employer E-mail Address:</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Employer E-mail Address" value="<%= employer.email%>" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="comments" class="col-sm-2 control-label">Comments:</label>
+                    <div class="col-sm-10">
+                        <textarea type="text" class="form-control" name="comments" id="comments" placeholder="Enter comments here!"  rows="3"><%=employer.comments%></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" value="submit" class="btn btn-success">Submit</button>
+                        <button type="reset" class="btn btn-danger">Reset</button>
+                    </div>
+                </div>
+            </form>
+    </div>
+    <!-- Popup Div Ends Here -->
+</div>
+    <div class="page-wrapper">
+        <% include ../partials/nav.ejs %>
+        <div class="container">
+            <br>
+            <ul class="nav nav-tabs nav-justified">
+                <li role="presentation"><button onclick="goBack()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back</button></li>
+            </ul>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h2>Employer Data</h2>
+                        <p>
+                            <strong>Employer Id</strong>: <%= employer._id %><br>
+                            <strong>Employer Name</strong>: <%= employer.empname %><br>
+                            <strong>Contact Name</strong>: <%= employer.contact %><br>
+                            <strong>Alternate Contact</strong>: <%= employer.altcontact %><br>
+                            <strong>Alternate Contact Email</strong>: <%= employer.altemail %><br>
+                            <strong>Street Address</strong>: <%= employer.streetaddress %><br>
+                            <strong>City</strong>: <%= employer.city %><br>
+                            <strong>State</strong>: <%= employer.state %><br>
+                            <strong>Zip Code</strong>: <%= employer.zipcode %><br>
+                            <strong>Phone Number</strong>: <%= employer.phonenumber %><br>
+                            <strong>Email</strong>: <%= employer.email %><br>
+                            <strong>Payroll Deposit</strong>: <%= employer.payroll %><br>
+                            <strong>Dental Plan</strong>: <%= employer.dental %><br>
+                            <strong>Cash Advantage Plan</strong>: <%= employer.cashadvantage %><br>
+                            <strong>Vision Plan</strong>: <%= employer.vision %><br>
+                            <strong>Comments</strong>: <%= employer.comments %><br>
+                            <!--
+                            <a href="/agentDashboard" class="btn btn-default"> Back to Agent Dashboard</a>
+                            -->
+                            <br>
+                            <center>
+                                <a id="send-email" href="/<%= employer.empname %>/sendemail/<%= user._id %>/<%= employer._id %>/<%= employer.email%>/<%= employer.altemail%>" class="btn btn-info"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Send Registration Info</a>
+                                <a href="/delete" name="delete" class="btn btn-danger" disabled><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete Record</a>
+                                <a onclick="div_show()" class="btn btn-info"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Update Info </a>
+                            </center>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h2>Employee Data</h2>
+                        <p>
+                            <p>
+                                <% emp.forEach(function(employee) { %>
+                                <%if (employer._id == employee.employerid && user._id == employee.agentid) { %>
+                                <strong>Name</strong>:  <a href="/employee/pdf/generator/<%= employee._id %>"><%= employee.firstname %>&nbsp;<%= employee.lastname%> </a> <br>
+                                <% } %>
+                                <% }); %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="nav nav-tabs nav-justified">
+                <li role="presentation"><button onclick="goBack()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back</button></li>
+            </ul>
+        </div>
+    </div>
+    <!--
+    <h2><strong>Employee Signup Link</strong>: <%= url %> </h2>
+    -->
+<% } %>
+<% }); %>
+    <% include ../partials/footer.ejs %>
+
+    <script type="text/javascript">
+        var elems = document.getElementsByName('delete');
+        var confirmIt = function (e) {
+            if (!confirm('Are you sure you want to delete this employer account?')) e.preventDefault();
+        };
+        for (var i = 0, l = elems.length; i < l; i++) {
+            elems[i].addEventListener('click', confirmIt, false);
+        }
+    </script>
+    <script>
+        function div_show() {
+            document.getElementById('abc').style.display = "block";
+        }
+        function div_hide(){
+            document.getElementById('abc').style.display = "none";
+        }
+    </script>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>
 ```
 
 #### healthplan.ejs
 
 ```sh
+<!DOCTYPE html>
+<html>
+    <head>
+        <% include ../partials/header.ejs %>
+    </head>
+    <body>
+
+    <div class="page-wrapper">
+        <% include ../partials/nav.ejs %>
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <img src="../../img/7815141.jpg" alt="" style="padding-top:60px;">
+                    </div>
+                    <div class="col-sm-6">
+                        <h1>A better way to control your healthcare costs.</h1>
+                        <p>The HAP plan uses a combination of core health insurance, education, and supplemental coverage to create a turn-key solution that will <u>drive down the cost</u> of premiums for employers and give employees more <u>needed</u> benefits.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h1>Plan Features</h1>
+                        <p>
+                            <ul>
+                                <li>Average $200 in savings per month per employee</li>
+                                <li>Low fixed individual cost to employer</li>
+                                <li>No annual increases for the employer</li>
+                                <li>Pre-tax option to offset employer contribution</li>
+                                <li>Individually Personalized Health Insurance</li>
+                                <li>National and Regional provider networks</li>
+                                <li>$5000 payable upon cancer diagnosis</li>
+                                <li>$1000/Day Hospital Confinement benefit for up to 30 days</li>
+                                <li>Up to $10,000 critical illness benefit</li>
+                                <li>One-on-One Benefits communication & education</li>
+                                <li>Full Service Payroll Administration</li>
+                                <li>One Monthly Bill!</li>
+                            </ul>
+                        </p>
+                    </div>
+                    <div class="col-sm-4">
+                        <img src="../../img/463389.png" alt="" style="padding-top:60px;">
+                        <p>
+                            <center>
+                                <small>Monthly and annual employer savings.</small>
+                            </center>
+                        </p>
+                        <p>
+                            <center>
+                                <em>A small business having a profit margin of 32% with 20 employees on the HAP plan would be the equivalent of $101,250 in sales annually.</em>
+                            </center>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-10">
+                        <h1>Retain capital while retaining your employees.</h1>
+                        <p>With constant change in health care it is hard for small business owners to keep up. The <strong>HAP</strong> produces a <strong>hands-off</strong> approach for small business owners and puts all the questions and concerns of the employees in our hands. We are here to get you “out of the insurance business” and give you more needed time to grow your business and overall, increase <strong>profitability.</strong></p>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+        </section>
+    </div>
+    <div><div id="968244701478285836" align="center" style="width: 100%; overflow-y: hidden; margin-bottom: 30px;" class="wcustomhtml"><script id="setmore_script" type="text/javascript" src="https://my.setmore.com/js/iframe/setmore_iframe.js"></script><a id="Setmore_button_iframe" style="float:none" href="https://my.setmore.com/shortBookingPage/52b3edf9-5324-4ef0-bcae-4e25f31281ff"><img border="none" src="https://my.setmore.com/images/bookappt/SetMore-book-button.png" alt="Book an appointment with ACA Insurance Group using SetMore" /></a>
+        </div>
+
+
+        <% include ../partials/footer.ejs %>
+
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    </body>
+</html>
 ```
 
 #### index.ejs
 
 ```sh
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+    <div class="page-wrapper-index">
+        <% include ../partials/nav.ejs %>
+        <section class="header-10-sub v-center">
+            <div class="background">
+                &nbsp;
+            </div>
+            <div>
+                <div class="container">
+                    <div class="hero-unit">
+                        <h1>Your path to peace of mind.</h1>
+                        <p>
+                            Our proven benefit packages can help you
+                            <br/>
+                            through today's benefit twists and turns...
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <a class="control-btn fui-arrow-down" href="#"> </a>
+        </section>
+
+        <!-- content-7  -->
+        <section class="content-7 v-center">
+            <div>
+
+                <div class="container">
+                    <h3>We are not your normal brokerage.</h3>
+
+                    <div class="row v-center">
+                        <div class="col-sm-3">
+                            <div>
+                                ACA takes the time to find the best and most affordable packages for your business.
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="col-sm-offset-1">
+                                <div class="screen-wrapper">
+                                    <img src="../../common-files/img/content/offer.jpg" alt="">
+                                    <!--
+                                    <div class="screen">
+                                        <img src="../../common-files/img/content/offer.jpg" alt="">
+                                    </div>
+                                    -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="col-sm-offset-2">
+                                <h6>Save Time</h6>
+                                Our goal is to save you one of the most valuable resources, time. We take the benefit management process out of your hands and let you get back to building your business.
+                                <h6>Provide Solutions</h6>
+                                With our turn-key solutions we put much needed capital back in the hands of the small business owner and their employees.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- content-23  -->
+        <!--
+        <section class="content-23 bg-midnight-blue custom-bg">
+            <div class="holder v-center">
+                <div>
+                    <div class="container">
+                        <div class="hero-unit hero-unit-bordered">
+                            <h1>Let us be your Affordable Care Associates</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="control-btn fui-arrow-down" href="#"> </a>
+        </section>
+        -->
+
+        <!-- content-8  -->
+        <!--
+        <section class="content-8 v-center">
+            <div>
+                <div class="container">
+                    <div class="img">
+                        <img src="../../common-files/img/content/offer.jpg" alt="">
+                    </div>
+                    <h3>Take a look at what we have to offer</h3>
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <p>We provide a wide array of solutions
+                            </p>
+                            <a class="btn btn-large btn-clear" href="#">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        -->
+
+        <!-- content-23  -->
+        <section class="content-23 bg-midnight-blue">
+            <div id="bgVideo" class="background"></div>
+            <div class="holder v-center">
+                <div>
+                    <div class="container">
+                        <div class="hero-unit">
+                            <h1>Find the perfect plans for
+                            <br class="hidden-phone">
+                            your insurance needs</h1>
+                        </div>
+                    </div>
+                </div>   
+            </div>
+            <a class="control-btn fui-arrow-down" href="#"> </a>
+        </section>
+
+        <!-- content-8  -->
+        <section class="content-8 v-center">
+            <div>
+                <div class="container">
+                    <div class="img second">
+                        <img alt="" src="img/aca380x187.png"/>
+                    </div>
+                    <h3>Learn more about our programs</h3>
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <p>
+                                We put big company benefits in place that were not offered before.
+                            </p>
+                            <a class="btn btn-large btn-clear" href="/contact">Learn More Now</a>
+                            <div><div id="968244701478285836" align="center" style="width: 100%; overflow-y: hidden; margin-top: 25px;" class="wcustomhtml"><script id="setmore_script" type="text/javascript" src="https://my.setmore.com/js/iframe/setmore_iframe.js"></script><a id="Setmore_button_iframe" style="float:none" href="https://my.setmore.com/shortBookingPage/52b3edf9-5324-4ef0-bcae-4e25f31281ff"><img border="none" src="https://my.setmore.com/images/bookappt/SetMore-book-button.png" alt="Book an appointment with ACA Insurance Group using SetMore" /></a>
+                                </div>
+
+
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <% include ../partials/footer.ejs %>
+
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/common-files/js/jquery-1.10.2.min.js"></script>
+    <script src="/flat-ui/js/bootstrap.min.js"></script>
+    <script src="/common-files/js/modernizr.custom.js"></script>
+    <script src="/common-files/js/jquery.scrollTo-1.4.3.1-min.js"></script>
+    <script src="/common-files/js/jquery.parallax.min.js"></script>
+    <script src="/common-files/js/startup-kit.js"></script>
+    <script src="/common-files/js/jquery.backgroundvideo.min.js"></script>
+    <script src="/js/script.js"></script>
+
+</body>
+</html>
 ```
 
 #### information.ejs
 
 ```sh
+<!DOCTYPE html>
+<html>
+    <head>
+        <% include ../partials/header.ejs %>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="/js/setloginsession.js"> </script>
+        <style>
+            div#signature_container canvas,
+            div#signature_container img
+            {
+                border:dashed 1px #CCCCCC;
+            }
+            #wrapperr {
+                margin: auto;
+                width: 50%;
+            }
+            #myImage{
+                display:block;
+                margin:auto;
+            }
+            #loading{
+                text-align: center;
+            }
+            #info {
+                text-align: center;
+            }
+            .form-group.required .control-label:after {
+                content:"*";
+                color:red;
+            }
+        </style>
+    </head>
+    <body>
+        <div  class="page-wrapper">
+            <div id="my-modal" style="display: none; margin-top: 160px;" class="modal fade in">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button id="closemodal" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Save Successful!</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>All your information has been saved, and you can check the information below for accuracy.<br><br>
+                            Your agent will be contacting you for further updates. <br><br>
+                            Thank you!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% include ../partials/nav.ejs %>
+            <!--<div id = "wrapperr" class="well"> <img id = "myImage" src ="/img/ajax_loader.gif" > <br><br><br> <h3 id="loading"> Ensuring a secure connection...</h3></div>-->
+            <div id = "wholepage" class="container">
+                <div class="page-header text-center">
+                    <% user.employer.forEach(function(employer) { %>
+                    <%if (employer._id == employerid) { %>
+                    <h1>Employee Profile Page</h1>
+                    <h3>Employer: <%= employer.empname %></h3>
+                </div>
+                <div class="row">
+                    <!--<div class="col-sm-6">-->
+                        <div id= "info" class="well">
+                            <h4><%= employee.email%> <br></h4>
+                            <p>
+                                Your coverage: <br>
+
+
+                                <% if (employer.payroll == "True") { %>
+                                Payroll Deposit <br>
+                                <% } %>
+                                <% if (employer.dental == "True") { %>
+                                Dental Plan <br>
+                                <% } %>
+                                <% if (employer.cashadvantage == "True") { %>
+                                Cash Advantage Plan <br>
+                                <% } %>
+                                <% if (employer.vision == "True") { %>
+                                Vision Plan <br>
+                                <% } %>
+                            <p>
+                        </div>
+                    </div>
+                    <!--<div class="col-sm-6">-->
+
+                        <div class="well">
+                            <form class="form-horizontal" method="post">
+                                <div class="row" style="margin: auto;">
+                                    <button type="submit" value="submit" class="btn btn-success">Save</button>
+                                </div>
+                                <div class="form-group required">
+                                <h5 style="text-align:center;">Primary</h5>
+                                    <label for="FirstName"  class="col-sm-2 control-label">First Name</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="FirstName" name="FirstName" type="text" class="required" title="First Name" placeholder="First Name" value="<%= employee.firstname %>"required>
+                                </div>
+                                </div>
+                                <div class="form-group required">
+                                    <label for="LastName"  class="col-sm-2 control-label">Last Name</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control"  id="LastName" name="LastName" type="text" class="required" title="Last Name" placeholder="Last Name" value="<%= employee.lastname %>"required>
+                                </div>
+                                </div>
+                                <div class="form-group required">
+                                    <fieldset>
+                                        <label for="GenderPrimary"  class="col-sm-2 control-label">Gender</label>
+                                        <div class="col-sm-10">
+                                            <span><input value="Male" id="Gender" name="Gender" type="radio" <%= (employee.gender == 'Male')?'checked="checked"':'' %>> <label for="GenderPrimary">Male</label></span>
+                                            <span><input value="Female" id="Gender" name="Gender" type="radio" <%= (employee.gender == 'Female')?'checked="checked"':'' %>> <label for="GenderPrimary">Female</label></span>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="form-group required">
+                                    <% if (employee.maritalstatus == "Single") { %>
+                                    <fieldset>
+                                        <div class="col-sm-12">
+                                        <label for="MaritalStatus"  class="col-sm-2 control-label"> Marital Status</label>
+                                        <span><input value="Single" id="MaritalStatus_21" name="MaritalStatus" type="radio" class="required" title="Single" checked="checked" required> <label for="MaritalStatus_21">Single</label></span>
+                                        <span><input value="Married" id="MaritalStatus_22" name="MaritalStatus" type="radio" class="required" title="Married" required> <label for="MaritalStatus_22">Married</label></span>
+                                        </div>
+                                    </fieldset>
+                                    <% } %>
+                                    <% if (employee.maritalstatus == "Married") { %>
+                                    <fieldset>
+                                        <div class="col-sm-12">
+                                        <label for="MaritalStatus"  class="col-sm-2 control-label">Marital Status</label>
+                                        <span><input  value="Single" id="MaritalStatus_21" name="MaritalStatus" type="radio" class="required" title="Single"  required> <label for="MaritalStatus_21">Single</label></span>
+                                        <span><input  value="Married" id="MaritalStatus_22" name="MaritalStatus" type="radio" class="required" title="Married" checked="checked" required> <label for="MaritalStatus_22">Married</label></span>
+                                        </div>
+                                    </fieldset>
+                                    <% } %>
+                                    <% if (employee.maritalstatus == null) { %>
+                                    <fieldset>
+                                        <div class="col-sm-12">
+                                        <label for="MaritalStatus"  class="col-sm-2 control-label">Marital Status</label>
+                                        <span><input value="Single" id="MaritalStatus_21" name="MaritalStatus" type="radio" class="required" title="Single"  required> <label for="MaritalStatus_21">Single</label></span>
+                                        <span><input value="Married" id="MaritalStatus_22" name="MaritalStatus" type="radio" class="required" title="Married" required> <label for="MaritalStatus_22">Married</label></span>
+                                        </div>
+                                    </fieldset>
+                                    <% } %>
+                                    </div>
+                                <div class="form-group">
+                                    <label for="SpouseFirstName" class="col-sm-2 control-label">Spouse First Name</label>
+                                    <div class="col-sm-10">
+                                    <input  class="form-control" id="SpouseFirstName" name="SpouseFirstName" type="text" placeholder="First Name" value="<%= employee.spousefirstname %>">
+                                </div>
+                                    </div>
+                                <div class="form-group">
+                                    <label for="SpouseLastName" class="col-sm-2 control-label">Spouse Last Name</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="SpouseLastName" name="SpouseLastName" type="text" placeholder="Last Name" value="<%= employee.spouselastname %>">
+                                    </div>
+                                </div>
+                                <div class="form-group required">
+                                    <label for="PhoneNumber" class="col-sm-2 control-label">Phone Number</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" pattern="\d{3}-\d{3}-\d{4}" id="PhoneNumber" name="PhoneNumber" type="tel" class="required" placeholder="###-###-####" value="<%= employee.phonenumber %>" required>
+                                    </div>
+                                </div>
+                                <div class="form-group required">
+                                    <label for="AlternatePhoneNumber" class="col-sm-2 control-label">Alternate Phone Number</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" pattern="\d{3}-\d{3}-\d{4}" id="AlternatePhoneNumber" name="AlternatePhoneNumber" type="tel" class="required" placeholder="###-###-####" value="<%= employee.altphonenumber %>" required>
+                                </div>
+                                    </div>
+                                <div class="form-group required">
+                                    <label for="Address" class="col-sm-2 control-label">Address</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="Address" name="Address" type="text" class="required" title="Address" placeholder="Address" value="<%= employee.address %>" required>
+                                </div>
+                                    </div>
+                                <div class="form-group required">
+                                    <label for="City" class="col-sm-2 control-label">City</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="City" name="City" type="text" class="required" title="City" placeholder="City" value="<%= employee.city %>" required>
+                                </div>
+                                </div>
+                                <div class="form-group required">
+                                    <label for="State" class="col-sm-2 control-label">State</label>
+                                    <div class="col-sm-10">
+                                    <select class="form-control" id="State" name="State" class="required" title="State" onload="myFunction();" required>
+                                        <option value="AL" <%= (employee.state == 'AL')?'selected':'' %> >AL </option>
+                                        <option value="AK" <%= (employee.state == 'AK')?'selected':'' %> >AK </option>
+                                        <option value="AZ" <%= (employee.state == 'AZ')?'selected':'' %> >AZ </option>
+                                        <option value="AR" <%= (employee.state == 'AR')?'selected':'' %> >AR</option>
+                                        <option value="CA" <%= (employee.state == 'CA')?'selected':'' %> >CA</option>
+                                        <option value="CO" <%= (employee.state == 'CO')?'selected':'' %> >CO</option>
+                                        <option value="CT" <%= (employee.state == 'CT')?'selected':'' %> >CT</option>
+                                        <option value="DE" <%= (employee.state == 'DE')?'selected':'' %> >DE</option>
+                                        <option value="FL" <%= (employee.state == 'FL')?'selected':'' %> >FL</option>
+                                        <option value="GA" <%= (employee.state == 'GA')?'selected':'' %> >GA</option>
+                                        <option value="HI" <%= (employee.state == 'HI')?'selected':'' %> >HI</option>
+                                        <option value="ID" <%= (employee.state == 'ID')?'selected':'' %> >ID</option>
+                                        <option value="IL" <%= (employee.state == 'IL')?'selected':'' %> >IL</option>
+                                        <option value="IN" <%= (employee.state == 'IN')?'selected':'' %> >IN</option>
+                                        <option value="IA" <%= (employee.state == 'IA')?'selected':'' %> >IA</option>
+                                        <option value="KS" <%= (employee.state == 'KS')?'selected':'' %> >KS</option>
+                                        <option value="KY" <%= (employee.state == 'KY')?'selected':'' %> >KY</option>
+                                        <option value="LA" <%= (employee.state == 'LA')?'selected':'' %> >LA</option>
+                                        <option value="ME" <%= (employee.state == 'ME')?'selected':'' %> >ME</option>
+                                        <option value="MD" <%= (employee.state == 'MD')?'selected':'' %> >MD</option>
+                                        <option value="MA" <%= (employee.state == 'MA')?'selected':'' %> >MA</option>
+                                        <option value="MI" <%= (employee.state == 'MI')?'selected':'' %> >MI</option>
+                                        <option value="MN" <%= (employee.state == 'MN')?'selected':'' %> >MN</option>
+                                        <option value="MS" <%= (employee.state == 'MS')?'selected':'' %> >MS</option>
+                                        <option value="MO" <%= (employee.state == 'MO')?'selected':'' %> >MO</option>
+                                        <option value="MT" <%= (employee.state == 'MT')?'selected':'' %> >MT</option>
+                                        <option value="NE" <%= (employee.state == 'NE')?'selected':'' %> >NE</option>
+                                        <option value="NV" <%= (employee.state == 'NV')?'selected':'' %> >NV</option>
+                                        <option value="NH" <%= (employee.state == 'NH')?'selected':'' %> >NH</option>
+                                        <option value="NJ" <%= (employee.state == 'NJ')?'selected':'' %> >NJ</option>
+                                        <option value="NM" <%= (employee.state == 'NM')?'selected':'' %> >NM</option>
+                                        <option value="NY" <%= (employee.state == 'NY')?'selected':'' %> >NY</option>
+                                        <option value="NC" <%= (employee.state == 'NC')?'selected':'' %> >NC</option>
+                                        <option value="ND" <%= (employee.state == 'ND')?'selected':'' %> >ND</option>
+                                        <option value="OH" <%= (employee.state == 'OH')?'selected':'' %> >OH</option>
+                                        <option value="OK" <%= (employee.state == 'OK')?'selected':'' %> >OK</option>
+                                        <option value="OR" <%= (employee.state == 'OR')?'selected':'' %> >OR</option>
+                                        <option value="PA" <%= (employee.state == 'PA')?'selected':'' %> >PA</option>
+                                        <option value="RI" <%= (employee.state == 'RI')?'selected':'' %> >RI</option>
+                                        <option value="SC" <%= (employee.state == 'SC')?'selected':'' %> >SC</option>
+                                        <option value="SD" <%= (employee.state == 'SD')?'selected':'' %> >SD</option>
+                                        <option value="TN" <%= (employee.state == 'TN')?'selected':'' %> >TN</option>
+                                        <option value="TX" <%= (employee.state == 'TX')?'selected':'' %> >TX</option>
+                                        <option value="UT" <%= (employee.state == 'UT')?'selected':'' %> >UT</option>
+                                        <option value="VT" <%= (employee.state == 'VT')?'selected':'' %> >VT</option>
+                                        <option value="VA" <%= (employee.state == 'VA')?'selected':'' %> >VA</option>
+                                        <option value="WA" <%= (employee.state == 'WA')?'selected':'' %> >WA</option>
+                                        <option value="WV" <%= (employee.state == 'WV')?'selected':'' %> >WV</option>
+                                        <option value="WI" <%= (employee.state == 'WI')?'selected':'' %> >WI</option>
+                                        <option value="WY" <%= (employee.state == 'WY')?'selected':'' %> >WY</option>
+                                    </select>
+                                </div>
+                                </div>
+                                <div class="form-group required">
+                                    <label for="Zip" class="col-sm-2 control-label">Zip</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="Zip" name="Zip" type="text" pattern="\d{5}-?(\d{4})?" class="required" title="Zip" placeholder="##### or #####-####" value="<%= employee.zip %>" required>
+                                </div>
+                                </div>
+                                <div class="form-group required">
+                                    <label for="Email" class="col-sm-2 control-label">Email</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="Email" name="Email" type="email" class="required" title="Email" placeholder="Email" value="<%= employee.email %>" readonly>
+                                </div>
+                                    </div>
+                                <div class="form-group required">
+                                    <label for="BirthDate" class="col-sm-2 control-label">Birth Date</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="BirthDate" name="BirthDate" pattern="\d{4}-\d{2}-\d{2}" placeholder="YYYY-MM-DD" type="date" class="required" title="Birth Date" value="<%= employee.birthdate %>" required>
+                                </div>
+                                </div>
+                                <div class="form-group required">
+                                    <label for="NumberofPeopleThatNeedCoverage" class="col-sm-2 control-label">Number of People That Need Coverage</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="NumberofPeopleThatNeedCoverage" name="NumberofPeopleThatNeedCoverage" type="number" class="required" title="Number of People That Need Coverage" placeholder="0" value="<%= employee.coveragenumber %>"required>
+                                </div>
+                                </div>
+                                    <div class="form-group required">
+                                    <label for="PrimarySocialSecurity" class="col-sm-2 control-label">Primary Social Security #</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="PrimarySocialSecurity" pattern="\d{3}-\d{2}-\d{4}" name="PrimarySocialSecurity" type="text" class="required" title="Primary Social Security #" placeholder="###-##-####" value="<%= employee.ss %>"required>
+                                </div>
+                                    </div>
+                            <div id="Dependent1div">
+                                <div class="form-group">
+                                    <h5 style="text-align:center;">Dependent 1</h5>
+                                    <label for="Dependent1FirstName" class="col-sm-2 control-label">Dependent 1 First Name</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="Dependent1FirstName" name="Dependent1FirstName" value="<%= employee.d1firstname %>" type="text">
+                                </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Dependent1LastName" class="col-sm-2 control-label">Dependent 1 Last Name</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="Dependent1LastName" name="Dependent1LastName" value="<%= employee.d1lastname %>" type="text">
+                                </div>
+                                    </div>
+                                <div class="form-group">
+                                    <label for="Dependent1BirthDate" class="col-sm-2 control-label">Dependent 1 Birth Date </label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="Dependent1BirthDate" pattern="\d{4}-\d{2}-\d{2}" placeholder="YYYY-MM-DD" name="Dependent1BirthDate" value="<%= employee.d1birthdate %>"type="date">
+                                </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Dependent1SocialSecurity#"  class="col-sm-2 control-label">Dependent 1 Social Security #</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" pattern="\d{3}-\d{2}-\d{4}" placeholder= "###-##-####" id="Dependent1SocialSecurity#" value="<%= employee.d1ss %>" name="Dependent1SocialSecurity" type="text">
+                                </div>
+                                </div>
+                                <div class="form-group">
+                                    <fieldset>
+                                        <label for="Dependent1Gender"  class="col-sm-2 control-label">Dependent 1 Gender</label>
+                                        <div class="col-sm-10">
+                                        <span><input value="Male" id="Dependent1Gender" <%= (employee.d1gender == 'Male')?'checked="checked"':'' %> name="Dependent1Gender" type="radio"> <label for="Dependent1Gender">Male</label></span>
+                                        <span><input value="Female" id="Dependent1Gender" <%= (employee.d1gender == 'Female')?'checked="checked"':'' %> name="Dependent1Gender" type="radio"> <label for="Dependent1Gender">Female</label></span>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="form-group">
+                                    <span><label for="Dependent1NeedsCoverage" class="col-sm-2 control-label">Dependent 1 Needs Coverage</label></span>
+                                    <div class="col-sm-10">
+                                    <input  id="Dependent1NeedsCoverage" name="Dependent1NeedsCoverage" <%= (employee.d1coverage == 'on')?'checked="checked"':'' %> type="checkbox">
+                                </div>
+                                    </div>
+                            </div>
+                                <input type="button" id="dependent2button" value="add/show next dependent" onclick="showDependent2()" />
+                            <div id="Dependent2div" style="display: none">
+                                <div class="form-group">
+                                    <h5 style="text-align:center;">Dependent 2</h5>
+                                    <label for="Dependent2FirstName" class="col-sm-2 control-label">Dependent 2 First Name</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="Dependent2FirstName" value="<%= employee.d2firstname %>" name="Dependent2FirstName" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Dependent2LastName" class="col-sm-2 control-label">Dependent 2 Last Name</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="Dependent2LastName" value="<%= employee.d2lastname %>" name="Dependent2LastName" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Dependent2BirthDate" class="col-sm-2 control-label">Dependent 2 Birth Date </label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="Dependent2BirthDate" pattern="\d{4}-\d{2}-\d{2}" placeholder="YYYY-MM-DD" value="<%= employee.d2birthdate %>" name="Dependent2BirthDate" type="date">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Dependent2SocialSecurity#"  class="col-sm-2 control-label">Dependent 2 Social Security #</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" pattern="\d{3}-\d{2}-\d{4}" placeholder= "###-##-####" id="Dependent2SocialSecurity#" value="<%= employee.d2ss %>" name="Dependent2SocialSecurity" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <fieldset>
+                                        <label for="Dependent2Gender"  class="col-sm-2 control-label">Dependent 2 Gender</label>
+                                        <div class="col-sm-10">
+                                            <span><input value="Male" id="Dependent2Gender" <%= (employee.d2gender == 'Male')?'checked="checked"':'' %> name="Dependent2Gender" type="radio"> <label for="Dependent2Gender">Male</label></span>
+                                            <span><input value="Female" id="Dependent2Gender" <%= (employee.d2gender == 'Female')?'checked="checked"':'' %> name="Dependent2Gender" type="radio"> <label for="Dependent2Gender">Female</label></span>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="form-group">
+                                    <span><label for="Dependent2NeedsCoverage" class="col-sm-2 control-label">Dependent 2 Needs Coverage</label></span>
+                                    <div class="col-sm-10">
+                                        <input  id="Dependent2NeedsCoverage" name="Dependent2NeedsCoverage" <%= (employee.d2coverage == 'on')?'checked="checked"':'' %> type="checkbox">
+                                    </div>
+                                </div>
+                            </div>
+                                <input type="button" id="dependent3button" value="add/show next dependent" style="display: none" onclick="showDependent3()" />
+                            <div id="Dependent3div" style="display: none">
+                                <div class="form-group">
+                                    <h5 style="text-align:center;">Dependent 3</h5>
+                                    <label for="Dependent3FirstName" class="col-sm-2 control-label">Dependent 3 First Name</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="Dependent3FirstName" value="<%= employee.d3firstname %>" name="Dependent3FirstName" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Dependent3LastName" class="col-sm-2 control-label">Dependent 3 Last Name</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="Dependent3LastName" value="<%= employee.d3lastname %>" name="Dependent3LastName" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Dependent3BirthDate" class="col-sm-2 control-label">Dependent 3 Birth Date </label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" pattern="\d{4}-\d{2}-\d{2}" placeholder="YYYY-MM-DD" id="Dependent3BirthDate" value="<%= employee.d3birthdate %>" name="Dependent3BirthDate" type="date">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Dependent3SocialSecurity#"  class="col-sm-2 control-label">Dependent 3 Social Security #</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" pattern="\d{3}-\d{2}-\d{4}" placeholder= "###-##-####" value="<%= employee.d3ss %>" id="Dependent3SocialSecurity#" name="Dependent3SocialSecurity" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <fieldset>
+                                        <label for="Dependent3Gender"  class="col-sm-2 control-label">Dependent 3 Gender</label>
+                                        <div class="col-sm-10">
+                                            <span><input value="Male" id="Dependent3Gender" <%= (employee.d3gender == 'Male')?'checked="checked"':'' %> name="Dependent3Gender" type="radio"> <label for="Dependent3Gender">Male</label></span>
+                                            <span><input value="Female" id="Dependent3Gender" <%= (employee.d3gender == 'Female')?'checked="checked"':'' %> name="Dependent3Gender" type="radio"> <label for="Dependent3Gender">Female</label></span>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="form-group">
+                                    <span><label for="Dependent3NeedsCoverage" class="col-sm-2 control-label">Dependent 3 Needs Coverage</label></span>
+                                    <div class="col-sm-10">
+                                        <input  id="Dependent3NeedsCoverage" <%= (employee.d3coverage == 'on')?'checked="checked"':'' %> name="Dependent3NeedsCoverage" type="checkbox">
+                                    </div>
+                                </div>
+                            </div>
+                                <input type="button" id="dependent4button" value="add/show next dependent" style="display: none" onclick="showDependent4()" />
+                            <div id="Dependent4div" style="display: none">
+                                <div class="form-group">
+                                    <h5 style="text-align:center;">Dependent 4</h5>
+                                    <label for="Dependent4FirstName" class="col-sm-2 control-label">Dependent 4 First Name</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="Dependent4FirstName" value="<%= employee.d4firstname %>" name="Dependent4FirstName" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Dependent4LastName" class="col-sm-2 control-label">Dependent 4 Last Name</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="Dependent4LastName" value="<%= employee.d4lastname %>" name="Dependent4LastName" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Dependent4BirthDate" class="col-sm-2 control-label">Dependent 4 Birth Date </label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" pattern="\d{4}-\d{2}-\d{2}" placeholder="YYYY-MM-DD" id="Dependent4BirthDate" value="<%= employee.d4birthdate %>" name="Dependent4BirthDate" type="date">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Dependent4SocialSecurity#"  class="col-sm-2 control-label">Dependent 4 Social Security #</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" pattern="\d{3}-\d{2}-\d{4}" placeholder= "###-##-####" value="<%= employee.d4ss %>" id="Dependent4SocialSecurity#" name="Dependent4SocialSecurity" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <fieldset>
+                                        <label for="Dependent4Gender"  class="col-sm-2 control-label">Dependent 4 Gender</label>
+                                        <div class="col-sm-10">
+                                            <span><input value="Male" id="Dependent4Gender" <%= (employee.d4gender == 'Male')?'checked="checked"':'' %> name="Dependent4Gender" type="radio"> <label for="Dependent4Gender">Male</label></span>
+                                            <span><input value="Female" id="Dependent4Gender" <%= (employee.d4gender == 'Female')?'checked="checked"':'' %> name="Dependent4Gender" type="radio"> <label for="Dependent4Gender">Female</label></span>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="form-group">
+                                    <span><label for="Dependent4NeedsCoverage" class="col-sm-2 control-label">Dependent 4 Needs Coverage</label></span>
+                                    <div class="col-sm-10">
+                                        <input  id="Dependent4NeedsCoverage" <%= (employee.d4coverage == 'on')?'checked="checked"':'' %> name="Dependent4NeedsCoverage" type="checkbox">
+                                    </div>
+                                </div>
+                            </div>
+                                <div class="form-group">
+                                    <label for="employer"  class="col-sm-2 control-label">Employer</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="employer" name="employer" type="text" value="<%= employer.empname %>" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="employerphone"  class="col-sm-2 control-label">Employer Phone #</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="employerphone" name="employerphone" type="tel" value="<%= employer.phonenumber %>" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group required">
+                                    <label for="income"  class="col-sm-2 control-label">Household Income $</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="income" name="income" type="number" value="<%= employee.income %>" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="physician"  class="col-sm-2 control-label">Primary Care Physician</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="physician" name="physician" type="text" value="<%= employee.physician %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="physicianspecialty"  class="col-sm-2 control-label">Primary Care Physician Specialty</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="physicianspecialty" name="physicianspecialty" type="text" value="<%= employee.physicianspecialty %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ailment1"  class="col-sm-2 control-label">Physical Ailment Requiring Treatment</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="ailment1" name="ailment1" placeholder="Leave blank if none" type="text" value="<%= employee.ailment1 %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ailment2"  class="col-sm-2 control-label">Physical Ailment Requiring Treatment</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="ailment2" name="ailment2" placeholder="Leave blank if none" type="text" value="<%= employee.ailment2 %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ailment3"  class="col-sm-2 control-label">Physical Ailment Requiring Treatment</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="ailment3" name="ailment3" placeholder="Leave blank if none" type="text" value="<%= employee.ailment3 %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="prescription1"  class="col-sm-2 control-label">Prescription</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="prescription1" name="prescription1" placeholder="Leave blank if none" type="text" value="<%= employee.prescription1 %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="dosage1"  class="col-sm-2 control-label">Dosage</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="dosage1" name="dosage1" placeholder="Leave blank if none" type="text" value="<%= employee.dosage1 %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="prescription2"  class="col-sm-2 control-label">Prescription</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="prescription2" name="prescription2" placeholder="Leave blank if none" type="text" value="<%= employee.prescription2 %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="dosage2"  class="col-sm-2 control-label">Dosage</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="dosage2" name="dosage2" placeholder="Leave blank if none" type="text" value="<%= employee.dosage2 %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="prescription3"  class="col-sm-2 control-label">Prescription</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="prescription3" name="prescription3" placeholder="Leave blank if none" type="text" value="<%= employee.prescription3 %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="dosage3"  class="col-sm-2 control-label">Dosage</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="dosage3" name="dosage3" placeholder="Leave blank if none" type="text" value="<%= employee.dosage3 %>">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="signatureid"  class="col-sm-2 control-label">SignatureId</label>
+                                    <div class="col-sm-10">
+                                    <input class="form-control" id="signatureid" name="signatureid" type="text" value="<%= employee.signature %>" readonly>
+                                </div>
+                                    </div>
+                                <div class="row" style="text-align: center;">
+                                    <div id="signature_container"><canvas style="margin-left: auto; margin-right: auto;" data-processing-sources="signature.pde" id="signature"></canvas></div>
+                                    <script src="//cdnjs.cloudflare.com/ajax/libs/processing.js/1.4.8/processing.min.js"></script>
+                                </div>
+                                <div class="row" style="margin: auto;">
+                                    <button type="submit" value="submit" class="btn btn-success">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% } %>
+        <% }); %>
+        <% include ../partials/footer.ejs %>
+        <script>
+        function savedSignature()
+        {
+        var img = document.getElementById("signature_image");
+        var id = img.getAttribute('src');
+        if (id != null) {
+            document.getElementById('signatureid').readonly = false;
+            document.getElementById('signatureid').value = id;
+            document.getElementById('signatureid').readonly = true;
+        }
+        }
+        </script>
+        <!--<script type = "text/javascript">-->
+
+            <!--function show() {-->
+                <!--document.getElementById("wholepage").style.display = "none";-->
+                <!--var string = window.location.toString();-->
+                <!-- -->
+                <!--if (window.location.protocol == 'https:' || string.indexOf("localhost") != -1) {-->
+                <!--}-->
+                <!--else {-->
+                    <!--window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);-->
+                <!--}-->
+                <!--var x = document.cookie.toString().split(';'); //for localhost cookies-->
+
+                <!--if(document.cookie == "https=True" || x[1] == " https=True" || x[2] == " https=True") {-->
+                    <!--hide();-->
+                <!--}-->
+                <!--else {-->
+                    <!--var d = new Date();-->
+                    <!--console.log(d);-->
+                    <!--var newd = new Date();-->
+                    <!--//based on +5 hrs-->
+                    <!--newd.setMinutes(newd.getMinutes() + 320);-->
+                    <!--console.log(newd);-->
+                    <!--document.getElementById("wholepage").style.display = "none";-->
+                    <!--document.getElementById("wrapperr").style.display = "block";-->
+                    <!--document.cookie="https=True; expires=" + newd.toString() +";";-->
+                    <!--setTimeout("hide()", 1700);-->
+                <!--}-->
+            <!--}-->
+
+            <!--function hide() {-->
+                <!--document.getElementById("wrapperr").style.display="none";-->
+                <!--document.getElementById("wholepage").style.display="block";-->
+                <!--setLoginSession();-->
+            <!--}-->
+            <!--window.onload = show;-->
+
+        <!--</script>-->
+        <script src="/js/dependentbuttons.js"> </script>
+        <script>
+            var queryString = window.location.search;
+            queryString = queryString.substring(2);
+            if(queryString == "saved"){
+                document.getElementById("my-modal").style.display = "block";
+            }
+
+            $("#closemodal").click(function () {
+                $("#my-modal").css("display", "none");
+                window.location.href = "/information";
+            });
+        </script>
+    </body>
+</html>
 ```
 
 #### login.ejs
 
 ```sh
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+    <script src="/js/forcehttps.js"> </script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <% include ../partials/nav.ejs %>
+        <div class="container">
+
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="well">
+                <h1><span class="fa fa-sign-in"></span> Agent Login</h1>
+
+                <!-- show any messages that come back with authentication -->
+                <% if (message.length > 0) { %>
+                <div class="alert alert-danger"><%= message %></div>
+                <% } %>
+
+                <!-- LOGIN FORM -->
+                <form action="/agentLogin" method="post">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="text" class="form-control" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" name="password" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+
+                <hr>
+
+                <p>Need an account? <a href="/signup">Signup</a></p>
+                <p>Or go <a href="/">home</a>.</p>
+
+            </div>
+        </div>
+        </div>
+    </div>
+    <% include ../partials/footer.ejs %>
+
+</body>
+</html>
 ```
 
 #### login2.ejs
 
 ```sh
+<!doctype html>
+<html>
+<head>
+    <% include ../partials/header.ejs %>
+    <script src="/js/forcehttps.js"> </script>
+</head>
+<body>
+<div class="page-wrapper">
+    <% include ../partials/nav.ejs %>
+    <div class="container">
+
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="well">
+            <h1><span class="fa fa-sign-in"></span> Login</h1>
+
+            <!-- show any messages that come back with authentication -->
+            <% if (message == "Email Sent!" || message.indexOf("Your Email is") > -1) { %>
+            <div class="alert alert-success"><%= message %></div>
+            <% } %>
+
+            <% if (message.length > 0 && message != "Email Sent!" && message.indexOf("Your Email is") < 0) { %>
+            <div class="alert alert-danger"><%= message %></div>
+            <% } %>
+
+
+            <!-- LOGIN FORM -->
+
+            <form action="/login" method="post">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" class="form-control" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" name="password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+                <hr>
+                <p>
+                    <a href="/recovery">Need help?</a>
+                </p>
+                <p>
+                    <a href="/agentLogin">Login as Agent</a>
+                </p>
+        </div>
+        </div>
+    </div>
+</div>
+<% include ../partials/footer.ejs %>
+
+</body>
+</html>
 ```
 
 #### passwordExpired.ejs
 
 ```sh
+<!doctype html>
+<html>
+<head>
+    <% include ../partials/header.ejs %>
+</head>
+<body>
+<div class="page-wrapper">
+    <% include ../partials/nav.ejs %>
+    <div class="container">
+
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="well">
+            <h1><span class="fa fa-sign-in"></span> Set Password</h1>
+            
+            <!-- show any messages that come back with authentication -->
+            <% if (message.length > 0) { %>
+            <div class="alert alert-danger"><%= message %></div>
+            <% } %>
+            
+            <!-- LOGIN FORM -->
+            <form action="/passwordExpired" method="post">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" class="form-control" name="email" value="<%= emailAddress %>" readonly>
+                </div>
+                <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password" class="form-control" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" class="form-control" name="passwordverify" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Set Password</button>
+                <br/>
+                <br/>
+                <a href="/recovery">Need help?</a>
+            </form>
+        </div>
+    </div>
+    </div>
+</div>
+<% include ../partials/footer.ejs %>
+<script src="/js/forcehttps.js"> </script>
+</body>
+</html>
 ```
 
 #### quote.ejs
 
 ```sh
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+    
+    <div class="page-wrapper">
+        <% include ../partials/nav.ejs %>
+        <div class="container">
+            <div style="padding-top: 99px; text-align: center;">
+                <form class="form-horizontal" action="/submitQuote/" method="post">
+                    <div class="form-group">
+                        <label for="firstName" class="col-sm-2 control-label">First Name:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="firstName" id="firstName" placeholder="First Name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName" class="col-sm-2 control-label">Last Name:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last Name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="streetAddress" class="col-sm-2 control-label">Street Address:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="streetAddress" id="streetAddress" placeholder="Street Address">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="city" class="col-sm-2 control-label">City:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="city" id="city" placeholder="City">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="state" class="col-sm-2 control-label">State:</label>
+                        <div class="col-sm-10">
+                            <select name="state" id="state" class="form-control">
+                                <option value="AL">AL</option>
+                                <option value="AK">AK</option>
+                                <option value="AZ">AZ</option>
+                                <option value="AR">AR</option>
+                                <option value="CA">CA</option>
+                                <option value="CO">CO</option>
+                                <option value="CT">CT</option>
+                                <option value="DE">DE</option>
+                                <option value="DC">DC</option>
+                                <option value="FL">FL</option>
+                                <option value="GA">GA</option>
+                                <option value="HI">HI</option>
+                                <option value="ID">ID</option>
+                                <option value="IL">IL</option>
+                                <option value="IN">IN</option>
+                                <option value="IA">IA</option>
+                                <option value="KS">KS</option>
+                                <option value="KY">KY</option>
+                                <option value="LA">LA</option>
+                                <option value="ME">ME</option>
+                                <option value="MD">MD</option>
+                                <option value="MA">MA</option>
+                                <option value="MI">MI</option>
+                                <option value="MN">MN</option>
+                                <option value="MS">MS</option>
+                                <option value="MO">MO</option>
+                                <option value="MT">MT</option>
+                                <option value="NE">NE</option>
+                                <option value="NV">NV</option>
+                                <option value="NH">NH</option>
+                                <option value="NJ">NJ</option>
+                                <option value="NM">NM</option>
+                                <option value="NY">NY</option>
+                                <option value="NC">NC</option>
+                                <option value="ND">ND</option>
+                                <option value="OH">OH</option>
+                                <option value="OK">OK</option>
+                                <option value="OR">OR</option>
+                                <option value="PA">PA</option>
+                                <option value="RI">RI</option>
+                                <option value="SC">SC</option>
+                                <option value="SD">SD</option>
+                                <option value="TN">TN</option>
+                                <option value="TX">TX</option>
+                                <option value="UT">UT</option>
+                                <option value="VT">VT</option>
+                                <option value="VA">VA</option>
+                                <option value="WA">WA</option>
+                                <option value="WV">WV</option>
+                                <option value="WI">WI</option>
+                                <option value="WY">WY</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="zipCode" class="col-sm-2 control-label">Zip Code:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="zipCode" id="zipCode" placeholder="Zip Code">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneNumber" class="col-sm-2 control-label">Phone Number:</label>
+                        <div class="col-sm-10">
+                            <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber" placeholder="Phone Number">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="emailAddress" class="col-sm-2 control-label">E-mail Address:</label>
+                        <div class="col-sm-10">
+                            <input type="email" class="form-control" name="emailAddress" id="emailAddress" placeholder="E-mail Address">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="comments" class="col-sm-2 control-label">Comments:</label>
+                        <div class="col-sm-10">
+                            <textarea type="text" class="form-control" name="comments" id="comments" placeholder="Enter comments here!" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" value="submit" class="btn btn-success">Submit</button>
+                            <button type="reset" class="btn btn-danger">Reset</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <% include ../partials/footer.ejs %>
+
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/common-files/js/jquery-1.10.2.min.js"></script>
+    <script src="/flat-ui/js/bootstrap.min.js"></script>
+    <script src="/common-files/js/modernizr.custom.js"></script>
+    <script src="/common-files/js/jquery.scrollTo-1.4.3.1-min.js"></script>
+    <script src="/common-files/js/jquery.parallax.min.js"></script>
+    <script src="/common-files/js/startup-kit.js"></script>
+    <script src="/common-files/js/jquery.backgroundvideo.min.js"></script>
+    <script src="/js/script.js"></script>
+
+
+</body>
+</html>
 ```
 
 #### recovery.ejs
 
 ```sh
+<!doctype html>
+<html>
+    <head>
+        <% include ../partials/header.ejs %>
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+    </head>
+    <body>
+        <div class="page-wrapper">
+            <% include ../partials/nav.ejs %>
+            <div class="container">
+                <div class="well">
+                <div class="row">
+                    <div class=".col-xs-6 .col-sm-4">
+                        <form class="form-horizontal" action="/recovery" method="post">
+                            <h1>Having trouble signing in?</h1>
+                            <div class="radio-option">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" onclick="recoveryOptionSelected();" data-toggle="collapse" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                                    I don't know my password
+                                    <div class="collapse" id="collapse1" style="display: none;">
+                                        <div class="well">
+                                            To reset your password, enter the email address you use to sign in to ACA.
+                                            <input type="email" class="form-control" name="email" id="email" placeholder="E-mail Address">
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="radio-option">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" onclick="recoveryOptionSelected();"data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                                    I don't know my username
+                                    <div class="collapse" id="collapse2" style="display: none;">
+                                        <div class="well">
+                                            Enter your SSN and we will redirect you to the login with your email.
+                                            <input type="text" pattern="\d{3}-\d{2}-\d{4}" class="form-control" name="ss" id="ss" placeholder="###-##-####">
+                                            <div class="g-recaptcha" data-sitekey="6LdUuRATAAAAAMkGjzs6Fz2HyCRuLcorHDjs_nvT"></div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="radio-option">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" onclick="recoveryOptionSelected();" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                    I'm having other problems signing in
+                                    <div class="collapse" id="collapse3" style="display: none">
+                                        <div class="well">
+                                            Enter the username you use to sign in to ACA.
+                                            <input type="email" class="form-control" name="email2" id="email2" placeholder="E-mail Address">
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                            <button type="submit" value="submit" class="btn btn-primary">Continue</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <% include ../partials/footer.ejs %>
+        <script>
+            function recoveryOptionSelected() {
+                var optionOneSelected = document.getElementById("optionsRadios1").checked;
+                var optionTwoSelected = document.getElementById("optionsRadios2").checked;
+                var optionThreeSelected = document.getElementById("optionsRadios3").checked;
+                if (optionOneSelected == true) {
+                    $('#collapse2').collapse('hide');
+                    $('#collapse3').collapse('hide');
+                    document.getElementById("collapse2").style.display = "none";
+                    document.getElementById("collapse3").style.display = "none";
+                    document.getElementById("collapse1").style.display = "block";
+
+                } else if (optionTwoSelected == true) {
+                    $('#collapse1').collapse('hide');
+                    $('#collapse3').collapse('hide');
+                    document.getElementById("collapse1").style.display = "none";
+                    document.getElementById("collapse3").style.display = "none";
+                    document.getElementById("collapse2").style.display = "block";
+
+                } else if (optionThreeSelected == true) {
+                    $('#collapse1').collapse('hide');
+                    $('#collapse2').collapse('hide');
+                    document.getElementById("collapse1").style.display = "none";
+                    document.getElementById("collapse2").style.display = "none";
+                    document.getElementById("collapse3").style.display = "block";
+
+                }
+            }
+        </script>
+    </body>
+</html>
 ```
 
 #### search.ejs
 
 ```sh
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <% include ../partials/header.ejs %></head>
+<style>
+    iframe {
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 400px;
+        width: 100%;
+    }
+</style>
+<body>
+<div class="page-wrapper">
+    <% include ../partials/nav.ejs %>
+    <div class="container">
+
+        <div class="page-header text-center">
+            <h1><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Agent Dashboard</h1>
+        </div>
+        <div class="row">
+            <!-- LOCAL INFORMATION -->
+            <div class="col-sm-6">
+                <div class="well">
+                    <h3><span class="fa fa-user"></span> Agent Info</h3>
+                    <p>
+                        <strong>Agent ID</strong>: <%= user._id %><br>
+                        <strong>Name</strong>: <%= user.local.firstName %> <%= user.local.lastName %><br>
+                        <strong>E-mail</strong>: <%= user.local.email %>
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="well">
+                    <h3><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Agent Cases</h3>
+                    <p>
+                        <% user.employer.forEach(function(employer) { %>
+                        <a href="/<%= user._id %>/<%= employer._id %>"><%= employer.empname %></a>   <br>
+                        <% }); %>
+                    </p>
+                    <p>
+                        <a href="/profile/case" class="btn btn-default"> Add New Case</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="well">
+                    <h3><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Calendar</h3>
+                    <p>
+                        <iframe src="https://calendar.google.com/calendar/embed?src=acainsuresme%40gmail.com&ctz=America/Chicago" style="border: 0" frameborder="0" scrolling="yes"></iframe>
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="well">
+                    <h3><span class="glyphicon glyphicon-search" aria-hidden="true"></span>Employee Search</h3>
+                    <p>
+                    <form class="form-inline" action="/search" method="post">
+                        <div class="form-group">
+                            <input type="search" name="search" class="form-control" id="search">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-default">Search</button>
+                        </div>
+                    </form>
+                    </p>
+
+                    <h5>Results:</h5>
+                    <% search.forEach(function(employee) { %>
+                    <% var check = false; %>
+                    <% user.employer.forEach(function(employer) { %>
+                    <% if (check == false) { %>
+                    <% if(employee.employerid == employer._id) { %>
+                    <% check = true %>
+                    <div class="row">
+                        <div class="col-md-6">
+                        <b>Email:</b> <%= employee.email %><br>
+                        <b>DOB:</b>   <%= employee.birthdate %><br>
+                        <b>Phone#:</b>  <%= employee.phonenumber %><br>
+                        </div>
+                        <div class="col-md-6">
+                        <b>First Name:</b> <%= employee.firstname%><br>
+                        <b>Last Name:</b> <%= employee.lastname%><br>
+                        <b>Employer:</b> <%= employer.empname %> <br><br><br><br>
+                        </div>
+                    </div>
+                    <% } %>
+                    <% } %>
+                    <% }); %>
+                    <% }); %>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% include ../partials/footer.ejs %>
+</body>
+</html>
 ```
 
 #### signup.ejs
 
 ```sh
+<!-- views/signup.ejs -->
+<!doctype html>
+<html>
+<head>
+    <% include ../partials/header.ejs %>
+    <script src="/js/forcehttps.js"> </script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <% include ../partials/nav.ejs %>
+        <div class="container">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="well">
+                <h1><span class="fa fa-sign-in"></span> Signup</h1>
+
+                <!-- show any messages that come back with authentication -->
+                <% if (message.length > 0) { %>
+                <div class="alert alert-danger"><%= message %></div>
+                <% } %>
+
+                <!-- LOGIN FORM -->
+                <form action="/signup" method="post">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" class="form-control" name="firstname" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" class="form-control" name="lastname" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" input pattern=".{8,}" name="password" required title="Minimum 8 characters required">
+                    </div>
+                    <div class="form-group">
+                        <label>Verify Password</label>
+                        <input type="password" class="form-control" name="passwordverify" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Agent Code</label>
+                        <input type="password" class="form-control" name="agentcode" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Signup</button>
+                </form>
+
+                <hr>
+
+                <p>Already have an account? <a href="/agentlogin">Login</a></p>
+                <p>Or go <a href="/">home</a>.</p>
+
+            </div>
+        </div>
+    </div>
+    </div>
+    <% include ../partials/footer.ejs %>
+</body>
+</html>
 ```
 
 #### signup2.ejs
 
 ```sh
+<!-- views/signup.ejs -->
+<!doctype html>
+<html>
+<head>
+    <% include ../partials/header.ejs %>
+    <script src="/js/forcehttps.js"> </script>
+</head>
+<body>
+
+<div class="page-wrapper">
+    <% include ../partials/nav.ejs %>
+    <div class="container">
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="well">
+            <h1><span class="fa fa-sign-in"></span> Signup</h1>
+
+            <!-- show any messages that come back with authentication -->
+            <% if (message.length > 0) { %>
+            <div class="alert alert-danger"><%= message %></div>
+            <% } %>
+
+            <!-- LOGIN FORM -->
+            <form action="/signup2" method="post">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" class="form-control" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" input pattern=".{8,}"  name="password" required title="Minimum 8 characters required">
+                </div>
+                <div class="form-group">
+                    <label>Verify Password</label>
+                    <input type="password" class="form-control" name="passwordverify" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Signup</button>
+            </form>
+
+            <hr>
+            <p>Or go <a href="/">home</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<% include ../partials/footer.ejs %>
+</body>
+</html>
 ```
 
 #### smallbusiness.ejs
 
 ```sh
+<!DOCTYPE html>
+<html>
+    <head>
+        <% include ../partials/header.ejs %>
+    </head>
+    <body>
+
+    <div class="page-wrapper">
+        <% include ../partials/nav.ejs %>
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <h1>The Small Business Insurance Market has changed.</h1>
+                        <p>The new PPACA laws allow us to offer new innovative ways for small business to support their employees and control cost for themselves. We offer several turn-key solutions for you unique situation.</p>
+                    </div>
+                    <div class="col-sm-5">
+                        <img src="../../img/1427838952.jpg" alt="" style="padding-top:60px;">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section style="padding-top:60px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <img src="../../img/1427839095.png" alt="" style="padding-top:60px;">
+                    </div>
+                    <div class="col-sm-8">
+                        <h3>Defined Contribution (Tax Free) Health Insurance</h3>
+                        <p>For small businesses that would like to start new coverage or stop purchasing health insurance but still contribute towards employees health coverage as a benefit of their employment the concept of a Section 105 Defined Contribution plan offers many benefits to both your business and your employees. As a result of the Affordable Care Act’s law that, as of January 1st, 2014, requires insurers to offer coverage without health questions and to cover pre-existing conditions, individual and family coverage is more freely available to your employees and the broader availability of coverage, combined with a proper Section 105 Defined Benefit Plan, can help your business and its bottom line as well as our employees and their budgets. In many cases it’s a ‘win–win’ for your business and employees.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section style="padding-top:30px; padding-bottom:30px; margin-left:90px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <img src="../../img/1443063.png" alt="" style="padding-top:60px;">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div><div id="968244701478285836" align="center" style="width: 100%; overflow-y: hidden; margin-bottom: 30px;" class="wcustomhtml"><script id="setmore_script" type="text/javascript" src="https://my.setmore.com/js/iframe/setmore_iframe.js"></script><a id="Setmore_button_iframe" style="float:none" href="https://my.setmore.com/shortBookingPage/52b3edf9-5324-4ef0-bcae-4e25f31281ff"><img border="none" src="https://my.setmore.com/images/bookappt/SetMore-book-button.png" alt="Book an appointment with ACA Insurance Group using SetMore" /></a>
+        </div>
+
+
+        <% include ../partials/footer.ejs %>
+
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    </body>
+</html>
 ```
 
 #### success.ejs
 
 ```sh
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+    
+    <div class="page-wrapper">
+        <% include ../partials/nav.ejs %>
+        <section class="content-8 v-center">
+            <div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <h1>Message Sent!</h1>
+                            <h2>We will be in touch shortly. :)</h2>
+                            <br/>
+                            <br/>
+                            <a class="btn btn-large btn-clear" href="/">Let's Go Back Home</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <% include ../partials/footer.ejs %>
+    
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/common-files/js/jquery-1.10.2.min.js"></script>
+    <script src="/flat-ui/js/bootstrap.min.js"></script>
+    <script src="/common-files/js/modernizr.custom.js"></script>
+    <script src="/common-files/js/jquery.scrollTo-1.4.3.1-min.js"></script>
+    <script src="/common-files/js/jquery.parallax.min.js"></script>
+    <script src="/common-files/js/startup-kit.js"></script>
+    <script src="/common-files/js/jquery.backgroundvideo.min.js"></script>
+    <script src="/js/script.js"></script>
+    <script type="text/javascript">
+        function showContent8(){
+            fadedEls($('.content-8'), 300);
+            $(window).resize().scroll();
+        }
+        showContent8();
+    </script>
+
+
+</body>
+</html>
 ```
 
 ### Models
