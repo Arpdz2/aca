@@ -3680,13 +3680,7 @@ exports.convertDate = function(string) {
 </html>
 ```
 
-### Data Structure
-
-Data in MongoDB is stored inside of a document in collections which are analogous to JSON objects but exist in the database in format known as BSON ("binary" + "JSON" = BSON).
-
-The documents in a collection share a similar structure; however, the data can substantially vary between documents with the same data fields.
-
-### Data Models
+### Models
 
 #### employee.js
 
