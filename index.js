@@ -13,10 +13,7 @@ var express = require('express'),
     random = require("random-js"),
     user = require('./routes/user.js'),
     employee = require('./routes/employee.js'),
-    agentDashboard = require('./routes/agentDashboard.js'),
-    adminDashboard = require('./routes/adminDashboard.js'),
     userFunctions = require('./routes/userFunctions.js'),
-    search = require('./routes/search.js'),
     nodemailer = require('nodemailer'),
     mandrillTransport = require('nodemailer-mandrill-transport'),
     fdf = require('fdf'),
@@ -283,13 +280,6 @@ app.post('/signup', passport.authenticate('local-signup', {
     failureRedirect : '/signup', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
 }));
-
-// process the login form
-//app.post('/agentLogin', passport.authenticate('local-login', {
-//    successRedirect : '/agentDashboard', // redirect to the secure agentDashboard section
-//    failureRedirect : '/agentLogin', // redirect back to the signup page if there is an error
-//    failureFlash : true // allow flash messages
-//}));
 
 app.post('/agentLogin',
          passport.authenticate('local-login', { failureRedirect : '/agentLogin', failureFlash : true }),
@@ -637,111 +627,6 @@ app.post('/information', function(req,res){
         res.redirect('/');
     }
 });
-
-//app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
-//{
-//    employee.findOne({_id: req.params.employeeid}, function (err, result) {
-//        var data = fdf.generate({
-//            "Applicants Name": result.firstname,
-//            "Last": result.lastname
-//        });
-//        fs.writeFile(result._id + '.fdf', data, function (err) {
-//            console.log('done');
-//            //res.redirect('/');
-//        });
-//        spawn('pdftk', ['test3.pdf', 'fill_form', result._id + '.fdf', 'output', result.id + '.pdf', 'flatten']);
-//        res.redirect('/pdf/' + result.id);
-//    })
-//});
-// 
-//app.get('/pdf/:employeeid', isLoggedIn, function(request, response){
-//    var tempFile= request.params.employeeid + ".pdf";
-//    fs.readFile(tempFile, function (err,data){
-//        response.contentType("application/pdf");
-//        response.send(data);
-//    });
-//});
-
-
-/*
-app.get('/employee', isLoggedIn, function(req,res, next)
-{
-    console.log(req.session.empid);
-    var a = req.user;
-    var eid = req.session.empid;
-    var isvalid = mongoose.Types.ObjectId.isValid(eid)
-    if (isvalid === true) {
-        // create the employee
-        var newemployee = new employee();
-
-        // set the employee's local credentials
-        newemployee.agentid = a._id;
-        newemployee.employerid = eid;
-        newemployee.editkey = null;
-
-        // save the employee
-        newemployee.save(function (err) {
-            if (err)
-                throw err;
-
-        res.render('pages/employee', {
-            user: a, emp: eid // get the user out of session and pass to template
-        });
-        });
-    }
-    else
-    {
-        res.redirect('/profile');
-    }
-    req.session.empid = null;
-});
-
-app.get('/:employeeid', function(req,res) {
-    employee.findOne({'_id': req.params.employeeid}, function(err, data){
-        if (err)
-            res.redirect('/');
-        else{
-            try {
-                req.session.employeeid = req.params.employeeid;
-                req.session.employerid = data.employerid;
-                res.render('pages/confirm');
-            }
-            catch(err) {
-                console.log(err);
-                res.redirect('/');
-            }
-        }
-    });
-});
-
-app.post('/confirm', function(req, res){
-    if(req.body.password == req.session.employerid)
-    {
-        employee.findOne({'_id': req.session.employeeid}, function(err, data) {
-            var exists = data.editkey;
-            if(exists != null) {
-                res.render('pages/information', {editkey: "already assigned for this account"});
-            }
-            else {
-                var randomstring = "";
-                var random = new random(random.engines.mt19937().autoSeed());
-                for (var i = 0; i < 4; i++) {
-                    var value = random.integer(0, 9);
-                    randomstring += value.toString();
-                }
-                    data.editkey = randomstring;
-                    data.save(function (err) {
-                        res.render('pages/information', {editkey: randomstring});
-                    });
-            }
-            });
-    }
-    else
-    {
-        res.redirect('/');
-    }
-});
-*/
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
