@@ -30,7 +30,6 @@ Your app should now be running on [localhost:5000](http://localhost:5000/).
 ------ stylesheets                      <!-- custom css -->
 ------ video                            <!-- custom videos -->
 - routes
------- admin.js                         <!-- admin model -->
 ------ captcha.js                       <!-- captcha settings -->
 ------ db.js                            <!-- database connection settings -->
 ------ employee.js                      <!-- employee model -->
@@ -3681,35 +3680,13 @@ exports.convertDate = function(string) {
 </html>
 ```
 
-### Models
+### Data Structure
 
-#### admin.js
+Data in MongoDB is stored inside of a document in collections which are analogous to JSON objects but exist in the database in format known as BSON ("binary" + "JSON" = BSON).
 
-```sh
-var mongoose = require('mongoose');
-var bcrypt = require('bcrypt-nodejs');
+The documents in a collection share a similar structure; however, the data can substantially vary between documents with the same data fields.
 
-var adminSchema = mongoose.Schema({
-        agentid: String,
-        employerid: String,
-        email: String,
-        password: String
-});
-
-// methods ======================
-// generating a hash
-adminSchema.methods.generateHash = function(password) {
-        return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-};
-
-// checking if password is valid
-adminSchema.methods.validPassword = function(password) {
-        return bcrypt.compareSync(password, this.password);
-};
-
-// create the model for employees and expose it to our app
-module.exports = mongoose.model('Admin', adminSchema);
-```
+### Data Models
 
 #### employee.js
 
