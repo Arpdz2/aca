@@ -1040,21 +1040,225 @@ passport.use('local-login', new LocalStrategy({
 #### sendEmail.js
 
 ```sh
+var express = require('express');
+var router = express.Router();
+var mongoose = require('mongoose');
+var employee = require('./employee.js');
+var nodemailer = require('nodemailer');
+var mandrillTransport = require('nodemailer-mandrill-transport');
+var captcha = require('./captcha.js');
+
+
+exports.passwordReset = function(req, callback) {
+
+    employee.findOne({ 'email' : req.body.email }, function(err, user) {
+            if (err) {
+                console.log(err);
+                callback("Invalid Email: No recovery Email sent.");
+            } else if (user && user != null) {
+                callback("Email Sent!");
+                var password = Math.random().toString(36).slice(-8);
+                var mongo = new employee();
+                user.password = mongo.generateHash(password);
+                user.passwordIsExpired = "TRUE";
+                user.save(function (err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
+                
+                var transport = nodemailer.createTransport(mandrillTransport({
+                    auth: {
+                        apiKey: 'y-Z7eNsStP65JC4YKJD3Lg'
+                    }
+                }));
+                
+                transport.sendMail({
+                    from: 'ACA Insurance Group  <noreply@acainsuresme.com>',
+                    to: user.email,
+                    subject: 'ACA Insurance Credentials',
+                    html: '<p>Dear ' + user.firstname + ',<br/>Your temporary password for ACA Insurance is below. Your username will be sent in a separate email. Please use the link below to login.<br/><b>Password: </b>' + password + '<br/><b>Link to site: </b>' + req.protocol + '://' + req.get("host") + '<br/>If you have any questions or issues regarding access to ACA Insurance, please e-mail EMAILHERE or call TEAMHERE at NUMBERHERE.</p><p>Thank you,<br/>ACA Insurance Group</p>'
+                }, function(err, info) {
+                    if (err) {
+                        console.error(err);
+                    } else {
+                        console.log('Message sent: ' + info.response);
+                    }
+                });
+
+                transport.sendMail({
+                    from: 'ACA Insurance Group  <noreply@acainsuresme.com>',
+                    to: user.email,
+                    subject: 'ACA Insurance Credentials',
+                    html: '<p>Dear ' + user.firstname + ',<br/>Your username for ACA Insurance is below. Your temporary password will be sent in a separate email. Please use the link below to login.<br/><b>Username: </b>' + user.email + '<br/><b>Link to site: </b>' + req.protocol + '://' + req.get("host") + '<br/>If you have any questions or issues regarding access to ACA Insurance, please e-mail EMAILHERE or call TEAMHERE at NUMBERHERE.</p><p>Thank you,<br/>ACA Insurance Group</p>'
+                }, function(err, info) {
+                    if (err) {
+                        console.error(err);
+                    } else {
+                        console.log('Message sent: ' + info.response);
+                    }
+                });
+                console.log("Password reset sent to " + user.email);
+            }
+        else {
+                callback("Invalid Email: No recovery Email sent.");
+            }
+
+        });
+};
+
+exports.forgotEmail = function(req, res, callback) {
+captcha.verifyRecaptcha(req.body["g-recaptcha-response"], function(success) {
+    if (success) {
+        console.log(success);
+        employee.findOne({'ss': req.body.ss}, function (err, user) {
+            if (err) {
+                console.log(err);
+                callback("No account was created with this SSN.");
+            } else if (user && user != null) {
+                callback("Your Email is " + user.email);
+            }
+            else {
+                callback("No account was created with this SSN.");
+            }
+        });
+    }
+    else {
+        console.log("Captcha failed");
+        res.redirect('/recovery');
+    }
+    });
+};
 ```
 
 #### udpdateEmail.js
 
 ```sh
+var express = require('express');
+var user = require('./user.js');
+var nodemailer = require('nodemailer');
+var mandrillTransport = require('nodemailer-mandrill-transport');
+
+exports.update = function(req, result, callback) {
+    user.findOne({_id: result.agentid}, function (err, doc) {
+        if (doc) {
+            var update = ["<table style='width:100%'>", "<tr><td><b>Field</b></td><td><b>New</b></td><td><b>Old</b></td><tr>"];
+            if (result.firstname != req.body.FirstName)                                 {update.push("<tr><td>First Name</td><td>" +  req.body.FirstName + "</td><td>" + result.firstname + "</td>")};
+            if (result.lastname != req.body.LastName)                                   {update.push("<tr><td>Last Name</td><td>" +  req.body.LastName + "</td><td>" + result.lastname + "</td>")};
+            if (result.maritalstatus != req.body.MaritalStatus)                         {update.push("<tr><td>Marital Status</td><td>" +  req.body.MaritalStatus + "</td><td>" + result.maritalstatus + "</td>")};
+            if (result.spousefirstname != req.body.SpouseFirstName)                     {update.push("<tr><td>Spouse First Name</td><td>" +  req.body.SpouseFirstName + "</td><td>" + result.spousefirstname + "</td>")};
+            if (result.spouselastname != req.body.SpouseLastName)                       {update.push("<tr><td>Spouse Last Name</td><td>" +  req.body.SpouseLastName + "</td><td>" + result.spouselastname + "</td>")};
+            if (result.phonenumber != req.body.PhoneNumber)                             {update.push("<tr><td>Phone Number</td><td>" +  req.body.PhoneNumber + "</td><td>" + result.phonenumber + "</td>")};
+            if (result.altphonenumber != req.body.AlternatePhoneNumber)                 {update.push("<tr><td>Alternate Phone Number</td><td>" +  req.body.AlternatePhoneNumber + "</td><td>" + result.altphonenumber + "</td>")};
+            if (result.address != req.body.Address)                                     {update.push("<tr><td>Address</td><td>" +  req.body.Address + "</td><td>" + result.address + "</td>")};
+            if (result.city != req.body.City)                                           {update.push("<tr><td>City</td><td>" +  req.body.City + "</td><td>" + result.city + "</td>")};
+            if (result.state != req.body.State)                                         {update.push("<tr><td>State</td><td>" +  req.body.State + "</td><td>" + result.state + "</td>")};
+            if (result.zip != req.body.Zip)                                             {update.push("<tr><td>Zip Code</td><td>" +  req.body.Zip + "</td><td>" + result.zip + "</td>")};
+            if (result.email != req.body.Email)                                         {update.push("<tr><td>Email</td><td>" +  req.body.Email + "</td><td>" + result.email + "</td>")};
+            if (result.birthdate != req.body.BirthDate)                                 {update.push("<tr><td>Birth Date</td><td>" +  req.body.BirthDate + "</td><td>" + result.birthdate + "</td>")};
+            if (result.coveragenumber != req.body.NumberofPeopleThatNeedCoverage)       {update.push("<tr><td># of people receiving coverage</td><td>" +  req.body.NumberofPeopleThatNeedCoverage + "</td><td>" + result.coveragenumber + "</td>")};
+            if (result.ss != req.body.PrimarySocialSecurity)                            {update.push("<tr><td>SSN</td><td>" +  req.body.PrimarySocialSecurity + "</td><td>" + result.ss + "</td>")};
+            if (result.gender != req.body.Gender)                                       {update.push("<tr><td>Gender</td><td>" +  req.body.Gender + "</td><td>" + result.gender + "</td>")};
+            if (result.d1firstname != req.body.Dependent1FirstName)                     {update.push("<tr><td>Dependent 1 First Name</td><td>" +  req.body.Dependent1FirstName + "</td><td>" + result.d1firstname + "</td>")};
+            if (result.d1lastname != req.body.Dependent1LastName)                       {update.push("<tr><td>Dependent 1 Last Name</td><td>" +  req.body.Dependent1LastName + "</td><td>" + result.d1lastname + "</td>")};
+            if (result.d1birthdate != req.body.Dependent1BirthDate)                     {update.push("<tr><td>Dependent 1 Birth Date</td><td>" +  req.body.Dependent1BirthDate + "</td><td>" + result.d1birthdate + "</td>")};
+            if (result.d1ss != req.body.Dependent1SocialSecurity)                       {update.push("<tr><td>Dependent 1 Social Security</td><td>" +  req.body.Dependent1SocialSecurity + "</td><td>" + result.d1ss + "</td>")};
+            if (result.d1gender != req.body.Dependent1Gender)                           {update.push("<tr><td>Dependent 1 Gender</td><td>" +  req.body.Dependent1Gender + "</td><td>" + result.d1gender + "</td>")};
+            if (result.d1coverage != req.body.Dependent1NeedsCoverage)                  {update.push("<tr><td>Dependent 1 Coverage</td><td>" +  req.body.Dependent1NeedsCoverage + "</td><td>" + result.d1coverage + "</td>")};
+            if (result.d2firstname != req.body.Dependent2FirstName)                     {update.push("<tr><td>Dependent 2 First Name</td><td>" +  req.body.Dependent2FirstName + "</td><td>" + result.d2firstname + "</td>")};
+            if (result.d2lastname != req.body.Dependent2LastName)                       {update.push("<tr><td>Dependent 2 Last Name</td><td>" +  req.body.Dependent2LastName + "</td><td>" + result.d2lastname + "</td>")};
+            if (result.d2birthdate != req.body.Dependent2BirthDate)                     {update.push("<tr><td>Dependent 2 Birth Date</td><td>" +  req.body.Dependent2BirthDate + "</td><td>" + result.d2birthdate + "</td>")};
+            if (result.d2ss != req.body.Dependent2SocialSecurity)                       {update.push("<tr><td>Dependent 2 Social Security</td><td>" +  req.body.Dependent2SocialSecurity + "</td><td>" + result.d2ss + "</td>")};
+            if (result.d2gender != req.body.Dependent2Gender)                           {update.push("<tr><td>Dependent 2 Gender</td><td>" +  req.body.Dependent2Gender + "</td><td>" + result.d2gender + "</td>")};
+            if (result.d2coverage != req.body.Dependent2NeedsCoverage)                  {update.push("<tr><td>Dependent 2 Coverage</td><td>" +  req.body.Dependent2NeedsCoverage + "</td><td>" + result.d2coverage + "</td>")};
+            if (result.d3firstname != req.body.Dependent3FirstName)                     {update.push("<tr><td>Dependent 3 First Name</td><td>" +  req.body.Dependent3FirstName + "</td><td>" + result.d3firstname + "</td>")};
+            if (result.d3lastname != req.body.Dependent3LastName)                       {update.push("<tr><td>Dependent 3 Last Name</td><td>" +  req.body.Dependent3LastName + "</td><td>" + result.d3lastname + "</td>")};
+            if (result.d3birthdate != req.body.Dependent3BirthDate)                     {update.push("<tr><td>Dependent 3 Birth Date</td><td>" +  req.body.Dependent3BirthDate + "</td><td>" + result.d3birthdate + "</td>")};
+            if (result.d3ss != req.body.Dependent3SocialSecurity)                       {update.push("<tr><td>Dependent 3 Social Security</td><td>" +  req.body.Dependent3SocialSecurity + "</td><td>" + result.d3ss + "</td>")};
+            if (result.d3gender != req.body.Dependent3Gender)                           {update.push("<tr><td>Dependent 3 Gender</td><td>" +  req.body.Dependent3Gender + "</td><td>" + result.d3gender + "</td>")};
+            if (result.d3coverage != req.body.Dependent3NeedsCoverage)                  {update.push("<tr><td>Dependent 3 Coverage</td><td>" +  req.body.Dependent3NeedsCoverage + "</td><td>" + result.d3coverage + "</td>")};
+            if (result.d4firstname != req.body.Dependent4FirstName)                     {update.push("<tr><td>Dependent 4 First Name</td><td>" +  req.body.Dependent4FirstName + "</td><td>" + result.d4firstname + "</td>")};
+            if (result.d4lastname != req.body.Dependent4LastName)                       {update.push("<tr><td>Dependent 4 Last Name</td><td>" +  req.body.Dependent4LastName + "</td><td>" + result.d4lastname + "</td>")};
+            if (result.d4birthdate != req.body.Dependent4BirthDate)                     {update.push("<tr><td>Dependent 4 Birth Date</td><td>" +  req.body.Dependent4BirthDate + "</td><td>" + result.d4birthdate + "</td>")};
+            if (result.d4ss != req.body.Dependent4SocialSecurity)                       {update.push("<tr><td>Dependent 4 Social Security</td><td>" +  req.body.Dependent4SocialSecurity + "</td><td>" + result.d4ss + "</td>")};
+            if (result.d4gender != req.body.Dependent4Gender)                           {update.push("<tr><td>Dependent 4 Gender</td><td>" +  req.body.Dependent4Gender + "</td><td>" + result.d4gender + "</td>")};
+            if (result.d4coverage != req.body.Dependent4NeedsCoverage)                  {update.push("<tr><td>Dependent 4 Coverage</td><td>" +  req.body.Dependent4NeedsCoverage + "</td><td>" + result.d4coverage + "</td>")};
+            if (result.employername != req.body.employer)                               {update.push("<tr><td>Employer Name</td><td>" +  req.body.employer + "</td><td>" + result.employername + "</td>")};
+            if (result.employerphone != req.body.employerphone)                         {update.push("<tr><td>Employer Phone</td><td>" +  req.body.employerphone + "</td><td>" + result.employerphone + "</td>")};
+            if (result.income != req.body.income)                                       {update.push("<tr><td>Household Income</td><td>" +  req.body.income + "</td><td>" + result.income + "</td>")};
+            if (result.physician != req.body.physician)                                 {update.push("<tr><td>Physician</td><td>" +  req.body.physician + "</td><td>" + result.physician + "</td>")};
+            if (result.physicianspecialty != req.body.physicianspecialty)               {update.push("<tr><td>Physician Specialty</td><td>" +  req.body.physicianspecialty + "</td><td>" + result.physicianspecialty + "</td>")};
+            if (result.ailment1 != req.body.ailment1)                                   {update.push("<tr><td>Physical Ailment</td><td>" +  req.body.ailment1 + "</td><td>" + result.ailment1 + "</td>")};
+            if (result.ailment2 != req.body.ailment2)                                   {update.push("<tr><td>Physical Ailment</td><td>" +  req.body.ailment2 + "</td><td>" + result.ailment2 + "</td>")};
+            if (result.ailment3 != req.body.ailment3)                                   {update.push("<tr><td>Physical Ailment</td><td>" +  req.body.ailment3 + "</td><td>" + result.ailment3 + "</td>")};
+            if (result.prescription1 != req.body.prescription1)                         {update.push("<tr><td>Prescription</td><td>" +  req.body.prescription1 + "</td><td>" + result.prescription1 + "</td>")};
+            if (result.prescription2 != req.body.prescription2)                         {update.push("<tr><td>Prescription</td><td>" +  req.body.prescription2 + "</td><td>" + result.prescription2 + "</td>")};
+            if (result.prescription3 != req.body.prescription3)                         {update.push("<tr><td>Prescription</td><td>" +  req.body.prescription3 + "</td><td>" + result.prescription3 + "</td>")};
+            if (result.dosage1 != req.body.dosage1)                                     {update.push("<tr><td>Dosage</td><td>" +  req.body.dosage1 + "</td><td>" + result.dosage1 + "</td>")};
+            if (result.dosage2 != req.body.dosage2)                                     {update.push("<tr><td>Dosage</td><td>" +  req.body.dosage2 + "</td><td>" + result.dosage2 + "</td>")};
+            if (result.dosage3 != req.body.dosage3)                                     {update.push("<tr><td>Dosage</td><td>" +  req.body.dosage3 + "</td><td>" + result.dosage3 + "</td>")};
+            update.push("</table>");
+
+            if (update.length > 3) {
+                var data = "";
+                for (var i = 0; i < update.length; i++) {
+                    data += update[i];
+                }
+            var transport = nodemailer.createTransport(mandrillTransport({
+                auth: {
+                    apiKey: 'y-Z7eNsStP65JC4YKJD3Lg'
+                }
+            }));
+
+            transport.sendMail({
+                from: 'ACA Insurance Group  <noreply@acainsuresme.com>',
+                to: doc.local.email,
+                subject: 'ACA Employee Updated Information',
+                html: result.firstname + ' ' + result.lastname + ' employed at ' + result.employername  + ' has changed their information:<br><br>'
+                + data
+                ,
+            }, function(err, info) {
+                if (err) {
+                    console.error(err);
+                } else {
+                    callback("email sent");
+                }
+            });
+                }
+            else {callback("no update");}
+            }
+    });
+}
 ```
 
 #### userFunctions.js
 
 ```sh
+var express = require('express');
+var user = require('../routes/user.js');
+
+exports.list = function(onResult) {
+    user.find({}, function(err, users) {
+        if (err) {
+            onResult(err, null);
+        } else {
+            onResult(null, users);
+        }
+    });
+};
 ```
 
 #### utility.js
 
 ```sh
+exports.convertDate = function(string) {
+    if (string.indexOf("-") > -1) {
+        var birthdate = string.split("-");
+        var finalbirthdate = birthdate[1] + "/" + birthdate[2] + "/" + birthdate[0];
+        return finalbirthdate;
+    }
+    else {return string};
+}
 ```
 
 ### Views
@@ -1062,16 +1266,187 @@ passport.use('local-login', new LocalStrategy({
 #### adminDashboard.ejs
 
 ```sh
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <% include ../partials/header.ejs %></head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="/js/setloginsession.js"> </script>
+<style>
+    iframe {
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 400px;
+        width: 100%;
+    }
+</style>
+<body>
+    <div class="page-wrapper">
+        <% include ../partials/nav.ejs %>
+        <div class="container">
+
+            <div class="page-header text-center">
+                <h1><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Admin Dashboard</h1>
+            </div>
+            <div class="row">
+                <!-- LOCAL INFORMATION -->
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h3><span class="fa fa-user"></span> Your Info</h3>
+                        <p>
+                            <strong>Admin ID</strong>: <%= user._id %><br>
+                            <strong>Name</strong>: <%= user.local.firstName %> <%= user.local.lastName %><br>
+                            <strong>E-mail</strong>: <%= user.local.email %>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h3><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Your Cases</h3>
+                        <p>
+                        <% user.employer.forEach(function(employer) { %>
+                        <a href="/<%= user._id %>/<%= employer._id %>"><%= employer.empname %></a>   <br>
+                        <% }); %>
+                        </p>
+                        <p>
+                            <a href="/profile/case" class="btn btn-default"> Add New Case</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h3><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Calendar</h3>
+                        <p>
+                            <iframe src="https://calendar.google.com/calendar/embed?src=acainsuresme%40gmail.com&ctz=America/Chicago" style="border: 0" frameborder="0" scrolling="yes"></iframe>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h3><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> All Cases</h3>
+                        <p>
+                        <% users.forEach(function(users) { %>
+                            <% users.employer.forEach(function(employers) { %>
+                            <a href="/<%= users._id %>/<%= employers._id %>"><%= employers.empname %></a>   <br>
+                            <% }); %>
+                        <% }); %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h3><span class="glyphicon glyphicon-search" aria-hidden="true"></span>Employee Search</h3>
+                        <p>
+                        <form class="form-inline" action="/search" method="post">
+                            <div class="form-group">
+                                <input type="search" name="search" class="form-control" id="search">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-default">Search</button>
+                            </div>
+                        </form>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="well">
+                        <h3><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> All Agents</h3>
+                        <p>
+                        <% users.forEach(function(users) { %>
+                        <!--
+                        <a href="/<%= user._id %>/<%= users._id %>/<%= users.local.firstName %>/<%= users.local.lastName %>"><%= users.local.firstName + " " + users.local.lastName %></a> <br>
+                        -->
+                        <p><%= users.local.firstName + " " + users.local.lastName %></p>
+                        <% }); %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% include ../partials/footer.ejs %>
+
+</body>
+</html>
 ```
 
 #### adminEmployee.ejs
 
 ```sh
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../partials/header.ejs %></head>
+<body>
+    <div class="page-wrapper-index">
+        <% include ../partials/nav.ejs %>
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <h1>Admin Employee</h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <% include ../partials/footer.ejs %>
+
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/common-files/js/jquery-1.10.2.min.js"></script>
+    <script src="/flat-ui/js/bootstrap.min.js"></script>
+    <script src="/common-files/js/modernizr.custom.js"></script>
+    <script src="/common-files/js/jquery.scrollTo-1.4.3.1-min.js"></script>
+    <script src="/common-files/js/jquery.parallax.min.js"></script>
+    <script src="/common-files/js/startup-kit.js"></script>
+    <script src="/common-files/js/jquery.backgroundvideo.min.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+</html>
 ```
 
 #### adminEmployer.ejs
 
 ```sh
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../partials/header.ejs %></head>
+<body>
+    <div class="page-wrapper-index">
+        <% include ../partials/nav.ejs %>
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <h1>Admin Employer</h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <% include ../partials/footer.ejs %>
+
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/common-files/js/jquery-1.10.2.min.js"></script>
+    <script src="/flat-ui/js/bootstrap.min.js"></script>
+    <script src="/common-files/js/modernizr.custom.js"></script>
+    <script src="/common-files/js/jquery.scrollTo-1.4.3.1-min.js"></script>
+    <script src="/common-files/js/jquery.parallax.min.js"></script>
+    <script src="/common-files/js/startup-kit.js"></script>
+    <script src="/common-files/js/jquery.backgroundvideo.min.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+</html>
 ```
 
 #### agentDashboard.ejs
@@ -1179,16 +1554,170 @@ passport.use('local-login', new LocalStrategy({
 #### admin.js
 
 ```sh
+var mongoose = require('mongoose');
+var bcrypt = require('bcrypt-nodejs');
+
+var adminSchema = mongoose.Schema({
+        agentid: String,
+        employerid: String,
+        email: String,
+        password: String
+});
+
+// methods ======================
+// generating a hash
+adminSchema.methods.generateHash = function(password) {
+        return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+
+// checking if password is valid
+adminSchema.methods.validPassword = function(password) {
+        return bcrypt.compareSync(password, this.password);
+};
+
+// create the model for employees and expose it to our app
+module.exports = mongoose.model('Admin', adminSchema);
 ```
 
 #### employee.js
 
 ```sh
+var express = require('express');
+var router = express.Router();
+var mongoose = require('mongoose');
+var bcrypt   = require('bcrypt-nodejs');
+
+var employeeSchema = mongoose.Schema({
+        agentid: String,
+        employerid: String,
+        employername: String,
+        employerphone: String,
+        email: String,
+        password: String,
+        passwordIsExpired: String,
+        firstname: String,
+        lastname: String,
+        maritalstatus: String,
+        spousefirstname: String,
+        spouselastname: String,
+        phonenumber: String,
+        altphonenumber: String,
+        address: String,
+        city: String,
+        state: String,
+        zip: String,
+        birthdate: String,
+        coveragenumber: String,
+        ss: String,
+        signature: String,
+        gender: String,
+        d1firstname: String,
+        d1lastname: String,
+        d1birthdate: String,
+        d1ss: String,
+        d1gender: String,
+        d1coverage: String,
+        d2firstname: String,
+        d2lastname: String,
+        d2birthdate: String,
+        d2ss: String,
+        d2gender: String,
+        d2coverage: String,
+        d3firstname: String,
+        d3lastname: String,
+        d3birthdate: String,
+        d3ss: String,
+        d3gender: String,
+        d3coverage: String,
+        d4firstname: String,
+        d4lastname: String,
+        d4birthdate: String,
+        d4ss: String,
+        d4gender: String,
+        d4coverage: String,
+        income: String,
+        physician: String,
+        physicianspecialty: String,
+        ailment1: String,
+        ailment2: String,
+        ailment3: String,
+        prescription1: String,
+        prescription2: String,
+        prescription3: String,
+        dosage1: String,
+        dosage2: String,
+        dosage3: String
+});
+
+employeeSchema.index(
+    { "$**": "text" },
+    { name: "textScore" }
+);
+
+// methods ======================
+// generating a hash
+employeeSchema.methods.generateHash = function(password) {
+        return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+
+// checking if password is valid
+employeeSchema.methods.validPassword = function(password) {
+        return bcrypt.compareSync(password, this.password);
+};
+
+// create the model for employees and expose it to our app
+module.exports = mongoose.model('Employee', employeeSchema);
 ```
 
 #### user.js
 
 ```sh
+var mongoose = require('mongoose');
+var bcrypt   = require('bcrypt-nodejs');
+
+// define the schema for our user model
+var userSchema = mongoose.Schema({
+
+    local            : {
+        email: String,
+        password: String,
+        firstName: String,
+        lastName: String,
+        role: String
+    },
+    employer     : [{
+        empname: String,
+        streetaddress: String,
+        city: String,
+        state: String,
+        zipcode: String,
+        phonenumber: String,
+        email: String,
+        contact: String,
+        altemail: String,
+        altcontact: String,
+        comments: String,
+        payroll: String,
+        dental: String,
+        cashadvantage: String,
+        vision: String
+        }]
+});
+
+// methods ======================
+// generating a hash
+userSchema.methods.generateHash = function(password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+
+// checking if password is valid
+userSchema.methods.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.local.password);
+};
+
+
+// create the model for users and expose it to our app
+module.exports = mongoose.model('User', userSchema);
 ```
 
 ## Credits
