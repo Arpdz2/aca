@@ -210,11 +210,6 @@ app.get('/contact', function(request, response) {
     console.log("Rendering contact us tab");
 });
 
-app.get('/loginindex', function(request, response) {
-    response.render('pages/loginindex');
-    console.log("Rendering loginindex tab");
-});
-
 app.get('/agentLogin', function(req, res) {
     res.render('pages/login',{ message: req.flash('loginMessage') });
     console.log("Rendering login tab");
@@ -225,12 +220,6 @@ app.get('/signup', function(req, res) {
     // render the page and pass in any flash data if it exists
     res.render('pages/signup', { message: req.flash('signupMessage') });
 });
-
-/*app.get('/profile', isLoggedIn, function(req, res) {
-    res.render('pages/profile', {
-        user : req.user // get the user out of session and pass to template
-    });
-});*/
 
 app.get('/agentDashboard', isLoggedIn, function(req, res) {
     res.render('pages/agentDashboard', {
@@ -348,9 +337,6 @@ app.post('/profile/case', isLoggedIn,function (req, res, next){
         {
             console.log(err);
             return res.redirect('/agentDashboard');
-            /*return res.render('pages/profile', {
-                user : req.user // get the user out of session and pass to template
-            });*/
         }
     );
 });
