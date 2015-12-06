@@ -3859,4 +3859,4 @@ module.exports = mongoose.model('User', userSchema);
 
 ## License
 
-Copyright (c) 2015 Austin Paul <[https://github.com/Arpdz2](https://github.com/Arpdz2) & Brenden McKamey <[http://brendenmckamey.com/](http://brendenmckamey.com/)>
+Copyright (c) 2015 Austin Paul [https://github.com/Arpdz2](https://github.com/Arpdz2) & Brenden McKamey [http://brendenmckamey.com/](http://brendenmckamey.com/)
