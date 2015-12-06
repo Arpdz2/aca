@@ -1,6 +1,5 @@
 var express = require('express'),
     sendEmail = require('./routes/sendEmail.js'),
-    passwordExpired = require('./routes/passwordExpired.js'),
     bodyParser = require('body-parser'),
     app = express(),
     dbConfig = require('./routes/db.js'),
