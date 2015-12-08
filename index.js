@@ -141,7 +141,7 @@ app.get('/pdf/:employeeid/employee.pdf', isLoggedIn, function(request, response)
 
 app.get('/passwordExpired', function(req, res){
     console.log(req.session.email);
-    emailAddress = req.session.email;
+    var emailAddress = req.session.email;
     res.render('pages/passwordExpired', {emailAddress : emailAddress, message : ''});
 });
 
