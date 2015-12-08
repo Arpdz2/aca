@@ -1649,7 +1649,7 @@ section * {
   background-color: #1B1F23;
 }
 .content-23 #bgVideo {
-  background-image: url('/common-files/img/header/img-video.jpg');
+  /*background-image: url('/common-files/img/header/img-video.jpg');*/
 }
 .content-23 .control-btn {
   opacity: 10;
