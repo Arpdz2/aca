@@ -67,7 +67,7 @@ app.use('*', function(req,res,next){
 });
 */
 
-app.use(enforce.HTTPS({ trustProtoHeader: true })); //*****Enable for production to force https******
+//app.use(enforce.HTTPS({ trustProtoHeader: true })); //*****Enable for production to force https******
 
 app.get('/', function(request, response) {
   response.render('pages/index');
@@ -229,6 +229,10 @@ app.get('/adminDashboard', isLoggedIn, function(req, res) {
             users : data
         });
     });
+});
+
+app.get('/hc', function(req, res) {
+    res.render('pages/hc');
 });
 
 app.post('/search', isLoggedIn, function(req, res) {
