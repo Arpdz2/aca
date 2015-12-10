@@ -72,7 +72,7 @@ app.use('*', function(req,res,next){
 });
 */
 
-app.use(enforce.HTTPS({ trustProtoHeader: true })); //*****Enable for production to force https******
+//app.use(enforce.HTTPS({ trustProtoHeader: true })); //*****Enable for production to force https******
 
 app.get('/', function(req, res) {
     if (req.session.employee && req.session.employee != null) {
@@ -493,7 +493,7 @@ app.get('/signup/:agentid/:employerid', function(req,res){
             }, function(err, docs){
                 console.log(docs);
                 if (docs != undefined)
-                res.render('pages/signup2', {message: ""});
+                res.render('pages/signup2', {message: "", user: null, employee: null});
                 else res.redirect('/');
             });
         }
@@ -506,11 +506,11 @@ app.post('/signup2', function(req,res){
             console.log("error");
         }
         if (user) {
-            res.render('pages/signup2', {message : "Email already taken" });
+            res.render('pages/signup2', {message : "Email already taken", user: null, employee: null });
         }
         else if (req.body.password != req.body.passwordverify)
         {
-            res.render('pages/signup2', {message : "Passwords are not the same" });
+            res.render('pages/signup2', {message : "Passwords are not the same", user: null, employee: null });
         }
         else
         {
