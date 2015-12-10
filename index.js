@@ -50,6 +50,11 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
+app.use(function (req, res, next) {
+  res.locals.login = req.isAuthenticated();
+  next();
+});
+
 
 /*used to enforce https on get requests
 app.use('*', function(req,res,next){
@@ -67,10 +72,16 @@ app.use('*', function(req,res,next){
 });
 */
 
-app.use(enforce.HTTPS({ trustProtoHeader: true })); //*****Enable for production to force https******
+//app.use(enforce.HTTPS({ trustProtoHeader: true })); //*****Enable for production to force https******
 
-app.get('/', function(request, response) {
-  response.render('pages/index');
+app.get('/', function(req, res) {
+    if (req.session.employee && req.session.employee != null) {
+        employee.findOne({_id: req.session.employee}, function (err, result) {
+            res.render('pages/index', { user: null, employee: result });
+        });
+    } else {
+        res.render('pages/index', { user: req.user, employee: null });
+    }
 });
 
 app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
@@ -115,14 +126,14 @@ app.get('/employee/pdf/generator/:employeeid', isLoggedIn, function(req, res)
     });
 });
 
-app.get('/pdf/:employeeid/employee.pdf', isLoggedIn, function(request, response){
-    var emp = request.params.employeeid;
-    var tempFile= request.params.employeeid + "final.pdf";
+app.get('/pdf/:employeeid/employee.pdf', isLoggedIn, function(req, res){
+    var emp = req.params.employeeid;
+    var tempFile= req.params.employeeid + "final.pdf";
     fs.readFile(tempFile, function (err,data){
-        response.contentType("application/pdf");
-        response.send(data);
+        res.contentType("application/pdf");
+        res.send(data);
         console.log("pdf load")
-        response.on('finish', function() {
+        res.on('finish', function() {
         fs.unlink(emp + '.fdf', function(err) {
             fs.unlink(emp + '.pdf', function(err) {
                 fs.unlink(emp + '.png', function(err) {
@@ -141,7 +152,7 @@ app.get('/pdf/:employeeid/employee.pdf', isLoggedIn, function(request, response)
 app.get('/passwordExpired', function(req, res){
     console.log(req.session.email);
     var emailAddress = req.session.email;
-    res.render('pages/passwordExpired', {emailAddress : emailAddress, message : ''});
+    res.render('pages/passwordExpired', {emailAddress : emailAddress, message : '', user: req.user, employee: null });
 });
 
 app.post('/passwordExpired', function(req, res){
@@ -151,7 +162,7 @@ app.post('/passwordExpired', function(req, res){
         }
         if (req.body.password != req.body.passwordverify)
         {
-            res.render('pages/passwordExpired', {emailAddress : emailAddress, message : "Passwords are not the same" });
+            res.render('pages/passwordExpired', {emailAddress : emailAddress, message : "Passwords are not the same", user: req.user, employee: null });
         }
         else
         {
@@ -167,72 +178,77 @@ app.post('/passwordExpired', function(req, res){
     });
 });
 
-app.get('/quote', function(request, response) {
-  response.render('pages/quote');
+app.get('/quote', function(req, res) {
+  res.render('pages/quote', { user: req.user, employee: null });
 });
 
-app.post('/submitContactForm', function(request, response) {
-    var firstName = request.body.firstName
-    var lastName = request.body.lastName
-    var companyName = request.body.companyName
-    var emailAddress = request.body.emailAddress
-    var phoneNumber = request.body.phoneNumber
-    var comments = request.body.comments
+app.post('/submitContactForm', function(req, res) {
+    var firstName = req.body.firstName
+    var lastName = req.body.lastName
+    var companyName = req.body.companyName
+    var emailAddress = req.body.emailAddress
+    var phoneNumber = req.body.phoneNumber
+    var comments = req.body.comments
     
 //    sendEmail.sendQuote(firstName, lastName, streetAddress, city, state, zipCode, phoneNumber, emailAddress, comments, function(statusCode, result) {
 //        console.log("Email sent...");
 //    })
-    response.render('pages/success');
+    res.render('pages/success', { user: req.user, employee: null });
 });
 
 
-app.get('/success', function(request, response) {
-  response.render('pages/success');
+app.get('/success', function(req, res) {
+  res.render('pages/success', { user: req.user, employee: null });
 });
 
-app.get('/smallbusiness', function(request, response) {
-    response.render('pages/smallbusiness');
+app.get('/smallbusiness', function(req, res) {
+    res.render('pages/smallbusiness', { user: req.user, employee: null });
     console.log("Rendering small business tab");
 });
 
-app.get('/healthplan', function(request, response) {
-    response.render('pages/healthplan');
+app.get('/healthplan', function(req, res) {
+    res.render('pages/healthplan', { user: req.user, employee: null });
     console.log("Rendering health plan tab");
 });
 
-app.get('/contact', function(request, response) {
-    response.render('pages/contact');
+app.get('/contact', function(req, res) {
+    res.render('pages/contact', { user: req.user, employee: null });
     console.log("Rendering contact us tab");
 });
 
 app.get('/agentLogin', function(req, res) {
-    res.render('pages/login',{ message: req.flash('loginMessage') });
+    res.render('pages/login', { message: req.flash('loginMessage'), user: req.user, employee: null });
     console.log("Rendering login tab");
 });
 
 app.get('/signup', function(req, res) {
 
     // render the page and pass in any flash data if it exists
-    res.render('pages/signup', { message: req.flash('signupMessage') });
+    res.render('pages/signup', { message: req.flash('signupMessage'), user: req.user, employee: null });
 });
 
 app.get('/agentDashboard', isLoggedIn, function(req, res) {
-    res.render('pages/agentDashboard', {
-        user : req.user // get the user out of session and pass to template
-    });
+    res.render('pages/agentDashboard', { user : req.user, employee: null });
 });
 
 app.get('/adminDashboard', isLoggedIn, function(req, res) {
     userFunctions.list(function (err, data) {
-        res.render('pages/adminDashboard', {
-            user : req.user, // get the user out of session and pass to template
-            users : data
-        });
+        res.render('pages/adminDashboard', { user : req.user, employee: null, users : data });
     });
 });
 
-app.get('/hc', function(req, res) {
-    res.render('pages/hc');
+app.get('/hc', isLoggedIn, function(req, res) {
+    res.render('pages/hc', { user: req.user, employee: null });
+});
+
+app.get('/back', isLoggedIn, function(req, res) {
+    
+    if (req.user.local.role == "agent") {
+        res.redirect('/agentDashboard');
+    } else if (req.user.local.role == "admin") {
+        res.redirect('/adminDashboard');
+    }
+    
 });
 
 app.post('/search', isLoggedIn, function(req, res) {
@@ -248,7 +264,7 @@ app.post('/search', isLoggedIn, function(req, res) {
             }
             else if (results) {
                 res.render('pages/search', {
-                    user: req.user, search: results // get the user out of session and pass to template
+                    user: req.user, employee: null, search: results // get the user out of session and pass to template
                 });
             }
             else {
@@ -256,7 +272,6 @@ app.post('/search', isLoggedIn, function(req, res) {
             }
     });
 });
-
 
 app.get('/logout', function(req, res) {
     req.logout();
@@ -299,7 +314,7 @@ app.post('/agentLogin',
 app.get('/profile/case', isLoggedIn, function(req, res)
 {
     res.render('pages/case', {
-        user : req.user // get the user out of session and pass to template
+        user : req.user, employee: null // get the user out of session and pass to template
     });
 });
 
@@ -374,7 +389,7 @@ app.get('/:id/:eid', isLoggedIn, function(req, res)
             if(err) {
                 throw(err);
             }
-            res.render('pages/employer', {user : user, page : eid, emp : docs, url: signupUrl/*, title: post.title, url: post.URL */});
+            res.render('pages/employer', {user : req.user, employee: null, id : user, page : eid, emp : docs, url: signupUrl/*, title: post.title, url: post.URL */});
         });
     });
 });
@@ -390,7 +405,7 @@ app.get('/:id/:eid/:firstName/:lastName', isLoggedIn, function(req, res)
         if(err) {
             res.json(err);
         }
-        res.render('pages/adminEmployee');
+        res.render('pages/adminEmployee', { user: req.user, employee: null });
     });
 });
 
@@ -447,7 +462,7 @@ app.get('/signup/:agentid/:employerid', function(req,res){
     req.session.agentid = req.params.agentid;
     req.session.employerid = req.params.employerid;
     user.findOne({'_id' : req.params.agentid }, function(err, docs) {
-        if (err) res.redirect('/');
+        if (err) res.redirect('/', { user: req.user, employee: null });
         else if(docs == null) res.redirect('/');
         else {
             user.find({
@@ -492,7 +507,7 @@ app.post('/signup2', function(req,res){
 });
 
 app.get('/login', function(req,res){
-    res.render('pages/login2', {message : "" });
+    res.render('pages/login2', {message : "", user: req.user, employee: null });
 });
 
 app.post('/login', function(req,res){
@@ -501,10 +516,10 @@ app.post('/login', function(req,res){
             console.log(err);
         // if no user is found, return the message
         } else if (!user) {
-            res.render('pages/login2', {message : "No user exists" });
+            res.render('pages/login2', {message : "No user exists", user: req.user, employee: null });
         // if the user is found but the password is wrong
         } else if (!user.validPassword(req.body.password)) {
-            res.render('pages/login2', {message : "Invalid Password" });
+            res.render('pages/login2', {message : "Invalid Password", user: req.user, employee: null });
         // if the user's password is expired
         } else if (user.passwordIsExpired == "TRUE") {
             console.log("Password is expired.")
@@ -520,7 +535,7 @@ app.post('/login', function(req,res){
 });
 
 app.get('/recovery', function(req, res){
-    res.render('pages/recovery');
+    res.render('pages/recovery', { user: req.user, employee: null });
 });
 
 app.post('/recovery', function(req, res){
@@ -542,13 +557,14 @@ app.post('/recovery', function(req, res){
 
 });
 
-app.get('/information', function(req,res){
+app.get('/information', function(req, res){
     if (req.session.employee && req.session.employee != null) {
         employee.findOne({_id: req.session.employee}, function (err, result) {
+            console.log(result.email);
             var agentid = result.agentid;
             var employerid = result.employerid;
             user.findOne({'_id': agentid}, function (err, docs) {
-                res.render('pages/information', {employee: result, user: docs, employerid: employerid});
+                res.render('pages/information', {employee: result, user: null, docs: docs, employerid: employerid});
             });
         });
     }
@@ -557,7 +573,7 @@ app.get('/information', function(req,res){
     }
 });
 
-app.post('/information', function(req,res){
+app.post('/information', function(req, res){
     if (req.session.employee && req.session.employee != null) {
         employee.findOne({_id: req.session.employee}, function (err, result) {
             updateEmail.update(req, result, function(message) {
