@@ -198,22 +198,43 @@ app.post('/submitContactForm', function(req, res) {
 
 
 app.get('/success', function(req, res) {
-  res.render('pages/success', { user: req.user, employee: null });
+    if (req.session.employee && req.session.employee != null) {
+        employee.findOne({_id: req.session.employee}, function (err, result) {
+            res.render('pages/success', { user: null, employee: result });
+        });
+    } else {
+        res.render('pages/success', { user: req.user, employee: null });
+    }
 });
 
 app.get('/smallbusiness', function(req, res) {
-    res.render('pages/smallbusiness', { user: req.user, employee: null });
-    console.log("Rendering small business tab");
+    if (req.session.employee && req.session.employee != null) {
+        employee.findOne({_id: req.session.employee}, function (err, result) {
+            res.render('pages/smallbusiness', { user: null, employee: result });
+        });
+    } else {
+        res.render('pages/smallbusiness', { user: req.user, employee: null });
+    }
 });
 
 app.get('/healthplan', function(req, res) {
-    res.render('pages/healthplan', { user: req.user, employee: null });
-    console.log("Rendering health plan tab");
+    if (req.session.employee && req.session.employee != null) {
+        employee.findOne({_id: req.session.employee}, function (err, result) {
+            res.render('pages/healthplan', { user: null, employee: result });
+        });
+    } else {
+        res.render('pages/healthplan', { user: req.user, employee: null });
+    }
 });
 
 app.get('/contact', function(req, res) {
-    res.render('pages/contact', { user: req.user, employee: null });
-    console.log("Rendering contact us tab");
+    if (req.session.employee && req.session.employee != null) {
+        employee.findOne({_id: req.session.employee}, function (err, result) {
+            res.render('pages/contact', { user: null, employee: result });
+        });
+    } else {
+        res.render('pages/contact', { user: req.user, employee: null });
+    }
 });
 
 app.get('/agentLogin', function(req, res) {
@@ -544,11 +565,11 @@ app.post('/recovery', function(req, res){
     
     if (optionsRadios == 'option1') {
         sendEmail.passwordReset(req, function(string){
-            res.render('pages/login2', {message : string});
+            res.render('pages/login2', {message : string, user: null, employee: null});
         });
     } else if (optionsRadios == 'option2') {
         sendEmail.forgotEmail(req, res, function(string) {
-            res.render('pages/login2', {message : string});
+            res.render('pages/login2', {message : string, user: null, employee: null});
         });
     } else if (optionsRadios == 'option3') {
         console.log("option3 not setup.");
