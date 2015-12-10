@@ -72,7 +72,7 @@ app.use('*', function(req,res,next){
 });
 */
 
-//app.use(enforce.HTTPS({ trustProtoHeader: true })); //*****Enable for production to force https******
+app.use(enforce.HTTPS({ trustProtoHeader: true })); //*****Enable for production to force https******
 
 app.get('/', function(req, res) {
     if (req.session.employee && req.session.employee != null) {
