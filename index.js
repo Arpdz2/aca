@@ -381,7 +381,7 @@ app.get('/:employer/sendemail/:id/:eid/:employeremail/:altemail', isLoggedIn, fu
         to: req.params.employeremail,
         cc: req.params.altemail + ", " + agentEmail,
         subject: 'ACA Insurance Employee Registration Link',
-        html: '<p>Dear ' + req.params.employer + ',</p><p>Please have your employees use the link below to create an account and receive a quote for ACA coverage:</p><p>' + req.protocol + '://' + req.get("host") + '/signup/' + req.params.id + '/' + req.params.eid + '</p><br/><p>Thank you,</p><p>ACA Insurance Group</p>'
+        html: '<p>Dear ' + req.params.employer + ',</p><p>Please have your employees use the link below to create an account and receive a quote for health insurance:</p><p>' + req.protocol + '://' + req.get("host") + '/signup/' + req.params.id + '/' + req.params.eid + '</p><br/><p>Thank you,</p><p>ACA Insurance Group</p>'
     }, function(err, info) {
         if (err) {
             console.error(err);
