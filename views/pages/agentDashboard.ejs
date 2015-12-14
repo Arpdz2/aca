@@ -1,82 +1,85 @@
 <!-- views/profile.ejs -->
 <!doctype html>
 <html>
-<head>
-    <% include ../partials/header.ejs %></head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="/js/setloginsession.js"> </script>
-<style>
-    iframe {
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 400px;
-        width: 100%;
-    }
-</style>
-<body>
-    <div class="page-wrapper">
-        <% include ../partials/nav.ejs %>
-        <div class="container">
+    <head>
+        <% include ../partials/header.ejs %>
+    </head>
+    <body>
+        <div class="page-wrapper">
+            <% include ../partials/nav.ejs %>
+            <div class="container">
 
-            <div class="page-header text-center">
-                <h1><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Agent Dashboard</h1>
-            </div>
-            <div class="row">
-                <!-- LOCAL INFORMATION -->
-                <div class="col-sm-6">
-                    <div class="well">
-                        <h3><span class="fa fa-user"></span> Agent Info</h3>
-                        <p>
-                            <strong>Agent ID</strong>: <%= user._id %><br>
-                            <strong>Name</strong>: <%= user.local.firstName %> <%= user.local.lastName %><br>
-                            <strong>E-mail</strong>: <%= user.local.email %>
-                        </p>
+                <div class="page-header text-center">
+                    <h1><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Agent Dashboard</h1>
+                </div>
+                <div class="row">
+                    <!-- LOCAL INFORMATION -->
+                    <div class="col-sm-6">
+                        <div class="well">
+                            <h3><span class="fa fa-user"></span> Agent Info</h3>
+                            <p>
+                                <strong>Agent ID</strong>: <%= user._id %><br>
+                                <strong>Name</strong>: <%= user.local.firstName %> <%= user.local.lastName %><br>
+                                <strong>E-mail</strong>: <%= user.local.email %>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="well">
+                            <h3><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Agent Cases</h3>
+                            <p>
+                            <% user.employer.forEach(function(employer) { %>
+                            <a href="/<%= user._id %>/<%= employer._id %>"><%= employer.empname %></a>   <br>
+                            <% }); %>
+                            </p>
+                            <p>
+                                <a href="/profile/case" class="btn btn-default"> Add New Case</a>
+                            </p>
+                        </div>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="well">
-                        <h3><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Agent Cases</h3>
-                        <p>
-                        <% user.employer.forEach(function(employer) { %>
-                        <a href="/<%= user._id %>/<%= employer._id %>"><%= employer.empname %></a>   <br>
-                        <% }); %>
-                        </p>
-                        <p>
-                            <a href="/profile/case" class="btn btn-default"> Add New Case</a>
-                        </p>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="well">
+                            <h3><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Calendar</h3>
+                            <p>
+                                <iframe src="https://calendar.google.com/calendar/embed?src=acainsuresme%40gmail.com&ctz=America/Chicago" style="border: 0" frameborder="0" scrolling="yes"></iframe>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="well">
+                            <h3><span class="glyphicon glyphicon-search" aria-hidden="true"></span>Employee Search</h3>
+                            <p>
+                            <form class="form-inline" action="/search" method="post">
+                                <div class="form-group">
+                                    <input type="search" name="search" class="form-control" id="search">
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-default">Search</button>
+                                </div>
+                            </form>
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="well">
-                        <h3><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Calendar</h3>
-                        <p>
-                            <iframe src="https://calendar.google.com/calendar/embed?src=acainsuresme%40gmail.com&ctz=America/Chicago" style="border: 0" frameborder="0" scrolling="yes"></iframe>
-                        </p>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="well">
-                        <h3><span class="glyphicon glyphicon-search" aria-hidden="true"></span>Employee Search</h3>
-                        <p>
-                        <form class="form-inline" action="/search" method="post">
-                            <div class="form-group">
-                                <input type="search" name="search" class="form-control" id="search">
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-default">Search</button>
-                            </div>
-                        </form>
-                        </p>
-                    </div>
-                </div>
+                <a href="https://aca-benefits-help.herokuapp.com/" target="_blank">
+                    <i class="fa fa-question-circle fa-3x" style="position:fixed; top:92%; right:2%; color:#1abc9c;"></i>
+                </a>
             </div>
         </div>
-    </div>
-    <% include ../partials/footer.ejs %>
+        <% include ../partials/footer.ejs %>
 
-</body>
+    </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <style>
+        iframe {
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 400px;
+            width: 100%;
+        }
+    </style>
 </html>

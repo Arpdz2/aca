@@ -1,7 +1,7 @@
 {
   "name": "aca",
   "version": "0.1.4",
-  "description": "Affordable Care Act Insurance Group",
+  "description": "ACA Benefits",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
@@ -39,6 +39,7 @@
   },
   "keywords": [
     "ACA",
+    "ACA Benefits",
     "ACA Insurance Group",
     "Affordable Care Act"
   ],

@@ -51,7 +51,7 @@
             <!--<div id = "wrapperr" class="well"> <img id = "myImage" src ="/img/ajax_loader.gif" > <br><br><br> <h3 id="loading"> Ensuring a secure connection...</h3></div>-->
             <div id = "wholepage" class="container">
                 <div class="page-header text-center">
-                    <% user.employer.forEach(function(employer) { %>
+                    <% docs.employer.forEach(function(employer) { %>
                     <%if (employer._id == employerid) { %>
                     <h1>Employee Profile Page</h1>
                     <h3>Employer: <%= employer.empname %></h3>
@@ -530,6 +530,9 @@
                                 </div>
                             </form>
                         </div>
+                        <a href="https://aca-benefits-help.herokuapp.com/" target="_blank">
+                            <i class="fa fa-question-circle fa-3x" style="position:fixed; top:92%; right:2%; color:#1abc9c;"></i>
+                        </a>
                     </div>
                 </div>
             </div>
