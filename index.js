@@ -347,7 +347,7 @@ app.get('/:employer/sendemail/:id/:eid/:employeremail/:altemail', isLoggedIn, fu
             console.error(err);
         } else {
             console.log('Message sent: ' + info.response);
-            res.redirect('/agentDashboard');
+            res.redirect('/agentDashboard?email=' + req.params.employeremail);
         }
     });
 });
