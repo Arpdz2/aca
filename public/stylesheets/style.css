@@ -973,7 +973,7 @@ section * {
   }
 }
 .header-10-sub .background {
-  background-image: url('/common-files/img/header/Forest.jpg');
+  background-image: url('/common-files/img/header/Forest.png');
   opacity: 20;
   filter: alpha(opacity=2000);
   opacity: 0.2;
